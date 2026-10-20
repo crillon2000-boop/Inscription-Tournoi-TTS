@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tournoi international de Seloncourt – 10ème édition – 17 &amp; 18 avril 2027</title>
+  <meta name="description" content="Inscription au 10ème tournoi international de tennis de table de Seloncourt, les 17 et 18 avril 2027. 6 060 € de récompenses, 19 tableaux, 28 tables.">
+  <meta name="theme-color" content="#060814">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%23ff8a1f'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&family=Unbounded:wght@500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ══════════ Design tokens ══════════ */
+    :root {
+      --ink: #060814;          /* fond de page */
+      --court: #0b1a4d;        /* bleu « plateau de table » */
+      --court-hi: #11287a;
+      --panel: rgba(15, 26, 78, .62);
+      --line: #243489;
+      --line-soft: rgba(120, 140, 255, .18);
+      --text: #eaeeff;
+      --muted: #9ba8dc;
+      --cyan: #22f0ff;         /* néon électrique */
+      --violet: #8a63ff;
+      --ball: #ff8a1f;         /* balle orange : action principale */
+      --ball-hi: #ffa94d;
+      --ok: #3dffa8;
+      --bad: #ff5d7a;
+      --font-display: 'Unbounded', 'Arial Black', system-ui, sans-serif;
+      --font-body: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+    body {
+      margin: 0;
+      background: var(--ink);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    img, svg { display: block; max-width: 100%; }
+    h1, h2, h3 { font-family: var(--font-display); margin: 0; line-height: 1.12; letter-spacing: -.015em; }
+    p { margin: 0; }
+    a { color: var(--cyan); }
+    button, input, select { font: inherit; color: inherit; }
+    :focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 6px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+    .wrap { width: min(1160px, 100% - 32px); margin-inline: auto; }
+    .section { padding-block: clamp(56px, 9vw, 104px); }
+    .section-title { font-size: clamp(1.55rem, 3.4vw, 2.4rem); font-weight: 700; max-width: 22ch; }
+    .section-lead { color: var(--muted); max-width: 60ch; margin-top: 14px; }
+
+    /* ══════════ Navigation ══════════ */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(6, 8, 20, .82);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 64px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: .92rem; color: var(--text); text-decoration: none; }
+    .brand-ball { width: 22px; height: 22px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffd2a0, var(--ball) 55%, #d4600a); box-shadow: 0 0 14px rgba(255, 138, 31, .7); }
+    .nav-links { display: flex; align-items: center; gap: 6px; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: .92rem; padding: 8px 12px; border-radius: 999px; transition: color .2s, background .2s; }
+    .nav-links a:hover { color: var(--text); background: rgba(255, 255, 255, .06); }
+    .nav-links .nav-cta { color: #1a0d00; background: var(--ball); font-weight: 800; }
+    .nav-links .nav-cta:hover { background: var(--ball-hi); color: #1a0d00; }
+    @media (max-width: 760px) { .nav-links a:not(.nav-cta) { display: none; } }
+
+    /* ══════════ Hero ══════════ */
+    .hero { position: relative; overflow: hidden; padding-block: clamp(40px, 7vw, 88px) clamp(48px, 7vw, 96px); }
+    .hero::before {              /* quadrillage très discret + halo bleu : l'ambiance de la salle */
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(900px 520px at 78% 8%, rgba(34, 80, 255, .30), transparent 70%),
+        radial-gradient(600px 400px at 6% 90%, rgba(138, 99, 255, .16), transparent 70%),
+        repeating-linear-gradient(0deg, rgba(120, 140, 255, .05) 0 1px, transparent 1px 56px),
+        repeating-linear-gradient(90deg, rgba(120, 140, 255, .05) 0 1px, transparent 1px 56px);
+      mask-image: linear-gradient(to bottom, #000 55%, transparent);
+    }
+    .hero-grid { position: relative; display: grid; gap: clamp(32px, 5vw, 64px); grid-template-columns: 1.08fr .92fr; align-items: center; }
+    @media (max-width: 960px) { .hero-grid { grid-template-columns: 1fr; } }
+
+    .hero h1 { font-size: clamp(2.05rem, 4.9vw, 4rem); font-weight: 900; letter-spacing: -.03em; }
+    .hero-edition { display: flex; flex-wrap: wrap; gap: 10px 14px; margin-top: 22px; }
+    .tag { display: inline-block; line-height: 1.4; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line); background: rgba(17, 40, 122, .45); font-weight: 600; font-size: .95rem; }
+    .tag strong { font-weight: 800; }
+    .tag.hot { border-color: rgba(255, 138, 31, .55); background: rgba(255, 138, 31, .12); }
+    .tag sup { font-size: .7em; }
+
+    /* Compte à rebours = tableau de marque */
+    .scoreboard { margin-top: 34px; display: flex; flex-wrap: wrap; gap: 12px clamp(10px, 2vw, 20px); }
+    .sb-group { display: flex; flex-direction: column; gap: 8px; }
+    .sb-digits { display: flex; gap: 4px; }
+    .sb-digit {
+      position: relative; width: clamp(34px, 6.2vw, 52px); height: clamp(52px, 9vw, 76px);
+      display: grid; place-items: center;
+      font-family: var(--font-display); font-weight: 700; font-size: clamp(1.6rem, 4vw, 2.6rem);
+      color: var(--cyan); text-shadow: 0 0 14px rgba(34, 240, 255, .75);
+      background: linear-gradient(#0a1240, #050a28);
+      border: 1px solid var(--line); border-radius: 8px;
+    }
+    .sb-digit::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: rgba(0, 0, 0, .65); }
+    .sb-label { font-size: .8rem; color: var(--muted); font-weight: 600; padding-left: 2px; }
+    .sb-done { font-family: var(--font-display); font-size: 1.4rem; color: var(--cyan); }
+
+    .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 22px; margin-top: 38px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      border: 0; cursor: pointer; text-decoration: none;
+      padding: 16px 30px; border-radius: 999px;
+      font-weight: 800; font-size: 1.05rem;
+      color: #1a0d00; background: var(--ball);
+      box-shadow: 0 0 0 0 rgba(255, 138, 31, .6), 0 10px 30px -8px rgba(255, 138, 31, .7);
+      transition: transform .18s, background .18s, box-shadow .18s;
+    }
+    .btn:hover { background: var(--ball-hi); transform: translateY(-2px); box-shadow: 0 0 0 6px rgba(255, 138, 31, .18), 0 14px 34px -8px rgba(255, 138, 31, .8); }
+    .btn:active { transform: translateY(0); }
+    .btn[disabled] { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--line); box-shadow: none; padding: 12px 22px; font-size: .95rem; }
+    .btn-ghost:hover { background: rgba(255, 255, 255, .06); box-shadow: none; }
+    .hero-note { color: var(--muted); font-size: .95rem; max-width: 30ch; }
+    .hero-note b { color: var(--text); }
+
+    /* Table vue de dessus + balle */
+    .court { position: relative; }
+    .court svg { width: 100%; height: auto; filter: drop-shadow(0 30px 60px rgba(20, 60, 255, .35)); }
+    .court-caption { margin-top: 14px; color: var(--muted); font-size: .9rem; text-align: right; }
+
+    /* ══════════ Planning ══════════ */
+    .day-tabs { display: inline-flex; gap: 6px; padding: 5px; margin-top: 32px; border-radius: 999px; background: rgba(255, 255, 255, .05); border: 1px solid var(--line-soft); }
+    .day-tabs button, .main-tabs button {
+      border: 0; background: transparent; cursor: pointer; border-radius: 999px;
+      padding: 10px 22px; font-weight: 700; color: var(--muted); transition: background .2s, color .2s;
+    }
+    .day-tabs button[aria-selected="true"] { background: var(--cyan); color: #00262b; }
+    .day-tabs button:not([aria-selected="true"]):hover { color: var(--text); }
+
+    .timeline { list-style: none; margin: 28px 0 0; padding: 0; position: relative; }
+    .timeline::before { content: ''; position: absolute; left: 61px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(var(--cyan), var(--violet)); opacity: .45; }
+    .tl-row { display: grid; grid-template-columns: 52px 18px 1fr; gap: 0 14px; padding-block: 8px; }
+    .tl-time { font-family: var(--font-display); font-weight: 700; font-size: .95rem; padding-top: 22px; text-align: right; }
+    .tl-dot { position: relative; z-index: 1; margin-top: 26px; width: 14px; height: 14px; border-radius: 50%; background: var(--ink); border: 3px solid var(--cyan); box-shadow: 0 0 10px rgba(34, 240, 255, .6); justify-self: center; }
+    .tl-card {
+      display: grid; grid-template-columns: 52px 1fr auto; gap: 6px 18px; align-items: center;
+      padding: 16px 20px; border-radius: 18px; background: var(--panel); border: 1px solid var(--line-soft);
+    }
+    .tl-letter { grid-row: span 2; width: 52px; height: 52px; display: grid; place-items: center; border-radius: 14px; font-family: var(--font-display); font-weight: 900; font-size: 1.5rem; background: linear-gradient(135deg, var(--court-hi), var(--court)); border: 1px solid var(--line); color: var(--cyan); }
+    .tl-title { font-weight: 800; font-size: 1.05rem; }
+    .tl-title small { display: block; font-weight: 600; color: var(--violet); font-size: .82rem; }
+    .tl-meta { color: var(--muted); font-size: .88rem; }
+    .tl-price { grid-row: span 2; text-align: right; }
+    .tl-price b { font-family: var(--font-display); font-size: 1.25rem; }
+    .tl-price span { display: block; color: var(--muted); font-size: .82rem; }
+    .prizes { grid-column: 2 / -1; display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: .86rem; color: var(--muted); margin-top: 4px; }
+    .prizes b { color: var(--text); font-weight: 700; margin-right: 4px; }
+    .seats { grid-column: 2 / -1; display: flex; align-items: center; gap: 10px; font-size: .82rem; color: var(--muted); margin-top: 6px; }
+    .seats-bar { flex: 1; max-width: 220px; height: 6px; border-radius: 99px; background: rgba(255, 255, 255, .09); overflow: hidden; }
+    .seats-bar i { display: block; height: 100%; background: var(--cyan); border-radius: 99px; transition: width .6s; }
+    .seats.full .seats-bar i { background: var(--bad); }
+    @media (max-width: 640px) {
+      .timeline::before { left: 7px; }
+      .tl-row { grid-template-columns: 14px 1fr; }
+      .tl-time { grid-column: 2; grid-row: 1; text-align: left; padding-top: 0; font-size: .85rem; color: var(--cyan); }
+      .tl-dot { grid-column: 1; grid-row: 1; margin-top: 6px; }
+      .tl-card { grid-column: 2; grid-template-columns: 44px 1fr; padding: 14px; }
+      .tl-letter { width: 44px; height: 44px; font-size: 1.25rem; }
+      .tl-price { grid-column: 2; grid-row: auto; text-align: left; display: flex; gap: 8px; align-items: baseline; }
+      .prizes, .seats { grid-column: 1 / -1; }
+    }
+
+    /* ══════════ Règles ══════════ */
+    .rules-grid { display: grid; gap: 14px; margin-top: 34px; grid-template-columns: repeat(3, 1fr); }
+    @media (max-width: 900px) { .rules-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 580px) { .rules-grid { grid-template-columns: 1fr; } }
+    .rule { padding: 22px; border-radius: 18px; background: var(--panel); border: 1px solid var(--line-soft); }
+    .rule h3 { font-size: 1.02rem; margin-bottom: 8px; font-weight: 700; }
+    .rule p { color: var(--muted); font-size: .94rem; }
+    .rule.wide { grid-column: span 2; background: linear-gradient(135deg, rgba(255, 138, 31, .14), rgba(15, 26, 78, .62)); border-color: rgba(255, 138, 31, .4); }
+    @media (max-width: 580px) { .rule.wide { grid-column: auto; } }
+    .reglement { margin-top: 22px; border-radius: 18px; border: 1px solid var(--line-soft); background: var(--panel); }
+    .reglement summary { cursor: pointer; padding: 18px 22px; font-weight: 800; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+    .reglement summary::-webkit-details-marker { display: none; }
+    .reglement summary::after { content: '+'; font-size: 1.5rem; line-height: 1; color: var(--cyan); transition: transform .25s; }
+    .reglement[open] summary::after { transform: rotate(45deg); }
+    .reglement-body { padding: 0 22px 22px; color: var(--muted); font-size: .94rem; max-width: 84ch; }
+    .reglement-body p { margin-top: 12px; }
+    .reglement-body b { color: var(--text); }
+
+    /* ══════════ Espace joueurs (onglets) ══════════ */
+    .space { background: linear-gradient(180deg, transparent, rgba(11, 26, 77, .55) 18%, rgba(11, 26, 77, .55) 82%, transparent); }
+    .main-tabs { display: flex; gap: 6px; margin-top: 30px; border-bottom: 1px solid var(--line-soft); }
+    .main-tabs button { border-radius: 12px 12px 0 0; padding: 14px 24px; font-size: 1rem; border-bottom: 3px solid transparent; }
+    .main-tabs button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--ball); background: rgba(255, 255, 255, .05); }
+    .main-tabs button:not([aria-selected="true"]):hover { color: var(--text); }
+    .count-pill { display: inline-block; margin-left: 8px; padding: 1px 10px; border-radius: 99px; background: var(--cyan); color: #00262b; font-size: .8rem; font-weight: 800; }
+
+    .demo-banner { margin-top: 24px; padding: 12px 16px; border-radius: 12px; border: 1px dashed var(--violet); background: rgba(138, 99, 255, .1); color: var(--text); font-size: .9rem; }
+    .demo-banner code { background: rgba(255, 255, 255, .1); padding: 1px 7px; border-radius: 6px; }
+
+    /* Formulaire */
+    .form-layout { display: grid; grid-template-columns: 1fr 340px; gap: 28px; margin-top: 30px; align-items: start; }
+    @media (max-width: 980px) { .form-layout { grid-template-columns: 1fr; } }
+    .step { padding: clamp(18px, 3vw, 28px); border-radius: 22px; background: var(--panel); border: 1px solid var(--line-soft); }
+    .step + .step { margin-top: 18px; }
+    .step h3 { font-size: 1.12rem; font-weight: 700; display: flex; align-items: center; gap: 12px; }
+    .step-num { width: 30px; height: 30px; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--cyan); color: #00262b; font-weight: 900; font-size: .9rem; }
+    .step.locked { opacity: .45; pointer-events: none; }
+    .step-hint { color: var(--muted); font-size: .92rem; margin-top: 8px; }
+
+    .fields { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 20px; }
+    @media (max-width: 620px) { .fields { grid-template-columns: 1fr; } }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field.full { grid-column: 1 / -1; }
+    .field label { font-weight: 700; font-size: .9rem; }
+    .field input {
+      width: 100%; padding: 13px 15px; border-radius: 12px;
+      background: rgba(4, 8, 30, .8); border: 1px solid var(--line); color: var(--text);
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .field input::placeholder { color: #5c6aa8; }
+    .field input:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(34, 240, 255, .2); }
+    .field input[readonly] { background: rgba(34, 240, 255, .06); border-style: dashed; color: var(--cyan); font-weight: 700; cursor: not-allowed; }
+    .field.invalid input { border-color: var(--bad); }
+    .field-error { color: var(--bad); font-size: .84rem; min-height: 1.1em; }
+    .field-help { color: var(--muted); font-size: .82rem; }
+    .licence-row { display: flex; gap: 10px; }
+    .licence-row input { flex: 1; }
+    .licence-row .btn { padding: 12px 22px; font-size: .95rem; flex: none; }
+
+    .verify { margin-top: 14px; padding: 12px 16px; border-radius: 12px; font-size: .92rem; display: none; }
+    .verify.show { display: block; }
+    .verify.ok { background: rgba(61, 255, 168, .1); border: 1px solid rgba(61, 255, 168, .45); }
+    .verify.ko { background: rgba(255, 93, 122, .1); border: 1px solid rgba(255, 93, 122, .5); }
+    .verify.wait { background: rgba(34, 240, 255, .08); border: 1px solid rgba(34, 240, 255, .35); }
+
+    /* Choix des tableaux */
+    .picks-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 20px; }
+    @media (max-width: 720px) { .picks-cols { grid-template-columns: 1fr; } }
+    .picks-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; font-weight: 800; }
+    .picks-head span { font-size: .85rem; color: var(--muted); font-weight: 600; }
+    .picks-head span.maxed { color: var(--ball); }
+    .pick { position: relative; display: block; margin-bottom: 10px; cursor: pointer; }
+    .pick input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; cursor: pointer; margin: 0; }
+    .pick-body {
+      display: grid; grid-template-columns: 40px 1fr auto; gap: 2px 14px; align-items: center;
+      padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: rgba(4, 8, 30, .6);
+      transition: border-color .18s, background .18s, transform .18s;
+    }
+    .pick:hover .pick-body { border-color: var(--cyan); }
+    .pick input:checked + .pick-body { border-color: var(--ball); background: rgba(255, 138, 31, .12); box-shadow: 0 0 0 1px var(--ball); }
+    .pick input:focus-visible + .pick-body { outline: 2px solid var(--cyan); outline-offset: 3px; }
+    .pick input:disabled + .pick-body { opacity: .42; cursor: not-allowed; }
+    .pick input:disabled { cursor: not-allowed; }
+    .pick-letter { grid-row: span 2; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 10px; font-family: var(--font-display); font-weight: 900; background: var(--court); color: var(--cyan); }
+    .pick input:checked + .pick-body .pick-letter { background: var(--ball); color: #1a0d00; }
+    .pick-name { font-weight: 800; font-size: .95rem; line-height: 1.25; }
+    .pick-sub { color: var(--muted); font-size: .8rem; }
+    .pick-price { grid-row: span 2; font-family: var(--font-display); font-weight: 700; font-size: .95rem; }
+    .empty-day { color: var(--muted); font-size: .92rem; padding: 14px; border-radius: 12px; border: 1px dashed var(--line); }
+
+    /* Case règlement */
+    .check { display: flex; gap: 14px; align-items: flex-start; cursor: pointer; margin-top: 4px; }
+    .check input { appearance: none; flex: none; width: 24px; height: 24px; margin: 2px 0 0; border-radius: 7px; border: 2px solid var(--line); background: rgba(4, 8, 30, .8); cursor: pointer; display: grid; place-items: center; transition: .18s; }
+    .check input:checked { background: var(--cyan); border-color: var(--cyan); }
+    .check input:checked::after { content: ''; width: 6px; height: 12px; border: solid #00262b; border-width: 0 3px 3px 0; transform: rotate(45deg) translate(-1px, -1px); }
+    .check.invalid input { border-color: var(--bad); }
+
+    /* Récapitulatif */
+    .recap { position: sticky; top: 84px; padding: 24px; border-radius: 22px; background: linear-gradient(160deg, var(--court-hi), var(--court)); border: 1px solid var(--line); }
+    .recap h3 { font-size: 1.05rem; }
+    .recap-list { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 8px; min-height: 40px; }
+    .recap-list li { display: flex; justify-content: space-between; gap: 12px; font-size: .92rem; }
+    .recap-list li span:first-child { color: var(--muted); }
+    .recap-empty { color: var(--muted); font-size: .92rem; }
+    .recap-total { display: flex; justify-content: space-between; align-items: baseline; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+    .recap-total b { font-family: var(--font-display); font-size: 1.9rem; color: var(--cyan); text-shadow: 0 0 16px rgba(34, 240, 255, .5); }
+    .recap .btn { width: 100%; margin-top: 18px; }
+    .recap-foot { margin-top: 14px; color: var(--muted); font-size: .8rem; }
+    .form-error { margin-top: 14px; padding: 12px 14px; border-radius: 12px; background: rgba(255, 93, 122, .12); border: 1px solid rgba(255, 93, 122, .5); font-size: .9rem; display: none; }
+    .form-error.show { display: block; }
+    .closed-note { margin-top: 30px; padding: 22px; border-radius: 18px; border: 1px solid var(--bad); background: rgba(255, 93, 122, .08); }
+
+    /* Liste des inscrits */
+    .list-tools { display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: end; margin-top: 30px; }
+    .list-tools .field { min-width: 200px; }
+    .list-tools select { padding: 13px 15px; border-radius: 12px; background: rgba(4, 8, 30, .8); border: 1px solid var(--line); color: var(--text); }
+    .list-tools input[type="search"] { min-width: 240px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; align-items: center; }
+    .chip-group-label { font-size: .82rem; color: var(--muted); font-weight: 700; margin: 0 4px 0 10px; }
+    .chip { cursor: pointer; border: 1px solid var(--line); background: rgba(4, 8, 30, .6); border-radius: 999px; padding: 7px 14px; font-weight: 700; font-size: .88rem; transition: .18s; }
+    .chip small { color: var(--muted); font-weight: 600; margin-left: 5px; }
+    .chip:hover { border-color: var(--cyan); }
+    .chip[aria-pressed="true"] { background: var(--cyan); border-color: var(--cyan); color: #00262b; }
+    .chip[aria-pressed="true"] small { color: #00262b; }
+    .tbl-info { margin-top: 22px; padding: 14px 18px; border-radius: 14px; background: rgba(34, 240, 255, .07); border: 1px solid rgba(34, 240, 255, .3); display: none; gap: 6px 22px; flex-wrap: wrap; align-items: center; font-size: .92rem; }
+    .tbl-info.show { display: flex; }
+    .tbl-info b { font-family: var(--font-display); font-size: 1.05rem; }
+    .table-wrap { margin-top: 18px; border-radius: 18px; border: 1px solid var(--line-soft); overflow: hidden; background: var(--panel); }
+    table.reg { width: 100%; border-collapse: collapse; }
+    .reg th, .reg td { padding: 13px 18px; text-align: left; border-bottom: 1px solid var(--line-soft); }
+    .reg thead th { background: rgba(4, 8, 30, .7); font-size: .85rem; color: var(--muted); font-weight: 700; white-space: nowrap; }
+    .reg thead th button { all: unset; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+    .reg thead th button:hover { color: var(--text); }
+    .reg thead th button:focus-visible { outline: 2px solid var(--cyan); border-radius: 4px; }
+    .reg thead th[aria-sort="ascending"] button, .reg thead th[aria-sort="descending"] button { color: var(--cyan); }
+    .reg thead th[aria-sort="ascending"] button::after { content: '▲'; font-size: .65rem; }
+    .reg thead th[aria-sort="descending"] button::after { content: '▼'; font-size: .65rem; }
+    .reg tbody tr:last-child td { border-bottom: 0; }
+    .reg tbody tr:hover { background: rgba(255, 255, 255, .03); }
+    .reg td.num, .reg th.num { text-align: right; font-variant-numeric: tabular-nums; }
+    .reg td.rank { color: var(--muted); width: 56px; }
+    .reg td.pts { font-family: var(--font-display); font-weight: 700; color: var(--cyan); }
+    .reg td.nm { font-weight: 800; }
+    .badges { display: flex; flex-wrap: wrap; gap: 5px; }
+    .badge { display: inline-grid; place-items: center; min-width: 28px; height: 28px; padding: 0 6px; border-radius: 8px; font-family: var(--font-display); font-weight: 700; font-size: .78rem; background: var(--court); border: 1px solid var(--line); }
+    .badge.sam { color: var(--cyan); }
+    .badge.dim { color: var(--ball-hi); }
+    .badge.on { background: var(--ball); color: #1a0d00; border-color: var(--ball); }
+    .list-empty { padding: 44px 20px; text-align: center; color: var(--muted); }
+    .list-foot { margin-top: 12px; color: var(--muted); font-size: .85rem; }
+    @media (max-width: 640px) {
+      .reg th, .reg td { padding: 11px 12px; }
+      .reg th.hide-sm, .reg td.hide-sm { display: none; }
+    }
+
+    /* ══════════ Pied de page ══════════ */
+    footer { border-top: 1px solid var(--line-soft); padding-block: 44px; color: var(--muted); font-size: .92rem; }
+    .foot-grid { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 22px; }
+    footer b { color: var(--text); }
+
+    /* ══════════ Fenêtre de confirmation ══════════ */
+    dialog { border: 1px solid var(--line); background: linear-gradient(160deg, #0f2070, #08123a); color: var(--text); border-radius: 26px; padding: 0; width: min(520px, calc(100% - 32px)); box-shadow: 0 40px 120px rgba(0, 0, 0, .7), 0 0 60px rgba(34, 240, 255, .18); }
+    dialog::backdrop { background: rgba(3, 5, 16, .8); backdrop-filter: blur(6px); }
+    dialog[open] { animation: pop .38s cubic-bezier(.2, 1.2, .3, 1); }
+    @keyframes pop { from { transform: scale(.85) translateY(20px); opacity: 0; } }
+    .dlg { padding: 36px 32px 30px; text-align: center; }
+    .dlg-icon { width: 76px; height: 76px; margin: 0 auto 20px; border-radius: 50%; display: grid; place-items: center; font-size: 2.2rem; background: rgba(61, 255, 168, .14); border: 2px solid var(--ok); color: var(--ok); box-shadow: 0 0 30px rgba(61, 255, 168, .35); }
+    .dlg-icon.warn { background: rgba(255, 138, 31, .14); border-color: var(--ball); color: var(--ball); box-shadow: 0 0 30px rgba(255, 138, 31, .35); }
+    .dlg-icon.bad { background: rgba(255, 93, 122, .14); border-color: var(--bad); color: var(--bad); box-shadow: 0 0 30px rgba(255, 93, 122, .35); }
+    .dlg-icon.spin::after { content: ''; width: 30px; height: 30px; border-radius: 50%; border: 3px solid rgba(34, 240, 255, .25); border-top-color: var(--cyan); animation: spin 0.9s linear infinite; }
+    .dlg-icon.spin { background: rgba(34, 240, 255, .08); border-color: var(--cyan); box-shadow: 0 0 30px rgba(34, 240, 255, .3); font-size: 0; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .dlg h2 { font-size: 1.45rem; }
+    .dlg p { color: var(--muted); margin-top: 12px; }
+    .dlg .summary { margin: 20px 0 6px; padding: 14px 18px; border-radius: 14px; background: rgba(4, 8, 30, .6); border: 1px solid var(--line); text-align: left; font-size: .93rem; display: grid; gap: 6px; }
+    .dlg .summary div { display: flex; justify-content: space-between; gap: 14px; }
+    .dlg .summary span:first-child { color: var(--muted); }
+    .dlg .btn { margin-top: 22px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══════════ Navigation ═══════════ -->
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top"><span class="brand-ball" aria-hidden="true"></span>TT Seloncourt</a>
+      <nav class="nav-links" aria-label="Navigation principale">
+        <a href="#planning">Planning</a>
+        <a href="#regles">Règlement</a>
+        <a href="#inscription" data-open-tab="inscrits">Liste des inscrits</a>
+        <a class="nav-cta" href="#inscription" data-open-tab="inscription">S’inscrire</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ═══════════ Hero ═══════════ -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <h1>Tournoi international de Seloncourt</h1>
+
+          <div class="hero-edition">
+            <span class="tag"><strong>10<sup>ème</sup> édition</strong></span>
+            <span class="tag"><strong>17 &amp; 18 avril 2027</strong></span>
+            <span class="tag hot"><strong>6 060 €</strong> de récompenses, dont 400 € de lots</span>
+          </div>
+
+          <div class="scoreboard" id="scoreboard" role="timer" aria-label="Compte à rebours avant le début du tournoi"></div>
+
+          <div class="hero-actions">
+            <a class="btn" href="#inscription" data-open-tab="inscription">S’inscrire maintenant</a>
+            <p class="hero-note"><b>Salle omnisports</b>, place Ambroise Croizat, Seloncourt (Doubs), sur 28 tables.</p>
+          </div>
+        </div>
+
+        <!-- Table de tennis de table vue de dessus -->
+        <div class="court" aria-hidden="true">
+          <svg viewBox="-30 10 660 360" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="felt" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#1636a8"/><stop offset="1" stop-color="#0a1a5c"/>
+              </linearGradient>
+              <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+                <feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+              <radialGradient id="ballg" cx=".35" cy=".3" r=".8">
+                <stop offset="0" stop-color="#ffe2c0"/><stop offset=".45" stop-color="#ff8a1f"/><stop offset="1" stop-color="#c9560a"/>
+              </radialGradient>
+            </defs>
+            <!-- plateau -->
+            <rect x="40" y="50" width="520" height="280" rx="14" fill="url(#felt)" stroke="#22f0ff" stroke-width="2.5" filter="url(#glow)"/>
+            <rect x="52" y="62" width="496" height="256" rx="8" fill="none" stroke="#eaeeff" stroke-opacity=".85" stroke-width="3"/>
+            <line x1="52" y1="190" x2="548" y2="190" stroke="#eaeeff" stroke-opacity=".5" stroke-width="2"/>
+            <!-- filet -->
+            <line x1="300" y1="36" x2="300" y2="344" stroke="#eaeeff" stroke-width="4" stroke-linecap="round"/>
+            <line x1="300" y1="36" x2="300" y2="344" stroke="#06091f" stroke-width="2" stroke-dasharray="3 5"/>
+            <circle cx="300" cy="36" r="5" fill="#22f0ff"/><circle cx="300" cy="344" r="5" fill="#22f0ff"/>
+            <!-- raquettes -->
+            <g transform="translate(14 190) rotate(-90)" fill="none" stroke="#8a63ff" stroke-width="3" filter="url(#glow)">
+              <ellipse cx="0" cy="0" rx="30" ry="34" fill="#1a1060"/><rect x="-6" y="32" width="12" height="30" rx="4" fill="#1a1060"/>
+            </g>
+            <g transform="translate(586 190) rotate(90)" fill="none" stroke="#22f0ff" stroke-width="3" filter="url(#glow)">
+              <ellipse cx="0" cy="0" rx="30" ry="34" fill="#06324a"/><rect x="-6" y="32" width="12" height="30" rx="4" fill="#06324a"/>
+            </g>
+            <!-- balle et son ombre -->
+            <path id="rally" d="M110 120 L190 270 L300 190 L410 285 L490 110 L410 285 L300 190 L190 270 Z" fill="none"/>
+            <g id="ball">
+              <ellipse cx="3" cy="9" rx="9" ry="4" fill="#000" opacity=".45"/>
+              <circle r="10" fill="url(#ballg)" filter="url(#glow)"/>
+              <animateMotion id="ballMotion" dur="3.6s" repeatCount="indefinite" calcMode="linear">
+                <mpath href="#rally"/>
+              </animateMotion>
+            </g>
+          </svg>
+          <p class="court-caption">28 tables, 19 tableaux, 2 jours de jeu.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ Planning ═══════════ -->
+    <section class="section" id="planning">
+      <div class="wrap">
+        <h2 class="section-title">Planning des tableaux</h2>
+        <p class="section-lead">Chaque tableau se joue par poules de 3 ou 4 joueurs (2 qualifiés par poule), puis en élimination directe, toutes les parties au meilleur des 5 manches. Pointage clos 15 minutes avant le début de chaque tableau.</p>
+
+        <div class="day-tabs" role="tablist" aria-label="Choisir le jour">
+          <button role="tab" id="dtab-sam" aria-selected="true" aria-controls="timeline" data-day="sam">Samedi 17 avril</button>
+          <button role="tab" id="dtab-dim" aria-selected="false" aria-controls="timeline" data-day="dim">Dimanche 18 avril</button>
+        </div>
+        <ol class="timeline" id="timeline" role="tabpanel" aria-labelledby="dtab-sam"></ol>
+      </div>
+    </section>
+
+    <!-- ═══════════ Règles ═══════════ -->
+    <section class="section" id="regles" style="padding-top:0">
+      <div class="wrap">
+        <h2 class="section-title">Les règles à retenir</h2>
+        <div class="rules-grid">
+          <article class="rule wide">
+            <h3>3 tableaux maximum par jour</h3>
+            <p>Choisissez jusqu’à 3 tableaux le samedi et 3 le dimanche. Le formulaire ne vous propose que ceux qui correspondent à votre classement. Les tableaux N et O ne peuvent pas se cumuler.</p>
+          </article>
+          <article class="rule">
+            <h3>Tarifs</h3>
+            <p>9 € par tableau. 11 € pour le tableau O (Trophée CUBE) et le tableau R (Open Messieurs).</p>
+          </article>
+          <article class="rule">
+            <h3>Paiement en ligne</h3>
+            <p>Le règlement se fait sur HelloAsso, à la fin de l’inscription. Votre place est confirmée dès le paiement reçu.</p>
+          </article>
+          <article class="rule">
+            <h3>Pointage</h3>
+            <p>Sur place, avec présentation obligatoire de la licence. Tirage au sort 15 minutes avant le début, avec les seuls joueurs pointés.</p>
+          </article>
+          <article class="rule">
+            <h3>Annulation</h3>
+            <p>Une annulation d’inscription entraîne 3 € de frais de gestion, déduits du remboursement.</p>
+          </article>
+          <article class="rule">
+            <h3>Matériel et tenue</h3>
+            <p>Balles plastique blanches fournies par l’organisateur. Tenue blanche (short et maillot) interdite.</p>
+          </article>
+          <article class="rule">
+            <h3>Arbitrage</h3>
+            <p>Tout joueur éliminé d’un tableau arbitre une partie. Le forfait est prononcé 5 minutes après le premier appel.</p>
+          </article>
+          <article class="rule">
+            <h3>Sur place</h3>
+            <p>Bar et buffet ouverts sans interruption entre 12 h et 14 h.</p>
+          </article>
+        </div>
+
+        <details class="reglement">
+          <summary>Lire le règlement complet</summary>
+          <div class="reglement-body">
+            <p><b>La participation au tournoi implique obligatoirement l’acceptation du présent règlement.</b></p>
+            <p><b>Article 1.</b> Le club « Tennis de Table Seloncourtois » (Doubs, 25230) organise son 10ème Tournoi International (32ème tournoi) dans la salle omnisports de Seloncourt (place Ambroise Croizat), sur 28 tables, les 17 et 18 avril 2027, ouvert à tous les licenciés compétiteurs (FFTT ou autres fédérations). Les horaires, engagements et valeurs des prix sont précisés dans le planning ci-dessus. Juge-arbitre : M. ANGENON Nico (AI-JAN). Juges-arbitres adjoints : M. LEMERCIER Michel (JA3), Mme CAPELLI Karine (AN et JA3), MM. CAPELLI Philippe et Corentin (AN et JA3). Président du CO : M. BARADEL Philippe. Responsable des épreuves : M. GIRARD François.</p>
+            <p><b>Article 2.</b> Les récompenses seront remises aux demi-finalistes de tous les tableaux et aux quarts de finalistes du tableau R (Open Messieurs). Les demi-finalistes sont tenus de se présenter sur les podiums lors de la cérémonie protocolaire, tout refus valant renoncement aux récompenses. Total chèques : 5 660 €. Total lots : 400 €. Total des récompenses : 6 060 €.</p>
+            <p><b>Article 3.</b> Les parties se déroulent au meilleur des 5 manches pour tous les tableaux.</p>
+            <p><b>Article 4.</b> Tous les autres tableaux se déroulent par poules de 3 ou 4 joueurs, avec 2 qualifiés par poule.</p>
+            <p><b>Article 5.</b> Le règlement général des épreuves est celui de la F.F.T.T. et de l’I.T.T.F., en rappelant que tout joueur doit arbitrer une partie dès lors qu’il est éliminé d’un tableau ; le forfait d’un joueur est prononcé 5 minutes après le premier appel à la table. Les balles en plastique blanches seront fournies par l’organisateur. Tenue blanche (short et maillot) interdite.</p>
+            <p><b>Article 6.</b> Les épreuves se poursuivent sans interruption entre 12 heures et 14 heures : bar et buffet sur place.</p>
+            <p><b>Article 7.</b> Le club organisateur décline toute responsabilité en cas de perte, vol ou accident dans la salle.</p>
+            <p><b>Article 8.</b> Les engagements sont à enregistrer uniquement par le site du club et sont limités à 3 tableaux par jour, avant le mercredi 14 avril 2027 à minuit. Renseignements : tél. 06 07 70 27 49, e-mail ttseloncourt25@gmail.com.</p>
+            <p><b>Article 9.</b> Le paiement des engagements se fait uniquement en ligne, sauf pour compléter des tableaux le jour même. Le pointage, avec présentation obligatoire des licences, se fait sur place. Les tableaux sont clos, sans aucun recours, 15 minutes avant l’horaire de début de chaque tableau, et le tirage au sort a lieu 15 minutes avant le début de chaque tableau, uniquement avec les joueurs ayant pointé. Le tournoi est totalement informatisé et ne sera pas remis en cause par des retards. Le club organisateur garantit ainsi des poules complètes et un parfait respect des règlements. Les annulations d’inscriptions engendrent des frais de gestion de 3 €, déduits du remboursement.</p>
+            <p><b>Article 10.</b> Pour le tableau R (Open Messieurs), le classement mondial détermine l’ordre de valeur des 8 meilleurs joueurs, puis le classement FFTT et/ou assimilé.</p>
+            <p><b>Article 11.</b> Le comité d’organisation se réserve le droit d’annuler ou de modifier la dotation d’un tableau si le nombre d’engagés est inférieur à 30 pour les tableaux de 84 joueurs, à 15 pour les tableaux de 42 joueurs, à 10 pour les tableaux de 24 joueurs et à 6 pour les tableaux de 16 joueurs.</p>
+            <p><b>Article 12.</b> Limitation du nombre d’engagés par tableau : tableaux E, M et R : 84 joueurs ; tableau I : 60 joueurs ; tableau S : 24 joueurs ; tableau J : 16 joueurs ; tous les autres tableaux : 42 joueurs.</p>
+            <p><b>Article 13.</b> En cas de forfait non excusé ou d’absence non excusée, la Commission sportive fédérale appliquera l’article IV.202 des Règlements administratifs sur votre première partie non jouée et vous perdrez les points classement que vous auriez dû perdre si vous aviez participé et perdu cette partie.</p>
+            <p><b>Article 14.</b> Les joueurs et joueuses du tournoi donnent leur accord sur le droit à l’image, sinon ils doivent le faire savoir aux organisateurs lors du tournoi.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ═══════════ Espace joueurs : inscription / liste ═══════════ -->
+    <section class="section space" id="inscription">
+      <div class="wrap">
+        <h2 class="section-title">Inscription et liste des inscrits</h2>
+
+        <div class="main-tabs" role="tablist" aria-label="Espace joueurs">
+          <button role="tab" id="mtab-inscription" aria-selected="true" aria-controls="panel-inscription" data-tab="inscription">Inscription</button>
+          <button role="tab" id="mtab-inscrits" aria-selected="false" aria-controls="panel-inscrits" data-tab="inscrits">Liste des inscrits<span class="count-pill" id="count-pill" hidden>0</span></button>
+        </div>
+
+        <div class="demo-banner" id="demo-banner" hidden>
+          Mode démo : aucune donnée n’est envoyée. Essayez la licence <code>1234567</code> (1204 pts), <code>7654321</code> (dame, 1750 pts) ou <code>1111111</code> (benjamin, 780 pts).
+        </div>
+
+        <!-- ───── Onglet 1 : inscription ───── -->
+        <div id="panel-inscription" role="tabpanel" aria-labelledby="mtab-inscription">
+          <div class="closed-note" id="closed-note" hidden>Les inscriptions en ligne sont closes. Pour toute demande, contactez le club : 06 07 70 27 49 ou ttseloncourt25@gmail.com.</div>
+
+          <form id="form" novalidate class="form-layout">
+            <div>
+              <!-- Étape 1 : licence -->
+              <div class="step" id="step-player">
+                <h3><span class="step-num">1</span>Votre licence FFTT</h3>
+                <p class="step-hint">Saisissez votre numéro de licence : votre nom, votre prénom et vos points sont récupérés et vérifiés auprès de la FFTT.</p>
+
+                <div class="fields">
+                  <div class="field full" data-field="licence">
+                    <label for="licence">Numéro de licence</label>
+                    <div class="licence-row">
+                      <input id="licence" name="licence" inputmode="numeric" autocomplete="off" placeholder="Ex. 2512345" maxlength="9">
+                      <button type="button" class="btn btn-ghost" id="btn-verify">Vérifier</button>
+                    </div>
+                    <span class="field-error" aria-live="polite"></span>
+                  </div>
+                  <div class="field" data-field="nom">
+                    <label for="nom">Nom</label>
+                    <input id="nom" name="nom" readonly placeholder="Rempli après vérification" tabindex="-1">
+                  </div>
+                  <div class="field" data-field="prenom">
+                    <label for="prenom">Prénom</label>
+                    <input id="prenom" name="prenom" readonly placeholder="Rempli après vérification" tabindex="-1">
+                  </div>
+                  <div class="field" data-field="points">
+                    <label for="points">Nombre de points</label>
+                    <input id="points" name="points" readonly placeholder="Rempli après vérification" tabindex="-1">
+                  </div>
+                  <div class="field" data-field="club">
+                    <label for="club">Club</label>
+                    <input id="club" name="club" readonly placeholder="Rempli après vérification" tabindex="-1">
+                  </div>
+                </div>
+                <div class="verify" id="verify" role="status" aria-live="polite"></div>
+              </div>
+
+              <!-- Étape 2 : tableaux -->
+              <div class="step locked" id="step-picks">
+                <h3><span class="step-num">2</span>Vos tableaux</h3>
+                <p class="step-hint" id="picks-hint">Vérifiez d’abord votre licence : seuls les tableaux accessibles avec votre classement s’afficheront.</p>
+                <div class="picks-cols" id="picks" hidden>
+                  <div>
+                    <div class="picks-head">Samedi 17 avril <span id="cnt-sam">0 / 3</span></div>
+                    <div id="picks-sam"></div>
+                  </div>
+                  <div>
+                    <div class="picks-head">Dimanche 18 avril <span id="cnt-dim">0 / 3</span></div>
+                    <div id="picks-dim"></div>
+                  </div>
+                </div>
+                <span class="field-error" id="picks-error" aria-live="polite"></span>
+              </div>
+
+              <!-- Étape 3 : contact -->
+              <div class="step locked" id="step-contact">
+                <h3><span class="step-num">3</span>Vos coordonnées</h3>
+                <div class="fields">
+                  <div class="field" data-field="email">
+                    <label for="email">Adresse e-mail de contact</label>
+                    <input id="email" name="email" type="email" autocomplete="email" placeholder="prenom.nom@exemple.fr">
+                    <span class="field-help">La confirmation d’inscription vous est envoyée à cette adresse.</span>
+                    <span class="field-error" aria-live="polite"></span>
+                  </div>
+                  <div class="field" data-field="telephone">
+                    <label for="telephone">Numéro de téléphone</label>
+                    <input id="telephone" name="telephone" type="tel" autocomplete="tel" placeholder="06 12 34 56 78">
+                    <span class="field-error" aria-live="polite"></span>
+                  </div>
+                  <div class="field full" data-field="reglement">
+                    <label class="check" id="check-reglement">
+                      <input type="checkbox" id="reglement" name="reglement">
+                      <span>J’ai lu et j’accepte le <a href="#regles" id="link-reglement">règlement du tournoi</a>, y compris le droit à l’image.</span>
+                    </label>
+                    <span class="field-error" aria-live="polite"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Récapitulatif -->
+            <aside class="recap" aria-live="polite">
+              <h3>Votre inscription</h3>
+              <ul class="recap-list" id="recap-list"><li class="recap-empty">Aucun tableau sélectionné.</li></ul>
+              <div class="recap-total"><span>Total à payer</span><b id="recap-total">0 €</b></div>
+              <button class="btn" type="submit" id="btn-submit" disabled>Valider et payer sur HelloAsso</button>
+              <div class="form-error" id="form-error" role="alert"></div>
+              <p class="recap-foot">Vous serez redirigé vers HelloAsso pour régler en toute sécurité. L’inscription n’est confirmée qu’après paiement.</p>
+            </aside>
+          </form>
+        </div>
+
+        <!-- ───── Onglet 2 : liste des inscrits ───── -->
+        <div id="panel-inscrits" role="tabpanel" aria-labelledby="mtab-inscrits" hidden>
+          <div class="list-tools">
+            <div class="field">
+              <label for="search">Rechercher un joueur</label>
+              <input id="search" type="search" placeholder="Nom ou prénom">
+            </div>
+            <div class="field">
+              <label for="sort">Trier par</label>
+              <select id="sort">
+                <option value="nom-asc">Nom, de A à Z</option>
+                <option value="nom-desc">Nom, de Z à A</option>
+                <option value="prenom-asc">Prénom, de A à Z</option>
+                <option value="prenom-desc">Prénom, de Z à A</option>
+                <option value="points-desc">Points, du plus haut au plus bas</option>
+                <option value="points-asc">Points, du plus bas au plus haut</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="chips" id="chips" role="group" aria-label="Filtrer par tableau"></div>
+          <div class="tbl-info" id="tbl-info"></div>
+
+          <div class="table-wrap">
+            <table class="reg">
+              <thead>
+                <tr>
+                  <th class="num" scope="col">N°</th>
+                  <th scope="col" data-sort="nom" aria-sort="none"><button type="button">Nom</button></th>
+                  <th scope="col" data-sort="prenom" aria-sort="none"><button type="button">Prénom</button></th>
+                  <th scope="col" class="num" data-sort="points" aria-sort="none"><button type="button">Points</button></th>
+                  <th scope="col" class="hide-sm">Tableaux</th>
+                </tr>
+              </thead>
+              <tbody id="reg-body"></tbody>
+            </table>
+            <div class="list-empty" id="list-empty" hidden>Aucun inscrit pour le moment. Les joueurs apparaissent ici dès que leur paiement est confirmé.</div>
+          </div>
+          <p class="list-foot" id="list-foot"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot-grid">
+      <div><b>Tennis de Table Seloncourtois</b><br>Salle omnisports, place Ambroise Croizat, 25230 Seloncourt</div>
+      <div><b>Renseignements</b><br>06 07 70 27 49<br><a href="mailto:ttseloncourt25@gmail.com">ttseloncourt25@gmail.com</a></div>
+    </div>
+  </footer>
+
+  <!-- Fenêtre de confirmation -->
+  <dialog id="dlg" aria-labelledby="dlg-title"><div class="dlg" id="dlg-content"></div></dialog>
+
+  <script>
+  'use strict';
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+   *  CONFIGURATION – seule partie à modifier
+   * ═══════════════════════════════════════════════════════════════════════════ */
+  const SITE = {
+    // URL de déploiement Google Apps Script (se termine par /exec).
+    // Laissez vide pour tester la page en « mode démo » (données fictives).
+    API_URL: '',
+    // Début du premier tableau (compte à rebours)
+    TARGET: '2027-04-17T08:30:00+02:00',
+    // Fin des inscriptions (le serveur reste maître de cette date)
+    DEADLINE: '2027-04-14T23:59:59+02:00'
+  };
+
+  // ─── Tableaux du tournoi (source : Règlement_Tournoi_2027.xlsx) ───────────────
+  // kind : 'points' (fourchette de points) | 'jeunes' (Benjamins-Minimes) | 'dames' | 'open'
+  const TABLEAUX = [
+    // SAMEDI 17 AVRIL 2027
+    { id:'A', day:'sam', kind:'points', min:500,  max:899,   label:'500 à 899 pts',  price:9,  pointage:'8h15',  start:'8h30',  limit:42, total:100, prizes:{ first:'30 € + lot 20 €', second:'20 €', third:'15 €' } },
+    { id:'B', day:'sam', kind:'points', min:900,  max:1499,  label:'900 à 1499 pts', price:9,  pointage:'8h30',  start:'8h45',  limit:42, total:110, prizes:{ first:'40 € + lot 20 €', second:'20 €', third:'15 €' } },
+    { id:'C', day:'sam', kind:'points', min:500,  max:1099,  label:'500 à 1099 pts', price:9,  pointage:'9h30',  start:'9h45',  limit:42, total:100, prizes:{ first:'30 € + lot 20 €', second:'20 €', third:'15 €' } },
+    { id:'D', day:'sam', kind:'points', min:1100, max:1699,  label:'1100 à 1699 pts',price:9,  pointage:'9h45',  start:'10h00', limit:42, total:140, prizes:{ first:'50 € + lot 20 €', second:'30 €', third:'20 €' } },
+    { id:'E', day:'sam', kind:'points', min:500,  max:1999,  label:'500 à 1999 pts', price:9,  pointage:'10h45', start:'11h00', limit:84, total:210, prizes:{ first:'80 € + lot 20 €', second:'50 €', third:'30 €' } },
+    { id:'F', day:'sam', kind:'points', min:500,  max:1299,  label:'500 à 1299 pts', price:9,  pointage:'12h00', start:'12h15', limit:42, total:110, prizes:{ first:'40 € + lot 20 €', second:'20 €', third:'15 €' } },
+    { id:'G', day:'sam', kind:'points', min:1300, max:1899,  label:'1300 à 1899 pts',price:9,  pointage:'12h15', start:'12h30', limit:42, total:200, prizes:{ first:'70 € + lot 20 €', second:'50 €', third:'30 €' } },
+    { id:'H', day:'sam', kind:'points', min:500,  max:799,   label:'500 à 799 pts',  price:9,  pointage:'13h15', start:'13h30', limit:42, total:100, prizes:{ first:'30 € + lot 20 €', second:'20 €', third:'15 €' } },
+    { id:'I', day:'sam', kind:'points', min:800,  max:1799,  label:'800 à 1799 pts', price:9,  pointage:'13h30', start:'13h45', limit:60, total:160, prizes:{ first:'60 € + lot 20 €', second:'40 €', third:'20 €' } },
+    { id:'J', day:'sam', kind:'jeunes', min:0,    max:1299,  label:'Benjamins-Minimes jusqu’à 1299 pts', price:9, pointage:'15h15', start:'15h30', limit:16, total:60, prizes:{ first:'lot 25 €', second:'lot 15 €', third:'lot 10 €' } },
+    // DIMANCHE 18 AVRIL 2027
+    { id:'K', day:'dim', kind:'points', min:500,  max:899,   label:'500 à 899 pts',  price:9,  pointage:'8h15',  start:'8h30',  limit:42, total:100, prizes:{ first:'30 € + lot 20 €', second:'20 €', third:'15 €' } },
+    { id:'L', day:'dim', kind:'points', min:900,  max:1599,  label:'900 à 1599 pts', price:9,  pointage:'8h30',  start:'8h45',  limit:42, total:140, prizes:{ first:'50 € + lot 20 €', second:'30 €', third:'20 €' } },
+    { id:'M', day:'dim', kind:'points', min:0,    max:1999,  label:'NC jusqu’à 1999 pts', title:'Trophée EIMI', price:9, pointage:'9h30', start:'9h45', limit:84, total:210, prizes:{ first:'80 € + lot 20 €', second:'50 €', third:'30 €' } },
+    { id:'N', day:'dim', kind:'points', min:500,  max:1399,  label:'500 à 1399 pts', price:9,  pointage:'10h30', start:'10h45', limit:42, total:110, incompatible:['O'], prizes:{ first:'40 € + lot 20 €', second:'20 €', third:'15 €' } },
+    { id:'O', day:'dim', kind:'points', min:500,  max:2499,  label:'500 à 2499 pts', title:'Trophée CUBE', price:11, pointage:'10h45', start:'11h00', limit:42, total:700, incompatible:['N'], prizes:{ first:'300 €', second:'200 €', third:'100 €' } },
+    { id:'P', day:'dim', kind:'points', min:500,  max:1099,  label:'500 à 1099 pts', price:9,  pointage:'11h45', start:'12h00', limit:42, total:110, prizes:{ first:'40 € + lot 20 €', second:'20 €', third:'15 €' } },
+    { id:'Q', day:'dim', kind:'points', min:1100, max:1799,  label:'1100 à 1799 pts',price:9,  pointage:'12h00', start:'12h15', limit:42, total:160, prizes:{ first:'60 € + lot 20 €', second:'40 €', third:'20 €' } },
+    { id:'R', day:'dim', kind:'open',   min:0,    max:99999, label:'Open Messieurs, toutes séries', title:'Trophée du Pays de Montbéliard Agglomération', price:11, pointage:'13h00', start:'13h15', limit:84, total:2800, prizes:{ first:'1000 €', second:'600 €', third:'300 €', fifth:'150 €' } },
+    { id:'S', day:'dim', kind:'dames',  min:0,    max:99999, label:'Open Dames, toutes séries', title:'Trophée du Département du Doubs', price:9, pointage:'14h45', start:'15h00', limit:24, total:440, prizes:{ first:'200 € + lot 40 €', second:'100 €', third:'50 €' } }
+  ];
+  const MAX_PER_DAY = 3;
+
+  /** Un joueur {points, sexe:'M'|'F', cat:'B2'...} peut-il jouer dans le tableau t ? */
+  function isEligible(t, p) {
+    const pts = Number(p.points);
+    if (!isFinite(pts)) return false;
+    if (t.kind === 'dames') return String(p.sexe || '').toUpperCase() === 'F';
+    if (t.kind === 'jeunes') return /^[BM][12]?$/i.test(String(p.cat || '').trim()) && pts <= t.max;
+    return pts >= t.min && pts <= t.max;
+  }
+
+  const DAYS = { sam: 'Samedi 17 avril', dim: 'Dimanche 18 avril' };
+  const DEMO = !SITE.API_URL;
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+   *  Utilitaires
+   * ═══════════════════════════════════════════════════════════════════════════ */
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const fmtEUR = (n) => n.toLocaleString('fr-FR') + ' €';
+  const byId = (id) => TABLEAUX.find((t) => t.id === id);
+  const collator = new Intl.Collator('fr', { sensitivity: 'base', numeric: true });
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+   *  Accès au backend (Google Apps Script) ou mode démo
+   * ═══════════════════════════════════════════════════════════════════════════ */
+  async function fetchJSON(url, opts) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 30000);
+    try {
+      const res = await fetch(url, Object.assign({ signal: ctrl.signal }, opts));
+      return await res.json();
+    } catch (e) {
+      return { ok: false, error: 'Le serveur ne répond pas. Vérifiez votre connexion et réessayez.' };
+    } finally { clearTimeout(timer); }
+  }
+
+  const api = {
+    list() {
+      if (DEMO) return Promise.resolve(demo.list());
+      return fetchJSON(SITE.API_URL + '?action=list');
+    },
+    player(licence) {
+      if (DEMO) return demo.player(licence);
+      return fetchJSON(SITE.API_URL + '?action=player&licence=' + encodeURIComponent(licence));
+    },
+    register(data) {
+      if (DEMO) return demo.register(data);
+      // text/plain évite la requête de pré-vérification CORS avec Apps Script
+      return fetchJSON(SITE.API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(Object.assign({ action: 'register' }, data)) });
+    },
+    confirm(ref) {
+      if (DEMO) return Promise.resolve({ ok: true, status: 'paid', registration: demo.last || { prenom: 'Démo', nom: 'JOUEUR', montant: 18, sam: ['C'], dim: ['P'] } });
+      return fetchJSON(SITE.API_URL + '?action=confirm&ref=' + encodeURIComponent(ref));
+    }
+  };
+
+  /* ── Données fictives pour la démonstration ── */
+  const demo = {
+    last: null,
+    players: {
+      '1234567': { licence: '1234567', nom: 'MARTIN', prenom: 'Julien', club: 'TT Exemple', sexe: 'M', cat: 'S', points: 1204 },
+      '7654321': { licence: '7654321', nom: 'BERNARD', prenom: 'Camille', club: 'Pongistes Démo', sexe: 'F', cat: 'S', points: 1750 },
+      '1111111': { licence: '1111111', nom: 'PETIT', prenom: 'Lucas', club: 'TT Exemple', sexe: 'M', cat: 'B2', points: 780 }
+    },
+    _rows: null,
+    rows() {
+      if (this._rows) return this._rows;
+      let seed = 42; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+      const noms = ['MARTIN', 'BERNARD', 'DUBOIS', 'THOMAS', 'ROBERT', 'RICHARD', 'PETIT', 'DURAND', 'LEROY', 'MOREAU', 'SIMON', 'LAURENT', 'LEFEBVRE', 'MICHEL', 'GARCIA', 'DAVID', 'BERTRAND', 'ROUX', 'VINCENT', 'FOURNIER', 'GIRARD', 'ANDRE', 'MERCIER', 'BLANC', 'GUERIN', 'BOYER', 'GARNIER', 'CHEVALIER', 'FRANCOIS', 'LEGRAND', 'GAUTHIER', 'PERRIN', 'ROBIN', 'CLEMENT', 'MORIN', 'NICOLAS', 'HENRY', 'ROUSSEL', 'MATHIEU', 'GAUTIER', 'MASSON', 'MARCHAND', 'DUVAL', 'DENIS', 'DUMONT', 'MARIE', 'LEMAIRE', 'NOEL', 'MEYER', 'DUFOUR', 'MEUNIER', 'BRUN', 'BLANCHARD', 'GIRAUD', 'JOLY', 'RIVIERE', 'LUCAS', 'BRUNET', 'GAILLARD', 'BARBIER'];
+      const prenoms = ['Julien', 'Camille', 'Lucas', 'Emma', 'Hugo', 'Léa', 'Nathan', 'Chloé', 'Maxime', 'Manon', 'Théo', 'Inès', 'Antoine', 'Sarah', 'Thomas', 'Laura', 'Romain', 'Clara', 'Alexandre', 'Jade', 'Kevin', 'Louise', 'Paul', 'Zoé'];
+      this._rows = noms.map((nom, i) => {
+        const dame = rnd() < .2;
+        const jeune = !dame && rnd() < .08;
+        const p = { nom, prenom: prenoms[Math.floor(rnd() * prenoms.length)], sexe: dame ? 'F' : 'M', cat: jeune ? 'M1' : 'S', points: jeune ? 500 + Math.floor(rnd() * 700) : 500 + Math.floor(Math.pow(rnd(), 1.5) * 1800) };
+        const tableaux = [];
+        ['sam', 'dim'].forEach((d) => {
+          const ok = TABLEAUX.filter((t) => t.day === d && isEligible(t, p) && rnd() < .55);
+          ok.slice(0, 1 + Math.floor(rnd() * 3)).forEach((t) => { if (!(t.incompatible || []).some((x) => tableaux.includes(x))) tableaux.push(t.id); });
+        });
+        return tableaux.length ? { nom: p.nom, prenom: p.prenom, points: p.points, tableaux } : null;
+      }).filter(Boolean);
+      return this._rows;
+    },
+    list() {
+      const rows = this.rows();
+      const counts = {}; TABLEAUX.forEach((t) => (counts[t.id] = 0));
+      rows.forEach((r) => r.tableaux.forEach((id) => counts[id]++));
+      return { ok: true, registrants: rows, counts, open: true };
+    },
+    async player(licence) {
+      await new Promise((r) => setTimeout(r, 450));
+      const p = this.players[licence];
+      if (!p) return { ok: false, error: 'Licence introuvable dans la base FFTT. Vérifiez le numéro ou contactez les organisateurs.' };
+      return { ok: true, player: p, eligible: TABLEAUX.filter((t) => isEligible(t, p)).map((t) => t.id) };
+    },
+    async register(data) {
+      await new Promise((r) => setTimeout(r, 700));
+      const sel = data.tableaux.map(byId);
+      this.last = { prenom: data.prenom, nom: data.nom, montant: sel.reduce((s, t) => s + t.price, 0), sam: sel.filter((t) => t.day === 'sam').map((t) => t.id), dim: sel.filter((t) => t.day === 'dim').map((t) => t.id) };
+      return { ok: true, ref: 'DEMO', amount: this.last.montant, paymentUrl: '' };
+    }
+  };
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+   *  Compte à rebours (tableau de marque)
+   * ═══════════════════════════════════════════════════════════════════════════ */
+  (function scoreboard() {
+    const box = $('#scoreboard');
+    const target = new Date(SITE.TARGET).getTime();
+    const units = [['d', 'jours'], ['h', 'heures'], ['m', 'minutes'], ['s', 'secondes']];
+    const els = {};
+    units.forEach(([k, label]) => {
+      const g = document.createElement('div'); g.className = 'sb-group';
+      g.innerHTML = '<div class="sb-digits" data-k="' + k + '"></div><span class="sb-label">' + label + '</span>';
+      box.appendChild(g); els[k] = g.firstChild;
+    });
+    function setDigits(el, str) {
+      if (el.textContent.length !== str.length) { el.innerHTML = str.split('').map(() => '<span class="sb-digit"></span>').join(''); }
+      Array.from(el.children).forEach((c, i) => { if (c.textContent !== str[i]) c.textContent = str[i]; });
+    }
+    function tick() {
+      let diff = Math.max(0, target - Date.now());
+      if (diff === 0) { box.innerHTML = '<span class="sb-done">Le tournoi a commencé !</span>'; clearInterval(timer); return; }
+      const s = Math.floor(diff / 1000);
+      const v = { d: Math.floor(s / 86400), h: Math.floor(s % 86400 / 3600), m: Math.floor(s % 3600 / 60), s: s % 60 };
+      Object.keys(v).forEach((k) => setDigits(els[k], String(v[k]).padStart(k === 'd' ? 2 : 2, '0')));
+    }
+    tick(); const timer = setInterval(tick, 1000);
+  })();
+
+  // Balle immobile si l'utilisateur préfère moins d'animations
+  if (reduceMotion) { const m = $('#ballMotion'); if (m) m.remove(); const b = $('#ball'); if (b) b.setAttribute('transform', 'translate(300 190)'); }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+   *  État global
+   * ═══════════════════════════════════════════════════════════════════════════ */
+  const state = {
+    list: { registrants: [], counts: {}, open: true },
+    player: null,         // joueur vérifié
+    eligible: [],         // ids des tableaux accessibles
+    selected: new Set(),
+    filter: 'all',
+    sort: 'nom-asc',
+    search: '',
+    day: 'sam',
+    submitting: false
+  };
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+   *  Planning
+   * ═══════════════════════════════════════════════════════════════════════════ */
+  function prizesHTML(t) {
+    const p = t.prizes; const out = [];
+    out.push('<span><b>1er</b>' + esc(p.first) + '</span>', '<span><b>2è</b>' + esc(p.second) + '</span>', '<span><b>3è/4è</b>' + esc(p.third) + '</span>');
+    if (p.fifth) out.push('<span><b>5è à 8è</b>' + esc(p.fifth) + '</span>');
+    return out.join('');
+  }
+
+  function renderTimeline() {
+    const tl = $('#timeline');
+    tl.setAttribute('aria-labelledby', 'dtab-' + state.day);
+    tl.innerHTML = TABLEAUX.filter((t) => t.day === state.day).map((t) => {
+      const n = state.list.counts[t.id] || 0;
+      const pct = Math.min(100, Math.round(n / t.limit * 100));
+      const full = n >= t.limit;
+      return '<li class="tl-row">' +
+        '<div class="tl-time">' + esc(t.start) + '</div><div class="tl-dot" aria-hidden="true"></div>' +
+        '<div class="tl-card">' +
+          '<div class="tl-letter" aria-label="Tableau ' + t.id + '">' + t.id + '</div>' +
+          '<div><div class="tl-title">' + (t.title ? '<small>' + esc(t.title) + '</small>' : '') + esc(t.label) + '</div>' +
+          '<div class="tl-meta">Pointage jusqu’à ' + esc(t.pointage) + ', dotation ' + fmtEUR(t.total) + '</div></div>' +
+          '<div class="tl-price"><b>' + fmtEUR(t.price) + '</b><span>par joueur</span></div>' +
+          '<div class="prizes">' + prizesHTML(t) + '</div>' +
+          '<div class="seats' + (full ? ' full' : '') + '"><div class="seats-bar"><i style="width:' + pct + '%"></i></div>' +
+          '<span>' + (full ? 'Complet' : (t.limit - n) + ' places restantes sur ' + t.limit) + '</span></div>' +
+        '</div></li>';
+    }).join('');
+  }
+
+  $$('.day-tabs button').forEach((b) => b.addEventListener('click', () => {
+    state.day = b.dataset.day;
+    $$('.day-tabs button').forEach((x) => x.setAttribute('aria-selected', String(x === b)));
+    renderTimeline();
+  }));
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+   *  Onglets principaux (Inscription / Liste des inscrits)
+   * ═══════════════════════════════════════════════════════════════════════════ */
+  function openTab(name) {
+    $$('.main-tabs button').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
+    $('#panel-inscription').hidden = name !== 'inscription';
+    $('#panel-inscrits').hidden = name !== 'inscrits';
+  }
+  $$('.main-tabs button').forEach((b) => b.addEventListener('click', () => openTab(b.dataset.tab)));
+  $$('[data-open-tab]').forEach((a) => a.addEventListener('click', () => openTab(a.dataset.openTab)));
+  $('#link-reglement').addEventListener('click', () => { $('.reglement').open = true; });
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+   *  Liste des inscrits : filtres, tris, recherche
+   * ═══════════════════════════════════════════════════════════════════════════ */
+  function renderChips() {
+    const counts = state.list.counts;
+    const total = state.list.registrants.length;
+    const chip = (id, label, n) => '<button type="button" class="chip" data-f="' + id + '" aria-pressed="' + (state.filter === id) + '">' + label + '<small>' + n + '</small></button>';
+    let html = chip('all', 'Tous les inscrits', total);
+    ['sam', 'dim'].forEach((d) => {
+      html += '<span class="chip-group-label">' + (d === 'sam' ? 'Samedi' : 'Dimanche') + '</span>';
+      html += TABLEAUX.filter((t) => t.day === d).map((t) => chip(t.id, 'Tableau ' + t.id, counts[t.id] || 0)).join('');
+    });
+    $('#chips').innerHTML = html;
+  }
+  $('#chips').addEventListener('click', (e) => {
+    const b = e.target.closest('.chip'); if (!b) return;
+    state.filter = b.dataset.f; renderChips(); renderList();
+  });
+  $('#sort').addEventListener('change', (e) => { state.sort = e.target.value; renderList(); });
+  $('#search').addEventListener('input', (e) => { state.search = e.target.value.trim(); renderList(); });
+  $$('.reg thead th[data-sort]').forEach((th) => th.querySelector('button').addEventListener('click', () => {
+    const key = th.dataset.sort;
+    const [k, dir] = state.sort.split('-');
+    state.sort = key + '-' + (k === key ? (dir === 'asc' ? 'desc' : 'asc') : (key === 'points' ? 'desc' : 'asc'));
+    $('#sort').value = state.sort; renderList();
+  }));
+
+  function renderList() {
+    const [key, dir] = state.sort.split('-');
+    const sign = dir === 'asc' ? 1 : -1;
+    const q = state.search.toLowerCase();
+    let rows = state.list.registrants.filter((r) => (state.filter === 'all' || r.tableaux.includes(state.filter)) &&
+      (!q || (r.nom + ' ' + r.prenom).toLowerCase().includes(q) || (r.prenom + ' ' + r.nom).toLowerCase().includes(q)));
+    rows = rows.slice().sort((a, b) => {
+      let c = key === 'points' ? a.points - b.points : collator.compare(a[key], b[key]);
+      if (c === 0) c = collator.compare(a.nom, b.nom) || collator.compare(a.prenom, b.prenom);
+      return c * sign;
+    });
+
+    $$('.reg thead th[data-sort]').forEach((th) => th.setAttribute('aria-sort', th.dataset.sort === key ? (dir === 'asc' ? 'ascending' : 'descending') : 'none'));
+
+    $('#reg-body').innerHTML = rows.map((r, i) =>
+      '<tr><td class="rank num">' + (i + 1) + '</td><td class="nm">' + esc(r.nom) + '</td><td>' + esc(r.prenom) + '</td>' +
+      '<td class="num pts">' + r.points + '</td><td class="hide-sm"><div class="badges">' +
+      r.tableaux.slice().sort().map((id) => '<span class="badge ' + byId(id).day + (id === state.filter ? ' on' : '') + '" title="Tableau ' + id + '">' + id + '</span>').join('') +
+      '</div></td></tr>').join('');
+
+    $('#list-empty').hidden = rows.length > 0;
+    if (rows.length === 0) $('#list-empty').textContent = state.list.registrants.length === 0
+      ? 'Aucun inscrit pour le moment. Les joueurs apparaissent ici dès que leur paiement est confirmé.'
+      : 'Aucun joueur ne correspond à ces critères.';
+
+    const info = $('#tbl-info');
+    if (state.filter !== 'all') {
+      const t = byId(state.filter);
+      info.classList.add('show');
+      info.innerHTML = '<b>Tableau ' + t.id + '</b><span>' + esc(t.title ? t.title + ', ' : '') + esc(t.label) + '</span>' +
+        '<span>' + DAYS[t.day] + ', début à ' + esc(t.start) + '</span><span>' + (state.list.counts[t.id] || 0) + ' inscrits sur ' + t.limit + ' places</span>';
+    } else info.classList.remove('show');
+
+    $('#list-foot').textContent = rows.length + (rows.length > 1 ? ' joueurs affichés' : ' joueur affiché') + '. Seules les inscriptions payées apparaissent dans la liste.';
+    const pill = $('#count-pill'); pill.hidden = state.list.registrants.length === 0; pill.textContent = state.list.registrants.length;
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+   *  Formulaire d’inscription
+   * ═══════════════════════════════════════════════════════════════════════════ */
+  const F = { licence: $('#licence'), nom: $('#nom'), prenom: $('#prenom'), points: $('#points'), club: $('#club'), email: $('#email'), tel: $('#telephone'), reglement: $('#reglement') };
+
+  function setFieldError(name, msg) {
+    const wrap = $('[data-field="' + name + '"]');
+    wrap.classList.toggle('invalid', !!msg);
+    const err = wrap.querySelector('.field-error'); if (err) err.textContent = msg || '';
+    const chk = wrap.querySelector('.check'); if (chk) chk.classList.toggle('invalid', !!msg);
+  }
+
+  function setVerify(kind, html) {
+    const v = $('#verify');
+    v.className = 'verify' + (kind ? ' show ' + kind : '');
+    v.innerHTML = html || '';
+  }
+
+  function resetPlayer() {
+    state.player = null; state.eligible = []; state.selected.clear();
+    ['nom', 'prenom', 'points', 'club'].forEach((k) => (F[k].value = ''));
+    $('#step-picks').classList.add('locked'); $('#step-contact').classList.add('locked');
+    $('#picks').hidden = true;
+    $('#picks-hint').textContent = 'Vérifiez d’abord votre licence : seuls les tableaux accessibles avec votre classement s’afficheront.';
+    updateRecap();
+  }
+
+  async function verifyLicence() {
+    const lic = F.licence.value.trim();
+    setFieldError('licence', '');
+    if (!/^\d{4,9}$/.test(lic)) { setFieldError('licence', 'Saisissez votre numéro de licence (chiffres uniquement).'); return false; }
+    resetPlayer();
+    const btn = $('#btn-verify'); btn.disabled = true; btn.textContent = 'Vérification…';
+    setVerify('wait', 'Interrogation de la base FFTT…');
+    const res = await api.player(lic);
+    btn.disabled = false; btn.textContent = 'Vérifier';
+    if (!res.ok) { setVerify('ko', esc(res.error || 'Vérification impossible.')); return false; }
+
+    state.player = res.player; state.eligible = res.eligible;
+    F.nom.value = res.player.nom; F.prenom.value = res.player.prenom; F.points.value = res.player.points; F.club.value = res.player.club || '';
+    setVerify('ok', 'Licence vérifiée auprès de la FFTT : <b>' + esc(res.player.prenom) + ' ' + esc(res.player.nom) + '</b>, ' + res.player.points + ' points.');
+    $('#step-picks').classList.remove('locked'); $('#step-contact').classList.remove('locked');
+    $('#picks-hint').textContent = 'Seuls les tableaux accessibles avec vos ' + res.player.points + ' points sont affichés. Maximum 3 par jour.';
+    $('#picks').hidden = false;
+    renderPicks();
+    return true;
+  }
+  $('#btn-verify').addEventListener('click', verifyLicence);
+  F.licence.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); verifyLicence(); } });
+  F.licence.addEventListener('input', () => { if (state.player) { resetPlayer(); setVerify('', ''); } });
+
+  function renderPicks() {
+    ['sam', 'dim'].forEach((d) => {
+      const list = TABLEAUX.filter((t) => t.day === d && state.eligible.includes(t.id));
+      const nSel = list.filter((t) => state.selected.has(t.id)).length;
+      const cnt = $('#cnt-' + d); cnt.textContent = nSel + ' / ' + MAX_PER_DAY; cnt.classList.toggle('maxed', nSel >= MAX_PER_DAY);
+      const box = $('#picks-' + d);
+      if (!list.length) { box.innerHTML = '<div class="empty-day">Aucun tableau accessible ce jour-là avec votre classement.</div>'; return; }
+      box.innerHTML = list.map((t) => {
+        const n = state.list.counts[t.id] || 0;
+        const full = n >= t.limit;
+        const checked = state.selected.has(t.id);
+        const blocked = (t.incompatible || []).some((x) => state.selected.has(x));
+        const dayFull = nSel >= MAX_PER_DAY && !checked;
+        const disabled = !checked && (full || blocked || dayFull);
+        let sub = (t.title ? esc(t.label) + ', ' : '') + 'début ' + esc(t.start);
+        if (full) sub = 'Complet'; else if (blocked) sub = 'Incompatible avec le tableau ' + t.incompatible.find((x) => state.selected.has(x));
+        return '<label class="pick"><input type="checkbox" value="' + t.id + '"' + (checked ? ' checked' : '') + (disabled ? ' disabled' : '') + '>' +
+          '<span class="pick-body"><span class="pick-letter">' + t.id + '</span>' +
+          '<span class="pick-name">' + esc(t.title || t.label) + '</span><span class="pick-price">' + fmtEUR(t.price) + '</span>' +
+          '<span class="pick-sub">' + sub + '</span></span></label>';
+      }).join('');
+    });
+  }
+  $('#picks').addEventListener('change', (e) => {
+    if (e.target.type !== 'checkbox') return;
+    e.target.checked ? state.selected.add(e.target.value) : state.selected.delete(e.target.value);
+    $('#picks-error').textContent = '';
+    renderPicks(); updateRecap();
+    const again = $('#picks input[value="' + e.target.value + '"]'); if (again) again.focus();
+  });
+
+  function updateRecap() {
+    const sel = TABLEAUX.filter((t) => state.selected.has(t.id));
+    const total = sel.reduce((s, t) => s + t.price, 0);
+    $('#recap-list').innerHTML = sel.length
+      ? sel.map((t) => '<li><span>' + (t.day === 'sam' ? 'Sam.' : 'Dim.') + ' tableau ' + t.id + ', ' + esc(t.start) + '</span><span>' + fmtEUR(t.price) + '</span></li>').join('')
+      : '<li class="recap-empty">Aucun tableau sélectionné.</li>';
+    $('#recap-total').textContent = fmtEUR(total);
+    $('#btn-submit').disabled = !sel.length || !state.player || state.submitting;
+  }
+
+  function showFormError(msg) { const el = $('#form-error'); el.textContent = msg || ''; el.classList.toggle('show', !!msg); }
+
+  function validate() {
+    let ok = true;
+    ['licence', 'email', 'telephone', 'reglement'].forEach((n) => setFieldError(n, ''));
+    if (!state.player) { setFieldError('licence', 'Vérifiez votre licence avant de continuer.'); ok = false; }
+    if (!state.selected.size) { $('#picks-error').textContent = 'Sélectionnez au moins un tableau.'; ok = false; }
+    const email = F.email.value.trim();
+    if (!email) { setFieldError('email', 'Saisissez votre adresse e-mail.'); ok = false; }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { setFieldError('email', 'Cette adresse e-mail n’est pas valide.'); ok = false; }
+    const tel = F.tel.value.trim();
+    const digits = tel.replace(/[\s.\-()]/g, '').replace(/^\+/, '');
+    if (!tel) { setFieldError('telephone', 'Saisissez votre numéro de téléphone.'); ok = false; }
+    else if (!/^\d{8,15}$/.test(digits)) { setFieldError('telephone', 'Ce numéro de téléphone n’est pas valide.'); ok = false; }
+    if (!F.reglement.checked) { setFieldError('reglement', 'Vous devez accepter le règlement pour vous inscrire.'); ok = false; }
+    if (!ok) { const first = $('.invalid input, #picks-error:not(:empty)'); if (first) first.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' }); }
+    return ok;
+  }
+
+  $('#form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    showFormError('');
+    if (state.submitting || !validate()) return;
+    state.submitting = true; updateRecap();
+    const btn = $('#btn-submit'); btn.textContent = 'Enregistrement…';
+
+    const p = state.player;
+    const res = await api.register({
+      licence: p.licence, nom: p.nom, prenom: p.prenom, points: p.points,
+      email: F.email.value.trim(), telephone: F.tel.value.trim(),
+      tableaux: Array.from(state.selected), reglement: true
+    });
+
+    state.submitting = false; btn.textContent = 'Valider et payer sur HelloAsso'; updateRecap();
+    if (!res.ok) { showFormError(res.error || 'L’inscription a échoué. Réessayez.'); refreshList(); return; }
+
+    const sel = Array.from(state.selected).map(byId);
+    const summary = '<div class="summary"><div><span>Joueur</span><b>' + esc(p.prenom) + ' ' + esc(p.nom) + '</b></div>' +
+      '<div><span>Tableaux</span><b>' + sel.map((t) => t.id).join(', ') + '</b></div><div><span>Montant</span><b>' + fmtEUR(res.amount) + '</b></div></div>';
+    if (DEMO || !res.paymentUrl) {
+      dialog({ icon: '✓', cls: '', title: DEMO ? 'Démo : inscription validée' : 'Inscription enregistrée',
+        html: summary + '<p>' + (DEMO ? 'En production, vous seriez maintenant redirigé vers HelloAsso pour payer.' : 'Votre inscription est enregistrée. Réglez-la sur HelloAsso pour la confirmer.') + '</p>',
+        action: { label: 'Fermer', fn: closeDialog } });
+    } else {
+      dialog({ icon: '', cls: 'spin', title: 'Inscription enregistrée',
+        html: summary + '<p>Redirection vers HelloAsso pour le paiement sécurisé…</p><a class="btn" href="' + esc(res.paymentUrl) + '">Payer maintenant</a>' });
+      setTimeout(() => { window.location.href = res.paymentUrl; }, 1600);
+    }
+  });
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+   *  Fenêtre de dialogue + retour de HelloAsso
+   * ═══════════════════════════════════════════════════════════════════════════ */
+  const dlg = $('#dlg');
+  function dialog({ icon, cls, title, html, action }) {
+    $('#dlg-content').innerHTML = '<div class="dlg-icon ' + (cls || '') + '" aria-hidden="true">' + icon + '</div><h2 id="dlg-title">' + esc(title) + '</h2>' + (html || '') +
+      (action ? '<button type="button" class="btn" id="dlg-action">' + esc(action.label) + '</button>' : '');
+    const a = $('#dlg-action'); if (a) a.addEventListener('click', action.fn);
+    if (!dlg.open) dlg.showModal();
+  }
+  function closeDialog() { if (dlg.open) dlg.close(); }
+
+  function regSummary(r) {
+    const t = [].concat(r.sam || [], r.dim || []);
+    return '<div class="summary"><div><span>Joueur</span><b>' + esc(r.prenom) + ' ' + esc(r.nom) + '</b></div>' +
+      '<div><span>Tableaux</span><b>' + esc(t.join(', ')) + '</b></div><div><span>Montant réglé</span><b>' + fmtEUR(Number(r.montant)) + '</b></div></div>';
+  }
+
+  async function handleReturn() {
+    const q = new URLSearchParams(location.search);
+    const kind = q.get('paiement'), ref = q.get('ref');
+    if (!kind) return;
+    history.replaceState(null, '', location.pathname + '#inscription');
+    if (kind === 'annule') { dialog({ icon: '!', cls: 'warn', title: 'Paiement annulé', html: '<p>Votre paiement n’a pas été effectué. Vos places sont conservées quelques minutes : recommencez l’inscription pour payer.</p>', action: { label: 'Retour au formulaire', fn: closeDialog } }); return; }
+    if (kind === 'erreur') { dialog({ icon: '×', cls: 'bad', title: 'Le paiement a échoué', html: '<p>Aucun montant n’a été débité. Vous pouvez recommencer votre inscription.</p>', action: { label: 'Retour au formulaire', fn: closeDialog } }); return; }
+    if (!ref) return;
+
+    dialog({ icon: '', cls: 'spin', title: 'Vérification du paiement', html: '<p>Nous confirmons votre paiement auprès de HelloAsso…</p>' });
+    let res;
+    for (let i = 0; i < 6; i++) {
+      res = await api.confirm(ref);
+      if (res.ok && res.status !== 'pending') break;
+      await new Promise((r) => setTimeout(r, 3000));
+    }
+    if (res && res.ok && res.status === 'paid') {
+      dialog({ icon: '✓', cls: '', title: 'Inscription confirmée !', html: regSummary(res.registration) + '<p>Un e-mail de confirmation vous est envoyé. Rendez-vous à Seloncourt, licence en main, pour le pointage.</p>', action: { label: 'Voir la liste des inscrits', fn: () => { closeDialog(); openTab('inscrits'); } } });
+      refreshList();
+    } else if (res && res.ok && res.status === 'pending') {
+      dialog({ icon: '…', cls: 'warn', title: 'Paiement en cours de validation', html: '<p>HelloAsso n’a pas encore confirmé votre paiement. Votre inscription apparaîtra dans la liste dès réception, en général sous quelques minutes. Aucune action n’est nécessaire.</p>', action: { label: 'Fermer', fn: closeDialog } });
+    } else {
+      dialog({ icon: '×', cls: 'bad', title: 'Inscription non confirmée', html: '<p>' + esc((res && res.error) || 'Ce paiement n’a pas abouti.') + ' Contactez le club au 06 07 70 27 49 si vous avez été débité.</p>', action: { label: 'Fermer', fn: closeDialog } });
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+   *  Chargement initial
+   * ═══════════════════════════════════════════════════════════════════════════ */
+  async function refreshList() {
+    const res = await api.list();
+    if (res && res.ok) {
+      state.list = res;
+      if (res.open === false || Date.now() > new Date(SITE.DEADLINE).getTime()) {
+        $('#closed-note').hidden = false; $('#form').hidden = true;
+      }
+      renderTimeline(); renderChips(); renderList();
+      if (state.player) renderPicks();
+    }
+  }
+
+  function init() {
+    if (DEMO) $('#demo-banner').hidden = false;
+    renderTimeline(); renderChips(); renderList(); updateRecap();
+    refreshList();
+    if (location.hash === '#inscrits') openTab('inscrits');
+    handleReturn();
+  }
+  init();
+  </script>
+</body>
+</html>
