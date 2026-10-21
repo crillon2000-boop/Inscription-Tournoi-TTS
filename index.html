@@ -163,7 +163,10 @@
     .seats { grid-column: 2 / -1; display: flex; align-items: center; gap: 10px; font-size: .82rem; color: var(--muted); margin-top: 6px; }
     .seats-bar { flex: 1; max-width: 220px; height: 6px; border-radius: 99px; background: rgba(255, 255, 255, .09); overflow: hidden; }
     .seats-bar i { display: block; height: 100%; background: var(--cyan); border-radius: 99px; transition: width .6s; }
-    .seats.full .seats-bar i { background: var(--bad); }
+    .seats.warn .seats-bar i { background: var(--ball); }
+    .seats.hot .seats-bar i, .seats.full .seats-bar i { background: var(--bad); }
+    .seats.hot > span:last-child { color: var(--bad); }
+    .seats.warn > span:last-child { color: var(--ball-hi); }
     @media (max-width: 640px) {
       .timeline::before { left: 7px; }
       .tl-row { grid-template-columns: 14px 1fr; }
@@ -299,6 +302,15 @@
     .chip:hover { border-color: var(--cyan); }
     .chip[aria-pressed="true"] { background: var(--cyan); border-color: var(--cyan); color: #00262b; }
     .chip[aria-pressed="true"] small { color: #00262b; }
+    /* Filtre par tableau : samedi = turquoise, dimanche = orange (texte toujours de cette couleur) */
+    .chip.sam { color: var(--cyan); }
+    .chip.dim { color: var(--ball); }
+    .chip.sam small, .chip.dim small { color: inherit; opacity: .7; }
+    .chip.sam:hover { border-color: var(--cyan); }
+    .chip.dim:hover { border-color: var(--ball); }
+    .chip.sam[aria-pressed="true"] { background: rgba(34, 240, 255, .16); border-color: var(--cyan); color: var(--cyan); }
+    .chip.dim[aria-pressed="true"] { background: rgba(255, 138, 31, .16); border-color: var(--ball); color: var(--ball); }
+    .chip.sam[aria-pressed="true"] small, .chip.dim[aria-pressed="true"] small { color: inherit; opacity: .85; }
     .tbl-info { margin-top: 22px; padding: 14px 18px; border-radius: 14px; background: rgba(34, 240, 255, .07); border: 1px solid rgba(34, 240, 255, .3); display: none; gap: 6px 22px; flex-wrap: wrap; align-items: center; font-size: .92rem; }
     .tbl-info.show { display: flex; }
     .tbl-info b { font-family: var(--font-display); font-size: 1.05rem; }
@@ -343,6 +355,11 @@
     .pick.wl .pick-body { border-style: dashed; }
     .pick.wl input:checked + .pick-body .pick-tag { color: var(--cyan); }
     .step h3 .opt { font-family: var(--font-body); font-size: .82rem; font-weight: 600; color: var(--muted); margin-left: 4px; }
+    .pick-body .seats { margin-top: 4px; font-size: .76rem; gap: 8px; }
+    .pick-body .seats-bar { height: 5px; }
+    .meal-wrap { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line); }
+    .meal-title { font-weight: 800; font-size: .85rem; color: var(--muted); margin-bottom: 8px; }
+    .pick.meal .pick-letter { font-size: 1.15rem; }
     .don-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
     .don-chip { cursor: pointer; border: 1px solid var(--line); background: rgba(4, 8, 30, .6); border-radius: 999px; padding: 11px 22px; font-weight: 800; transition: .18s; }
     .don-chip:hover { border-color: var(--cyan); }
@@ -488,7 +505,7 @@
           </article>
           <article class="rule">
             <h3>Tarifs</h3>
-            <p>9 € par tableau. 11 € pour le tableau O (Trophée CUBE) et le tableau R (Open Messieurs).</p>
+            <p>9 € par tableau. 11 € pour le tableau O (Trophée CUBE) et le tableau R (Open Messieurs). Repas à 12 € (samedi et/ou dimanche). Carte buvette prépayée par tranches de 5 €.</p>
           </article>
           <article class="rule">
             <h3>Paiement en ligne</h3>
@@ -512,7 +529,7 @@
           </article>
           <article class="rule">
             <h3>Tableau complet</h3>
-            <p>Inscrivez-vous gratuitement en liste complémentaire : si une place se libère, vous êtes prévenu par e-mail et elle vous est réservée 24 h.</p>
+            <p>Inscrivez-vous gratuitement en liste complémentaire : si une place se libère, les organisateurs vous contactent directement.</p>
           </article>
         </div>
 
@@ -601,10 +618,12 @@
                   <div>
                     <div class="picks-head">Samedi 17 avril <span id="cnt-sam">0 / 3</span></div>
                     <div id="picks-sam"></div>
+                    <div class="meal-wrap" id="meal-sam"></div>
                   </div>
                   <div>
                     <div class="picks-head">Dimanche 18 avril <span id="cnt-dim">0 / 3</span></div>
                     <div id="picks-dim"></div>
+                    <div class="meal-wrap" id="meal-dim"></div>
                   </div>
                 </div>
                 <span class="field-error" id="picks-error" aria-live="polite"></span>
@@ -635,10 +654,28 @@
                 </div>
               </div>
 
-              <!-- Étape 4 : don -->
+              <!-- Étape 4 : carte buvette -->
+              <div class="step locked" id="step-buvette">
+                <h3><span class="step-num">4</span>Carte buvette prépayée <span class="opt">facultatif</span></h3>
+                <p class="step-hint">Achetez d’avance votre carte pour la buvette, par tranches de 5 €. Elle s’ajoute à votre paiement HelloAsso.</p>
+                <div class="don-chips" role="group" aria-label="Montant de la carte buvette">
+                  <button type="button" class="don-chip" data-v="0" aria-pressed="true">Pas de carte</button>
+                  <button type="button" class="don-chip" data-v="5" aria-pressed="false">5 €</button>
+                  <button type="button" class="don-chip" data-v="10" aria-pressed="false">10 €</button>
+                  <button type="button" class="don-chip" data-v="20" aria-pressed="false">20 €</button>
+                  <button type="button" class="don-chip" data-v="other" aria-pressed="false">Autre montant</button>
+                </div>
+                <div class="field don-other" id="buv-other" data-field="buvette" hidden>
+                  <label for="buv-input">Montant de la carte, en euros (multiple de 5)</label>
+                  <input id="buv-input" type="number" inputmode="numeric" min="5" max="100" step="5" placeholder="Ex. 15">
+                  <span class="field-error" aria-live="polite"></span>
+                </div>
+              </div>
+
+              <!-- Étape 5 : don -->
               <div class="step locked" id="step-don">
-                <h3><span class="step-num">4</span>Un coup de pouce au club ? <span class="opt">facultatif</span></h3>
-                <p class="step-hint">Un don s’ajoute au montant de vos inscriptions et se règle en une seule fois sur HelloAsso. Il aide le club à organiser le tournoi.</p>
+                <h3><span class="step-num">5</span>Un coup de pouce au club ? <span class="opt">facultatif</span></h3>
+                <p class="step-hint">Un don s’ajoute au montant de votre commande et se règle en une seule fois sur HelloAsso. Il aide le club à organiser le tournoi.</p>
                 <div class="don-chips" role="group" aria-label="Montant du don">
                   <button type="button" class="don-chip" data-v="0" aria-pressed="true">Pas de don</button>
                   <button type="button" class="don-chip" data-v="5" aria-pressed="false">5 €</button>
@@ -731,7 +768,7 @@
   const SITE = {
     // URL de déploiement Google Apps Script (se termine par /exec).
     // Laissez vide pour tester la page en « mode démo » (données fictives).
-    API_URL: 'https://script.google.com/macros/s/AKfycby_yy9lKvqB8mkRsnXMu6th7NzzyqimQqxt687R3EMPP76kA5-7DJY6gE9uyLb7nmY/exec',
+    API_URL: '',
     // Début du premier tableau (compte à rebours)
     TARGET: '2027-04-17T08:30:00+02:00',
     // Fin des inscriptions (le serveur reste maître de cette date)
@@ -819,7 +856,7 @@
       return fetchJSON(SITE.API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(Object.assign({ action: 'register' }, data)) });
     },
     confirm(ref) {
-      if (DEMO) return Promise.resolve({ ok: true, status: 'paid', registration: demo.last || { prenom: 'Démo', nom: 'JOUEUR', montant: 18, sam: ['C'], dim: ['P'] } });
+      if (DEMO) return Promise.resolve({ ok: true, status: 'paid', registration: demo.last || { prenom: 'Démo', nom: 'JOUEUR', montant: 18, total: 18, sam: ['C'], dim: ['P'] } });
       return fetchJSON(SITE.API_URL + '?action=confirm&ref=' + encodeURIComponent(ref));
     }
   };
@@ -833,7 +870,7 @@
       '1111111': { licence: '1111111', nom: 'PETIT', prenom: 'Lucas', club: 'TT Exemple', sexe: 'M', cat: 'B2', points: 780 },
       '5555555': { licence: '5555555', nom: 'DUPONT', prenom: 'Marc', club: 'TT Exemple', sexe: 'M', cat: 'S', points: 1450 }
     },
-    mine: { '5555555': { registered: ['B', 'L'], pending: [], waiting: [], reserved: [] } },
+    mine: { '5555555': { registered: ['B', 'L'], pending: [], waiting: [], reserved: [], meals: { sam: true, dim: false } } },
     _rows: null,
     rows() {
       if (this._rows) return this._rows;
@@ -860,23 +897,28 @@
       counts.D = 42;   // tableau complet pour la démonstration de la liste complémentaire
       const waiting = {}; TABLEAUX.forEach((t) => (waiting[t.id] = 0)); waiting.D = 3;
       Object.keys(this.mine).forEach((l) => this.mine[l].waiting.forEach((id) => { if (!this._counted) waiting[id]++; }));
-      return { ok: true, registrants: rows, counts, waiting, holds: {}, open: true, don: { enabled: true, max: 500 } };
+      return { ok: true, registrants: rows, counts, waiting, holds: {}, limits: {}, open: true, don: { enabled: true, max: 500 },
+        extras: { mealEnabled: true, mealPrice: 12, buvetteEnabled: true, buvetteStep: 5, buvetteMax: 100 } };
     },
     async player(licence) {
       await new Promise((r) => setTimeout(r, 450));
       const p = this.players[licence];
       if (!p) return { ok: false, error: 'Licence introuvable dans la base FFTT. Vérifiez le numéro ou contactez les organisateurs.' };
-      const m = this.mine[licence] || { registered: [], pending: [], waiting: [], reserved: [] };
+      const m = this.mine[licence] || { registered: [], pending: [], waiting: [], reserved: [], meals: { sam: false, dim: false } };
       return { ok: true, player: p, eligible: TABLEAUX.filter((t) => isEligible(t, p)).map((t) => t.id), mine: JSON.parse(JSON.stringify(m)) };
     },
     async register(data) {
       await new Promise((r) => setTimeout(r, 700));
       const sel = data.tableaux.map(byId);
       const montant = sel.reduce((s, t) => s + t.price, 0);
-      const m = this.mine[data.licence] = this.mine[data.licence] || { registered: [], pending: [], waiting: [], reserved: [] };
-      const attente = data.attente.map((id) => { m.waiting.push(id); return { id, rank: 4 }; });
-      this.last = { prenom: data.prenom, nom: data.nom, montant, don: data.don, sam: sel.filter((t) => t.day === 'sam').map((t) => t.id), dim: sel.filter((t) => t.day === 'dim').map((t) => t.id) };
-      return { ok: true, ref: sel.length ? 'DEMO' : null, amount: montant, don: data.don, tableaux: data.tableaux, attente, paymentUrl: '' };
+      const nMeals = (data.repas.sam ? 1 : 0) + (data.repas.dim ? 1 : 0);
+      const total = montant + nMeals * 12 + data.buvette + data.don;
+      const m = this.mine[data.licence] = this.mine[data.licence] || { registered: [], pending: [], waiting: [], reserved: [], meals: { sam: false, dim: false } };
+      const attente = data.attente.map((id) => { m.waiting.push(id); return { id }; });
+      this.last = { prenom: data.prenom, nom: data.nom, montant, don: data.don, repasMontant: nMeals * 12, buvette: data.buvette, total,
+        sam: sel.filter((t) => t.day === 'sam').map((t) => t.id), dim: sel.filter((t) => t.day === 'dim').map((t) => t.id) };
+      const hasPayment = sel.length || nMeals || data.buvette;
+      return { ok: true, ref: hasPayment ? 'DEMO' : null, amount: montant, mealsAmount: nMeals * 12, buvette: data.buvette, don: data.don, total, tableaux: data.tableaux, attente, paymentUrl: '' };
     }
   };
 
@@ -915,8 +957,10 @@
    * ═══════════════════════════════════════════════════════════════════════════ */
   const state = {
     list: { registrants: [], counts: {}, waiting: {}, holds: {}, open: true, don: { enabled: true, max: 500 } },
-    mine: { registered: [], pending: [], waiting: [], reserved: [] },   // ce que le joueur vérifié a déjà
+    mine: { registered: [], pending: [], waiting: [], reserved: [], meals: { sam: false, dim: false } },   // ce que le joueur vérifié a déjà
     don: 0,
+    buvette: 0,
+    meals: { sam: false, dim: false },
     player: null,         // joueur vérifié
     eligible: [],         // ids des tableaux accessibles
     selected: new Set(),
@@ -937,14 +981,29 @@
     return out.join('');
   }
 
+  /* Places d'un tableau : le nombre vient du serveur (réglable dans admin.html), sinon valeur du règlement */
+  const limitOf = (t) => { const v = (state.list.limits || {})[t.id]; return v === undefined || v === null ? t.limit : Number(v); };
+  const extras = () => Object.assign({ mealEnabled: true, mealPrice: 12, buvetteEnabled: true, buvetteStep: 5, buvetteMax: 100 }, state.list.extras || {});
+  /** Remplissage : cyan, puis orange à partir de 70 %, rouge à partir de 90 %, rouge fixe quand complet */
+  function seatInfo(t, minusReserved) {
+    const lim = limitOf(t);
+    const n = (state.list.counts[t.id] || 0) + ((state.list.holds || {})[t.id] || 0) - (minusReserved ? 1 : 0);
+    const ratio = lim > 0 ? n / lim : 1;
+    return { lim, n, pct: Math.min(100, Math.round(ratio * 100)), left: Math.max(0, lim - n), full: ratio >= 1,
+      level: ratio >= 1 ? 'full' : ratio >= .9 ? 'hot' : ratio >= .7 ? 'warn' : '' };
+  }
+  function seatsHTML(t, minusReserved, tag) {
+    const s = seatInfo(t, minusReserved);
+    const wc = (state.list.waiting || {})[t.id] || 0;
+    const txt = s.full ? (wc ? 'Complet, ' + wc + ' en liste complémentaire' : 'Complet, liste complémentaire ouverte')
+      : s.left + (s.left > 1 ? ' places restantes' : ' place restante') + ' sur ' + s.lim;
+    return '<' + tag + ' class="seats' + (s.level ? ' ' + s.level : '') + '"><span class="seats-bar"><i style="width:' + s.pct + '%"></i></span><span>' + txt + '</span></' + tag + '>';
+  }
+
   function renderTimeline() {
     const tl = $('#timeline');
     tl.setAttribute('aria-labelledby', 'dtab-' + state.day);
     tl.innerHTML = TABLEAUX.filter((t) => t.day === state.day).map((t) => {
-      const n = (state.list.counts[t.id] || 0) + ((state.list.holds || {})[t.id] || 0);
-      const wc = (state.list.waiting || {})[t.id] || 0;
-      const pct = Math.min(100, Math.round(n / t.limit * 100));
-      const full = n >= t.limit;
       return '<li class="tl-row">' +
         '<div class="tl-time">' + esc(t.start) + '</div><div class="tl-dot" aria-hidden="true"></div>' +
         '<div class="tl-card">' +
@@ -953,8 +1012,7 @@
           '<div class="tl-meta">Pointage jusqu’à ' + esc(t.pointage) + ', dotation ' + fmtEUR(t.total) + '</div></div>' +
           '<div class="tl-price"><b>' + fmtEUR(t.price) + '</b><span>par joueur</span></div>' +
           '<div class="prizes">' + prizesHTML(t) + '</div>' +
-          '<div class="seats' + (full ? ' full' : '') + '"><div class="seats-bar"><i style="width:' + pct + '%"></i></div>' +
-          '<span>' + (full ? 'Complet' + (wc ? ', ' + wc + ' en liste complémentaire' : ', liste complémentaire ouverte') : (t.limit - n) + ' places restantes sur ' + t.limit) + '</span></div>' +
+          seatsHTML(t, false, 'div') +
         '</div></li>';
     }).join('');
   }
@@ -983,11 +1041,11 @@
   function renderChips() {
     const counts = state.list.counts;
     const total = state.list.registrants.length;
-    const chip = (id, label, n) => '<button type="button" class="chip" data-f="' + id + '" aria-pressed="' + (state.filter === id) + '">' + label + '<small>' + n + '</small></button>';
+    const chip = (id, label, n, cls) => '<button type="button" class="chip' + (cls ? ' ' + cls : '') + '" data-f="' + id + '" aria-pressed="' + (state.filter === id) + '">' + label + '<small>' + n + '</small></button>';
     let html = chip('all', 'Tous les inscrits', total);
     ['sam', 'dim'].forEach((d) => {
       html += '<span class="chip-group-label">' + (d === 'sam' ? 'Samedi' : 'Dimanche') + '</span>';
-      html += TABLEAUX.filter((t) => t.day === d).map((t) => chip(t.id, 'Tableau ' + t.id, counts[t.id] || 0)).join('');
+      html += TABLEAUX.filter((t) => t.day === d).map((t) => chip(t.id, 'Tableau ' + t.id, counts[t.id] || 0, d)).join('');
     });
     $('#chips').innerHTML = html;
   }
@@ -1034,7 +1092,7 @@
       const t = byId(state.filter);
       info.classList.add('show');
       info.innerHTML = '<b>Tableau ' + t.id + '</b><span>' + esc(t.title ? t.title + ', ' : '') + esc(t.label) + '</span>' +
-        '<span>' + DAYS[t.day] + ', début à ' + esc(t.start) + '</span><span>' + (state.list.counts[t.id] || 0) + ' inscrits sur ' + t.limit + ' places</span>' +
+        '<span>' + DAYS[t.day] + ', début à ' + esc(t.start) + '</span><span>' + (state.list.counts[t.id] || 0) + ' inscrits sur ' + limitOf(t) + ' places</span>' +
         (((state.list.waiting || {})[t.id]) ? '<span>' + state.list.waiting[t.id] + ' en liste complémentaire</span>' : '');
     } else info.classList.remove('show');
 
@@ -1060,7 +1118,7 @@
     v.innerHTML = html || '';
   }
 
-  const emptyMine = () => ({ registered: [], pending: [], waiting: [], reserved: [] });
+  const emptyMine = () => ({ registered: [], pending: [], waiting: [], reserved: [], meals: { sam: false, dim: false } });
 
   function byDayText(ids) {
     const out = [];
@@ -1076,15 +1134,17 @@
     const out = [];
     if (m.registered.length) out.push('<p class="note"><b>Vous êtes déjà inscrit(e)</b> : ' + byDayText(m.registered) + '. Ces tableaux sont signalés ci-dessous ; vous pouvez en ajouter (3 maximum par jour).</p>');
     if (m.reserved.length) out.push('<p class="note"><b>Une place vous est réservée</b> : ' + byDayText(m.reserved) + '. Sélectionnez-la ci-dessous pour la confirmer.</p>');
-    if (m.waiting.length) out.push('<p class="note"><b>Vous êtes en liste complémentaire</b> : ' + byDayText(m.waiting) + '. Nous vous prévenons par e-mail si une place se libère.</p>');
+    if (m.waiting.length) out.push('<p class="note"><b>Vous êtes en liste complémentaire</b> : ' + byDayText(m.waiting) + '. Les organisateurs vous contacteront si une place se libère.</p>');
+    if (m.meals && (m.meals.sam || m.meals.dim)) out.push('<p class="note"><b>Repas déjà réservé</b> : ' + [m.meals.sam ? 'samedi' : '', m.meals.dim ? 'dimanche' : ''].filter(Boolean).join(' et ') + '.</p>');
     if (m.pending.length) out.push('<p class="note">Un paiement n’a pas été terminé pour : ' + byDayText(m.pending) + '. Vous pouvez recommencer l’inscription.</p>');
     return out.join('');
   }
 
   function resetPlayer() {
     state.player = null; state.eligible = []; state.selected.clear(); state.mine = emptyMine();
+    state.meals = { sam: false, dim: false }; resetAmounts();
     ['nom', 'prenom', 'points', 'club'].forEach((k) => (F[k].value = ''));
-    ['#step-picks', '#step-contact', '#step-don'].forEach((id) => $(id).classList.add('locked'));
+    ['#step-picks', '#step-contact', '#step-buvette', '#step-don'].forEach((id) => $(id).classList.add('locked'));
     $('#picks').hidden = true;
     $('#picks-hint').textContent = 'Vérifiez d’abord votre licence : seuls les tableaux accessibles avec votre classement s’afficheront.';
     updateRecap();
@@ -1105,7 +1165,7 @@
     state.mine = Object.assign(emptyMine(), res.mine || {});
     F.nom.value = res.player.nom; F.prenom.value = res.player.prenom; F.points.value = res.player.points; F.club.value = res.player.club || '';
     setVerify('ok', 'Licence vérifiée auprès de la FFTT : <b>' + esc(res.player.prenom) + ' ' + esc(res.player.nom) + '</b>, ' + res.player.points + ' points.' + mineNotice(state.mine));
-    ['#step-picks', '#step-contact', '#step-don'].forEach((id) => $(id).classList.remove('locked'));
+    ['#step-picks', '#step-contact', '#step-buvette', '#step-don'].forEach((id) => $(id).classList.remove('locked'));
     $('#picks-hint').textContent = 'Seuls les tableaux accessibles avec vos ' + res.player.points + ' points sont affichés. Maximum 3 par jour, liste complémentaire comprise. Si un tableau est complet, vous pouvez vous inscrire gratuitement en liste complémentaire.';
     $('#picks').hidden = false;
     renderPicks(); updateRecap();
@@ -1117,7 +1177,7 @@
 
   /* ── Places, liste complémentaire et plafond de 3 tableaux par jour ── */
   const listOf = (k) => state.list[k] || {};
-  const isFull = (t) => (state.list.counts[t.id] || 0) + (listOf('holds')[t.id] || 0) - (state.mine.reserved.includes(t.id) ? 1 : 0) >= t.limit;
+  const isFull = (t) => seatInfo(t, state.mine.reserved.includes(t.id)).full;
   const isWaitItem = (t) => state.selected.has(t.id) && isFull(t);
 
   /** Tableaux déjà « pris » ce jour-là : inscrits, liste complémentaire, places réservées, sélection en cours. */
@@ -1126,7 +1186,23 @@
     return Array.from(ids).filter((id) => byId(id) && byId(id).day === day);
   }
 
+  function renderMeals() {
+    const ex = extras();
+    ['sam', 'dim'].forEach((d) => {
+      const box = $('#meal-' + d);
+      if (!ex.mealEnabled) { box.innerHTML = ''; return; }
+      const bought = !!(state.mine.meals && state.mine.meals[d]);
+      const checked = bought || state.meals[d];
+      box.innerHTML = '<div class="meal-title">Repas (facultatif)</div>' +
+        '<label class="pick meal' + (bought ? ' locked' : '') + '"><input type="checkbox" data-meal="' + d + '"' + (checked ? ' checked' : '') + (bought ? ' disabled' : '') + '>' +
+        '<span class="pick-body"><span class="pick-letter" aria-hidden="true">🍽</span>' +
+        '<span class="pick-name">Repas du ' + (d === 'sam' ? 'samedi' : 'dimanche') + (bought ? '<em class="pick-tag">Déjà réservé</em>' : '') + '</span>' +
+        '<span class="pick-price">' + fmtEUR(ex.mealPrice) + '</span><span class="pick-sub">1 repas, sur place</span></span></label>';
+    });
+  }
+
   function renderPicks() {
+    renderMeals();
     ['sam', 'dim'].forEach((d) => {
       const list = TABLEAUX.filter((t) => t.day === d && state.eligible.includes(t.id));
       const used = held(d);
@@ -1142,23 +1218,24 @@
         const full = isFull(t) && !locked;
         const clash = (t.incompatible || []).find((x) => used.includes(x));
         const disabled = locked || (!checked && (used.length >= MAX_PER_DAY || !!clash));
-        const wc = listOf('waiting')[t.id] || 0;
         const base = (t.title ? esc(t.label) + ', ' : '') + 'début ' + esc(t.start);
         let tag = '', sub = base, price = fmtEUR(t.price);
         if (registered) tag = 'Déjà inscrit(e)';
         else if (waiting) { tag = 'En liste complémentaire'; price = 'Gratuit'; }
         else if (reserved) tag = 'Place réservée pour vous';
-        else if (full) { tag = 'Complet : liste complémentaire gratuite'; sub = base + (wc ? ', ' + wc + ' en attente' : ''); price = 'Gratuit'; }
+        else if (full) { tag = 'Complet : liste complémentaire gratuite'; price = 'Gratuit'; }
         else if (clash && !checked) sub = 'Incompatible avec le tableau ' + clash;
+        const seats = (registered || waiting) ? '' : seatsHTML(t, reserved, 'span');
         return '<label class="pick' + (locked ? ' locked' : '') + (full ? ' wl' : '') + '"><input type="checkbox" value="' + t.id + '"' + (checked ? ' checked' : '') + (disabled ? ' disabled' : '') + '>' +
           '<span class="pick-body"><span class="pick-letter">' + t.id + '</span>' +
           '<span class="pick-name">' + esc(t.title || t.label) + (tag ? '<em class="pick-tag">' + tag + '</em>' : '') + '</span><span class="pick-price">' + price + '</span>' +
-          '<span class="pick-sub">' + sub + '</span></span></label>';
+          '<span class="pick-sub">' + sub + '</span>' + seats + '</span></label>';
       }).join('');
     });
   }
   $('#picks').addEventListener('change', (e) => {
     if (e.target.type !== 'checkbox') return;
+    if (e.target.dataset.meal) { state.meals[e.target.dataset.meal] = e.target.checked; $('#picks-error').textContent = ''; updateRecap(); return; }
     e.target.checked ? state.selected.add(e.target.value) : state.selected.delete(e.target.value);
     $('#picks-error').textContent = '';
     renderPicks(); updateRecap();
@@ -1170,49 +1247,74 @@
     return { pay: sel.filter((t) => !isWaitItem(t)), wait: sel.filter(isWaitItem) };
   }
 
+  /** Repas choisis (hors repas déjà réglés) */
+  const newMeals = () => ['sam', 'dim'].filter((d) => state.meals[d] && !(state.mine.meals && state.mine.meals[d]));
+
   function updateRecap() {
     const { pay, wait } = selection();
-    const total = pay.reduce((s, t) => s + t.price, 0);
-    const don = pay.length ? state.don : 0;
+    const ex = extras();
+    const meals = newMeals();
+    const buv = state.buvette;
+    const hasPayment = pay.length > 0 || meals.length > 0 || buv > 0;
+    const total = pay.reduce((s, t) => s + t.price, 0) + meals.length * ex.mealPrice + buv;
+    const don = hasPayment ? state.don : 0;
     const dayTxt = (t) => (t.day === 'sam' ? 'Sam.' : 'Dim.');
     const lines = pay.map((t) => '<li><span>' + dayTxt(t) + ' tableau ' + t.id + ', ' + esc(t.start) + '</span><span>' + fmtEUR(t.price) + '</span></li>')
-      .concat(wait.map((t) => '<li><span>' + dayTxt(t) + ' tableau ' + t.id + ', liste complémentaire</span><span>Gratuit</span></li>'));
+      .concat(wait.map((t) => '<li><span>' + dayTxt(t) + ' tableau ' + t.id + ', liste complémentaire</span><span>Gratuit</span></li>'))
+      .concat(meals.map((d) => '<li><span>Repas du ' + (d === 'sam' ? 'samedi' : 'dimanche') + '</span><span>' + fmtEUR(ex.mealPrice) + '</span></li>'));
+    if (buv) lines.push('<li><span>Carte buvette</span><span>' + fmtEUR(buv) + '</span></li>');
     if (don) lines.push('<li><span>Don au club</span><span>' + fmtEUR(don) + '</span></li>');
-    $('#recap-list').innerHTML = lines.length ? lines.join('') : '<li class="recap-empty">Aucun tableau sélectionné.</li>';
+    $('#recap-list').innerHTML = lines.length ? lines.join('') : '<li class="recap-empty">Aucune sélection.</li>';
     $('#recap-total').textContent = fmtEUR(total + don);
     const btn = $('#btn-submit');
-    if (!state.submitting) btn.textContent = pay.length ? 'Valider et payer sur HelloAsso' : 'Valider ma place en liste complémentaire';
-    btn.disabled = (!pay.length && !wait.length) || !state.player || state.submitting;
-    $('#recap-foot').textContent = pay.length
+    if (!state.submitting) btn.textContent = hasPayment ? 'Valider et payer sur HelloAsso' : 'Valider ma place en liste complémentaire';
+    btn.disabled = (!hasPayment && !wait.length) || !state.player || state.submitting;
+    $('#recap-foot').textContent = hasPayment
       ? 'Vous serez redirigé vers HelloAsso pour régler en toute sécurité. L’inscription n’est confirmée qu’après paiement.'
-      : (wait.length ? 'Aucun paiement à ce stade. Si une place se libère, vous êtes prévenu par e-mail et elle vous est réservée 24 h.' : 'Vous serez redirigé vers HelloAsso pour régler en toute sécurité. L’inscription n’est confirmée qu’après paiement.');
-    $('#don-hint').textContent = pay.length ? '' : 'Le don s’ajoute à un paiement d’inscription : sélectionnez d’abord un tableau.';
+      : 'Aucun paiement à ce stade. Si une place se libère, les organisateurs vous contactent directement.';
+    $('#don-hint').textContent = hasPayment ? '' : 'Le don s’ajoute à un paiement : sélectionnez d’abord un tableau, un repas ou une carte buvette.';
   }
 
-  /* ── Don facultatif ── */
+  /* ── Montants libres : carte buvette et don (puces + « autre montant ») ── */
+  function bindAmount(stepSel, otherSel, inputSel, field, key) {
+    const chips = $$(stepSel + ' .don-chip');
+    const input = $(inputSel);
+    chips.forEach((chip) => chip.addEventListener('click', () => {
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+      const other = chip.dataset.v === 'other';
+      $(otherSel).hidden = !other;
+      setFieldError(field, '');
+      if (other) { input.focus(); state[key] = Math.max(0, Math.round(Number(input.value) || 0)); }
+      else state[key] = Number(chip.dataset.v);
+      updateRecap();
+    }));
+    input.addEventListener('input', (e) => {
+      setFieldError(field, '');
+      state[key] = Math.max(0, Math.round(Number(e.target.value) || 0));
+      updateRecap();
+    });
+  }
+  bindAmount('#step-buvette', '#buv-other', '#buv-input', 'buvette', 'buvette');
+  bindAmount('#step-don', '#don-other', '#don-input', 'don', 'don');
+  function resetAmounts() {
+    state.don = 0; state.buvette = 0;
+    ['#step-don', '#step-buvette'].forEach((sel) => $$(sel + ' .don-chip').forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.v === '0'))));
+    ['#don-other', '#buv-other'].forEach((sel) => { $(sel).hidden = true; });
+    $('#don-input').value = ''; $('#buv-input').value = '';
+  }
   const donMax = () => (state.list.don && state.list.don.max) || 500;
-  $$('.don-chip').forEach((chip) => chip.addEventListener('click', () => {
-    $$('.don-chip').forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
-    const other = chip.dataset.v === 'other';
-    $('#don-other').hidden = !other;
-    setFieldError('don', '');
-    if (other) { $('#don-input').focus(); state.don = Math.max(0, Math.round(Number($('#don-input').value) || 0)); }
-    else state.don = Number(chip.dataset.v);
-    updateRecap();
-  }));
-  $('#don-input').addEventListener('input', (e) => {
-    setFieldError('don', '');
-    state.don = Math.max(0, Math.round(Number(e.target.value) || 0));
-    updateRecap();
-  });
 
   function showFormError(msg) { const el = $('#form-error'); el.textContent = msg || ''; el.classList.toggle('show', !!msg); }
 
   function validate() {
     let ok = true;
-    ['licence', 'email', 'telephone', 'reglement'].forEach((n) => setFieldError(n, ''));
+    ['licence', 'email', 'telephone', 'reglement', 'buvette'].forEach((n) => setFieldError(n, ''));
     if (!state.player) { setFieldError('licence', 'Vérifiez votre licence avant de continuer.'); ok = false; }
-    if (!state.selected.size) { $('#picks-error').textContent = 'Sélectionnez au moins un tableau.'; ok = false; }
+    if (!state.selected.size && !newMeals().length && !state.buvette) { $('#picks-error').textContent = 'Sélectionnez au moins un tableau, un repas ou une carte buvette.'; ok = false; }
+    const ex = extras();
+    if (state.buvette && (state.buvette % ex.buvetteStep !== 0 || state.buvette > ex.buvetteMax)) {
+      setFieldError('buvette', 'La carte buvette doit être un multiple de ' + ex.buvetteStep + ' € (maximum ' + fmtEUR(ex.buvetteMax) + ').'); ok = false;
+    }
     setFieldError('don', '');
     if (state.don > donMax()) { setFieldError('don', 'Le don ne peut pas dépasser ' + fmtEUR(donMax()) + '.'); ok = false; }
     const email = F.email.value.trim();
@@ -1237,11 +1339,15 @@
     $('#btn-submit').textContent = 'Enregistrement…';
 
     const { pay, wait } = selection();
+    const meals = newMeals();
+    const hasPayment = pay.length > 0 || meals.length > 0 || state.buvette > 0;
     const p = state.player;
     const res = await api.register({
       licence: p.licence, nom: p.nom, prenom: p.prenom, points: p.points,
       email: F.email.value.trim(), telephone: F.tel.value.trim(),
-      tableaux: pay.map((t) => t.id), attente: wait.map((t) => t.id), don: pay.length ? state.don : 0, reglement: true
+      tableaux: pay.map((t) => t.id), attente: wait.map((t) => t.id),
+      repas: { sam: meals.includes('sam'), dim: meals.includes('dim') }, buvette: state.buvette,
+      don: hasPayment ? state.don : 0, reglement: true
     });
 
     state.submitting = false; updateRecap();
@@ -1250,14 +1356,16 @@
     const att = res.attente || [];
     const summary = '<div class="summary">' + sumRow('Joueur', esc(p.prenom) + ' ' + esc(p.nom)) +
       (pay.length ? sumRow('Tableaux', pay.map((t) => t.id).join(', ')) + sumRow('Inscriptions', fmtEUR(res.amount)) : '') +
+      (res.mealsAmount ? sumRow('Repas', fmtEUR(res.mealsAmount)) : '') +
+      (res.buvette ? sumRow('Carte buvette', fmtEUR(res.buvette)) : '') +
       (res.don ? sumRow('Don au club', fmtEUR(res.don)) : '') +
-      (pay.length ? sumRow('Total à payer', fmtEUR(res.amount + (res.don || 0))) : '') +
-      att.map((a) => sumRow('Liste complémentaire, tableau ' + a.id, 'n° ' + a.rank)).join('') + '</div>';
-    const waitNote = att.length ? '<p>Vous êtes aussi en liste complémentaire pour ' + att.map((a) => a.id).join(', ') + ' (gratuit). Nous vous prévenons par e-mail si une place se libère.</p>' : '';
+      (hasPayment ? sumRow('Total à payer', fmtEUR(res.total)) : '') +
+      att.map((a) => sumRow('Liste complémentaire, tableau ' + a.id, 'enregistré')).join('') + '</div>';
+    const waitNote = att.length ? '<p>Vous êtes aussi en liste complémentaire pour ' + att.map((a) => a.id).join(', ') + ' (gratuit). Les organisateurs vous contacteront si une place se libère.</p>' : '';
 
-    if (!pay.length) {
+    if (!hasPayment) {
       dialog({ icon: '✓', cls: '', title: 'Vous êtes en liste complémentaire',
-        html: summary + '<p>Aucun paiement n’est demandé. Si une place se libère, vous recevez un e-mail et elle vous est réservée 24 h pour finaliser votre inscription.</p>',
+        html: summary + '<p>Aucun paiement n’est demandé. Si une place se libère, les organisateurs vous contactent directement.</p>',
         action: { label: 'Fermer', fn: () => { closeDialog(); } } });
       state.selected.clear(); refreshList(); verifyLicence();
     } else if (DEMO || !res.paymentUrl) {
@@ -1286,9 +1394,14 @@
 
   function regSummary(r) {
     const t = [].concat(r.sam || [], r.dim || []);
-    return '<div class="summary"><div><span>Joueur</span><b>' + esc(r.prenom) + ' ' + esc(r.nom) + '</b></div>' +
-      '<div><span>Tableaux</span><b>' + esc(t.join(', ')) + '</b></div>' + (r.don ? '<div><span>Dont don au club</span><b>' + fmtEUR(Number(r.don)) + '</b></div>' : '') +
-      '<div><span>Montant réglé</span><b>' + fmtEUR(Number(r.montant) + (Number(r.don) || 0)) + '</b></div></div>';
+    const row = (a, b) => '<div><span>' + a + '</span><b>' + b + '</b></div>';
+    const total = r.total !== undefined ? Number(r.total) : Number(r.montant) + (Number(r.don) || 0);
+    return '<div class="summary">' + row('Joueur', esc(r.prenom) + ' ' + esc(r.nom)) +
+      (t.length ? row('Tableaux', esc(t.join(', '))) : '') +
+      (Number(r.repasMontant) ? row('Repas', fmtEUR(Number(r.repasMontant))) : '') +
+      (Number(r.buvette) ? row('Carte buvette', fmtEUR(Number(r.buvette))) : '') +
+      (r.don ? row('Dont don au club', fmtEUR(Number(r.don))) : '') +
+      row('Montant réglé', fmtEUR(total)) + '</div>';
   }
 
   async function handleReturn() {
@@ -1328,6 +1441,7 @@
         $('#closed-note').hidden = false; $('#form').hidden = true;
       }
       $('#step-don').hidden = !!(res.don && res.don.enabled === false);
+      $('#step-buvette').hidden = extras().buvetteEnabled === false;
       renderTimeline(); renderChips(); renderList();
       if (state.player) { renderPicks(); updateRecap(); }
     }
