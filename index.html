@@ -178,7 +178,23 @@
       .prizes, .seats { grid-column: 1 / -1; }
     }
 
-    /* ══════════ Règles ══════════ */
+    /* Planning : tout ce qui concerne le samedi en turquoise, le dimanche en orange */
+    .timeline { --day: var(--cyan); --day-glow: rgba(34, 240, 255, .6); }
+    .timeline[data-day="dim"] { --day: var(--ball); --day-glow: rgba(255, 138, 31, .6); }
+    .timeline::before { background: linear-gradient(var(--day), var(--violet)); }
+    .timeline .tl-time, .timeline .tl-price b { color: var(--day); }
+    .timeline .tl-dot { border-color: var(--day); box-shadow: 0 0 10px var(--day-glow); }
+    .timeline .tl-letter { color: var(--day); border-color: var(--day); }
+    .timeline .tl-card { border-color: color-mix(in srgb, var(--day) 30%, transparent); }
+    .day-tabs button[data-day="sam"] { color: var(--cyan); }
+    .day-tabs button[data-day="dim"] { color: var(--ball); }
+    .day-tabs button[data-day="sam"][aria-selected="true"] { background: var(--cyan); color: #00262b; }
+    .day-tabs button[data-day="dim"][aria-selected="true"] { background: var(--ball); color: #2a1200; }
+    .day-tabs button[data-day]:not([aria-selected="true"]):hover { background: rgba(255, 255, 255, .07); color: inherit; }
+    .day-tabs button[data-day="sam"]:not([aria-selected="true"]):hover { color: var(--cyan); }
+    .day-tabs button[data-day="dim"]:not([aria-selected="true"]):hover { color: var(--ball); }
+
+    /* ══════════ Règles ══════════
     .rules-grid { display: grid; gap: 14px; margin-top: 34px; grid-template-columns: repeat(3, 1fr); }
     @media (max-width: 900px) { .rules-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 580px) { .rules-grid { grid-template-columns: 1fr; } }
@@ -769,7 +785,7 @@
   const SITE = {
     // URL de déploiement Google Apps Script (se termine par /exec).
     // Laissez vide pour tester la page en « mode démo » (données fictives).
-    API_URL: 'https://script.google.com/macros/s/AKfycbwYjyUFE1Hbrke14hzEcZdCihACfEuTYce9pfWD2LRmeKHZfsMrevtXnuTs8m9toOI/exec',
+    API_URL: '',
     // Début du premier tableau (compte à rebours)
     TARGET: '2027-04-17T08:30:00+02:00',
     // Fin des inscriptions (le serveur reste maître de cette date)
@@ -1004,6 +1020,7 @@
   function renderTimeline() {
     const tl = $('#timeline');
     tl.setAttribute('aria-labelledby', 'dtab-' + state.day);
+    tl.dataset.day = state.day;
     tl.innerHTML = TABLEAUX.filter((t) => t.day === state.day).map((t) => {
       return '<li class="tl-row">' +
         '<div class="tl-time">' + esc(t.start) + '</div><div class="tl-dot" aria-hidden="true"></div>' +
