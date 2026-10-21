@@ -246,6 +246,7 @@
     /* Choix des tableaux */
     .picks-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 20px; }
     @media (max-width: 720px) { .picks-cols { grid-template-columns: 1fr; } }
+    .picks-cols[hidden] { display: none; }
     .picks-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; font-weight: 800; }
     .picks-head span { font-size: .85rem; color: var(--muted); font-weight: 600; }
     .picks-head span.maxed { color: var(--ball); }
@@ -768,7 +769,7 @@
   const SITE = {
     // URL de déploiement Google Apps Script (se termine par /exec).
     // Laissez vide pour tester la page en « mode démo » (données fictives).
-    API_URL: 'https://script.google.com/macros/s/AKfycbw9zD9In2QYqT8HQOXqqWC4S7WE6L_cMO0xjnJOqpzK4tGa0kGRLwiqFNv7ORRxSsK9/exec',
+    API_URL: '',
     // Début du premier tableau (compte à rebours)
     TARGET: '2027-04-17T08:30:00+02:00',
     // Fin des inscriptions (le serveur reste maître de cette date)
@@ -1178,7 +1179,8 @@
   /* ── Places, liste complémentaire et plafond de 3 tableaux par jour ── */
   const listOf = (k) => state.list[k] || {};
   const isFull = (t) => seatInfo(t, state.mine.reserved.includes(t.id)).full;
-  const isWaitItem = (t) => state.selected.has(t.id) && isFull(t);
+  const isReserved = (t) => state.mine.reserved.includes(t.id);
+  const isWaitItem = (t) => state.selected.has(t.id) && isFull(t) && !isReserved(t);
 
   /** Tableaux déjà « pris » ce jour-là : inscrits, liste complémentaire, places réservées, sélection en cours. */
   function held(day) {
@@ -1215,7 +1217,7 @@
         const reserved = state.mine.reserved.includes(t.id);
         const locked = registered || waiting;
         const checked = locked || state.selected.has(t.id);
-        const full = isFull(t) && !locked;
+        const full = isFull(t) && !locked && !reserved;
         const clash = (t.incompatible || []).find((x) => used.includes(x));
         const disabled = locked || (!checked && (used.length >= MAX_PER_DAY || !!clash));
         const base = (t.title ? esc(t.label) + ', ' : '') + 'début ' + esc(t.start);
@@ -1225,7 +1227,7 @@
         else if (reserved) tag = 'Place réservée pour vous';
         else if (full) { tag = 'Complet : liste complémentaire gratuite'; price = 'Gratuit'; }
         else if (clash && !checked) sub = 'Incompatible avec le tableau ' + clash;
-        const seats = (registered || waiting) ? '' : seatsHTML(t, reserved, 'span');
+        const seats = (registered || waiting || reserved) ? '' : seatsHTML(t, reserved, 'span');
         return '<label class="pick' + (locked ? ' locked' : '') + (full ? ' wl' : '') + '"><input type="checkbox" value="' + t.id + '"' + (checked ? ' checked' : '') + (disabled ? ' disabled' : '') + '>' +
           '<span class="pick-body"><span class="pick-letter">' + t.id + '</span>' +
           '<span class="pick-name">' + esc(t.title || t.label) + (tag ? '<em class="pick-tag">' + tag + '</em>' : '') + '</span><span class="pick-price">' + price + '</span>' +
@@ -1329,6 +1331,16 @@
     return ok;
   }
 
+  /** Remet tout le formulaire à zéro (licence, coordonnées, sélection) */
+  function resetForm() {
+    F.licence.value = ''; F.email.value = ''; F.tel.value = ''; F.reglement.checked = false;
+    ['licence', 'email', 'telephone', 'reglement', 'buvette', 'don'].forEach((n) => setFieldError(n, ''));
+    $('#picks-error').textContent = '';
+    showFormError('');
+    setVerify('', '');
+    resetPlayer();
+  }
+
   const sumRow = (a, b) => '<div><span>' + a + '</span><b>' + b + '</b></div>';
 
   $('#form').addEventListener('submit', async (e) => {
@@ -1365,14 +1377,14 @@
 
     if (!hasPayment) {
       dialog({ icon: '✓', cls: '', title: 'Vous êtes en liste complémentaire',
-        html: summary + '<p>Aucun paiement n’est demandé. Si une place se libère, les organisateurs vous contactent directement.</p>',
-        action: { label: 'Fermer', fn: () => { closeDialog(); } } });
-      state.selected.clear(); refreshList(); verifyLicence();
+        html: summary + '<p>Aucun paiement n’est demandé. Un e-mail de confirmation vous est envoyé. Si une place se libère, les organisateurs vous contactent directement.</p>',
+        action: { label: 'Fermer', fn: closeDialog } });
+      resetForm(); refreshList();
     } else if (DEMO || !res.paymentUrl) {
       dialog({ icon: '✓', cls: '', title: DEMO ? 'Démo : inscription validée' : 'Inscription enregistrée',
         html: summary + waitNote + '<p>' + (DEMO ? 'En production, vous seriez maintenant redirigé vers HelloAsso pour payer.' : 'Votre inscription est enregistrée. Réglez-la sur HelloAsso pour la confirmer.') + '</p>',
         action: { label: 'Fermer', fn: closeDialog } });
-      if (DEMO) { state.selected.clear(); refreshList(); verifyLicence(); }
+      if (DEMO) { resetForm(); refreshList(); }
     } else {
       dialog({ icon: '', cls: 'spin', title: 'Inscription enregistrée',
         html: summary + waitNote + '<p>Redirection vers HelloAsso pour le paiement sécurisé…</p><a class="btn" href="' + esc(res.paymentUrl) + '">Payer maintenant</a>' });
