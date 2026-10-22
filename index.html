@@ -194,7 +194,7 @@
     .day-tabs button[data-day="sam"]:not([aria-selected="true"]):hover { color: var(--cyan); }
     .day-tabs button[data-day="dim"]:not([aria-selected="true"]):hover { color: var(--ball); }
 
-    /* ══════════ Règles ══════════
+    /* ══════════ Règles ══════════ */
     .rules-grid { display: grid; gap: 14px; margin-top: 34px; grid-template-columns: repeat(3, 1fr); }
     @media (max-width: 900px) { .rules-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 580px) { .rules-grid { grid-template-columns: 1fr; } }
@@ -203,6 +203,9 @@
     .rule p { color: var(--muted); font-size: .94rem; }
     .rule.wide { grid-column: span 2; background: linear-gradient(135deg, rgba(255, 138, 31, .14), rgba(15, 26, 78, .62)); border-color: rgba(255, 138, 31, .4); }
     @media (max-width: 580px) { .rule.wide { grid-column: auto; } }
+    /* Dernière carte : pleine largeur sur 2 colonnes (tablette), pour garder une grille sans case vide */
+    @media (max-width: 900px) { .rule.span-md { grid-column: span 2; } }
+    @media (max-width: 580px) { .rule.span-md { grid-column: auto; } }
     .reglement { margin-top: 22px; border-radius: 18px; border: 1px solid var(--line-soft); background: var(--panel); }
     .reglement summary { cursor: pointer; padding: 18px 22px; font-weight: 800; list-style: none; display: flex; justify-content: space-between; align-items: center; }
     .reglement summary::-webkit-details-marker { display: none; }
@@ -541,12 +544,12 @@
             <p>Balles plastique blanches fournies par l’organisateur. Tenue blanche (short et maillot) interdite.</p>
           </article>
           <article class="rule">
-            <h3>Arbitrage</h3>
-            <p>Tout joueur éliminé d’un tableau arbitre une partie. Le forfait est prononcé 5 minutes après le premier appel.</p>
-          </article>
-          <article class="rule">
             <h3>Tableau complet</h3>
             <p>Inscrivez-vous gratuitement en liste complémentaire : si une place se libère, les organisateurs vous contactent directement.</p>
+          </article>
+          <article class="rule span-md">
+            <h3>Sur place</h3>
+            <p>Petite restauration ouverte sans interruption entre 12 h et 14 h.</p>
           </article>
         </div>
 
@@ -785,7 +788,7 @@
   const SITE = {
     // URL de déploiement Google Apps Script (se termine par /exec).
     // Laissez vide pour tester la page en « mode démo » (données fictives).
-    API_URL: 'https://script.google.com/macros/s/AKfycbwHh25D35VIegpqMvtUtx-utAConeT8U3cz-ZH99ykDHJ5QL0XhCAyn-LDOoLy5_2Y/exec',
+    API_URL: '',
     // Début du premier tableau (compte à rebours)
     TARGET: '2027-04-17T08:30:00+02:00',
     // Fin des inscriptions (le serveur reste maître de cette date)
