@@ -887,7 +887,7 @@
   const SITE = {
     // URL de déploiement Google Apps Script (se termine par /exec).
     // Laissez vide pour tester la page en « mode démo » (données fictives).
-    API_URL: 'https://script.google.com/macros/s/AKfycbzqLNER3rTQSllcbcL73GxiLw7ccZ5mhvQ-5XN3oiN5554tmzDgr-uJWxd1BCkR0MfX/exec',
+    API_URL: '',
     // Début du premier tableau (compte à rebours)
     TARGET: '2027-04-17T08:30:00+02:00',
     // Fin des inscriptions (le serveur reste maître de cette date)
@@ -916,7 +916,7 @@
     { id:'O', day:'dim', kind:'points', min:500,  max:2499,  label:'500 à 2499 pts (mixte)', title:'Trophée CUBE', price:11, pointage:'10h45', start:'11h00', limit:42, total:700, incompatible:['N'], prizes:{ first:'300 €', second:'200 €', third:'100 €' } },
     { id:'P', day:'dim', kind:'points', min:500,  max:1099,  label:'500 à 1099 pts (mixte)', price:9,  pointage:'11h45', start:'12h00', limit:42, total:110, prizes:{ first:'40 € + lot 20 €', second:'20 €', third:'15 €' } },
     { id:'Q', day:'dim', kind:'points', min:1100, max:1799,  label:'1100 à 1799 pts (mixte)',price:9,  pointage:'12h00', start:'12h15', limit:42, total:160, prizes:{ first:'60 € + lot 20 €', second:'40 €', third:'20 €' } },
-    { id:'R', day:'dim', kind:'open',   min:0,    max:99999, label:'Open de Seloncourt (Toutes séries mixtes)', title:'Trophée du Pays de Montbéliard Agglomération', price:11, pointage:'13h00', start:'13h15', limit:84, total:2800, prizes:{ first:'1000 €', second:'600 €', third:'300 €', fifth:'150 €' } },
+    { id:'R', day:'dim', kind:'open',   min:0,    max:99999, label:'Open de Seloncourt (Toutes séries - Mixte)', title:'Trophée du Pays de Montbéliard Agglomération', price:11, pointage:'13h00', start:'13h15', limit:84, total:2800, prizes:{ first:'1000 €', second:'600 €', third:'300 €', fifth:'150 €' } },
     { id:'S', day:'dim', kind:'dames',  min:0,    max:99999, label:'Open Dames (Toutes séries dames)', title:'Trophée du Département du Doubs', price:9, pointage:'14h45', start:'15h00', limit:24, total:440, prizes:{ first:'200 € + lot 40 €', second:'100 €', third:'50 €' } }
   ];
   const MAX_PER_DAY = 3;
