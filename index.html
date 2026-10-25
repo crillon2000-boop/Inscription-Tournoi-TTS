@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tournoi international de Seloncourt – 10ème édition – 17 &amp; 18 avril 2027</title>
-  <meta name="description" content="Inscription au 10ème tournoi international de tennis de table de Seloncourt, les 17 et 18 avril 2027. 6 060 € de récompenses, 19 tableaux, 28 tables.">
+  <meta name="description" content="Inscription au 10ème tournoi international de tennis de table de Seloncourt, les 17 et 18 avril 2027. Plus de 6 000 € de dotation, 19 tableaux, 28 tables.">
   <meta name="theme-color" content="#060814">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%23ff8a1f'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -93,6 +93,7 @@
     .tag strong { font-weight: 800; }
     .tag.hot { border-color: rgba(255, 138, 31, .55); background: rgba(255, 138, 31, .12); }
     .tag sup { font-size: .7em; }
+    .tag.big { font-size: clamp(1.2rem, 2.7vw, 1.75rem); padding: 12px 26px; }
 
     /* Compte à rebours = tableau de marque */
     .scoreboard { margin-top: 34px; display: flex; flex-wrap: wrap; gap: 12px clamp(10px, 2vw, 20px); }
@@ -312,6 +313,12 @@
     .pick-price { grid-row: span 2; font-family: var(--font-display); font-weight: 700; font-size: .95rem; }
     .empty-day { color: var(--muted); font-size: .92rem; padding: 14px; border-radius: 12px; border: 1px dashed var(--line); }
 
+    /* Tableau complet : tarif barré, inscription gratuite en liste complémentaire */
+    .strike { text-decoration: line-through; text-decoration-thickness: 2px; opacity: .55; font-weight: 600; }
+    .free { font-style: normal; color: var(--ok); }
+    .pick-price { text-align: right; }
+    .pick-price .strike { display: block; font-size: .75em; }
+
     /* Case règlement */
     .check { display: flex; gap: 14px; align-items: flex-start; cursor: pointer; margin-top: 4px; }
     .check input { appearance: none; flex: none; width: 24px; height: 24px; margin: 2px 0 0; border-radius: 7px; border: 2px solid var(--line); background: rgba(4, 8, 30, .8); cursor: pointer; display: grid; place-items: center; transition: .18s; }
@@ -469,7 +476,7 @@
           <div class="hero-edition">
             <span class="tag"><strong>10<sup>ème</sup> édition</strong></span>
             <span class="tag"><strong>17 &amp; 18 avril 2027</strong></span>
-            <span class="tag hot"><strong>6 060 €</strong> de récompenses, dont 400 € de lots</span>
+            <span class="tag hot big"><strong>Plus de 6 000 € de dotation !</strong></span>
           </div>
 
           <div class="scoreboard" id="scoreboard" role="timer" aria-label="Compte à rebours avant le début du tournoi"></div>
@@ -549,7 +556,7 @@
           </article>
           <article class="rule">
             <h3>Tarifs</h3>
-            <p>9 € par tableau. 11 € pour le tableau O (Trophée CUBE) et le tableau R (Open Messieurs). Repas à 12 € (samedi et/ou dimanche). Carte buvette prépayée par tranches de 5 €.</p>
+            <p>9 € par tableau. 11 € pour le tableau O (Trophée CUBE) et le tableau R (Open de Seloncourt). Repas à 12 € (samedi et/ou dimanche). Carte buvette prépayée par tranches de 5 €.</p>
           </article>
           <article class="rule">
             <h3>Paiement en ligne</h3>
@@ -582,7 +589,7 @@
           <div class="reglement-body">
             <p><b>La participation au tournoi implique obligatoirement l’acceptation du présent règlement.</b></p>
             <p><b>Article 1.</b> Le club « Tennis de Table Seloncourtois » (Doubs, 25230) organise son 10ème Tournoi International (32ème tournoi) dans la salle omnisports de Seloncourt (place Ambroise Croizat), sur 28 tables, les 17 et 18 avril 2027, ouvert à tous les licenciés compétiteurs (FFTT ou autres fédérations). Les horaires, engagements et valeurs des prix sont précisés dans le planning ci-dessus. Juge-arbitre : M. ANGENON Nico (AI-JAN). Juges-arbitres adjoints : M. LEMERCIER Michel (JA3), Mme CAPELLI Karine (AN et JA3), MM. CAPELLI Philippe et Corentin (AN et JA3). Président du CO : M. BARADEL Philippe. Responsable des épreuves : M. GIRARD François.</p>
-            <p><b>Article 2.</b> Les récompenses seront remises aux demi-finalistes de tous les tableaux et aux quarts de finalistes du tableau R (Open Messieurs). Les demi-finalistes sont tenus de se présenter sur les podiums lors de la cérémonie protocolaire, tout refus valant renoncement aux récompenses. Total chèques : 5 660 €. Total lots : 400 €. Total des récompenses : 6 060 €.</p>
+            <p><b>Article 2.</b> Les récompenses seront remises aux demi-finalistes de tous les tableaux et aux quarts de finalistes du tableau R (Open de Seloncourt). Les demi-finalistes sont tenus de se présenter sur les podiums lors de la cérémonie protocolaire, tout refus valant renoncement aux récompenses. Total chèques : 5 660 €. Total lots : 400 €. Total des récompenses : 6 060 €.</p>
             <p><b>Article 3.</b> Les parties se déroulent au meilleur des 5 manches pour tous les tableaux.</p>
             <p><b>Article 4.</b> Tous les autres tableaux se déroulent par poules de 3 ou 4 joueurs, avec 2 qualifiés par poule.</p>
             <p><b>Article 5.</b> Le règlement général des épreuves est celui de la F.F.T.T. et de l’I.T.T.F., en rappelant que tout joueur doit arbitrer une partie dès lors qu’il est éliminé d’un tableau ; le forfait d’un joueur est prononcé 5 minutes après le premier appel à la table. Les balles en plastique blanches seront fournies par l’organisateur. Tenue blanche (short et maillot) interdite.</p>
@@ -590,9 +597,9 @@
             <p><b>Article 7.</b> Le club organisateur décline toute responsabilité en cas de perte, vol ou accident dans la salle.</p>
             <p><b>Article 8.</b> Les engagements sont à enregistrer uniquement par le site du club et sont limités à 3 tableaux par jour, avant le mercredi 14 avril 2027 à minuit. Renseignements : tél. 06 07 70 27 49, e-mail ttseloncourt25@gmail.com.</p>
             <p><b>Article 9.</b> Le paiement des engagements se fait uniquement en ligne, sauf pour compléter des tableaux le jour même. Le pointage, avec présentation obligatoire des licences, se fait sur place. Les tableaux sont clos, sans aucun recours, 15 minutes avant l’horaire de début de chaque tableau, et le tirage au sort a lieu 15 minutes avant le début de chaque tableau, uniquement avec les joueurs ayant pointé. Le tournoi est totalement informatisé et ne sera pas remis en cause par des retards. Le club organisateur garantit ainsi des poules complètes et un parfait respect des règlements. Les annulations d’inscriptions engendrent des frais de gestion de 3 €, déduits du remboursement.</p>
-            <p><b>Article 10.</b> Pour le tableau R (Open Messieurs), le classement mondial détermine l’ordre de valeur des 8 meilleurs joueurs, puis le classement FFTT et/ou assimilé.</p>
+            <p><b>Article 10.</b> Pour le tableau R (Open de Seloncourt), le classement mondial détermine l’ordre de valeur des 8 meilleurs joueurs, puis le classement FFTT et/ou assimilé.</p>
             <p><b>Article 11.</b> Le comité d’organisation se réserve le droit d’annuler ou de modifier la dotation d’un tableau si le nombre d’engagés est inférieur à 30 pour les tableaux de 84 joueurs, à 15 pour les tableaux de 42 joueurs, à 10 pour les tableaux de 24 joueurs et à 6 pour les tableaux de 16 joueurs.</p>
-            <p><b>Article 12.</b> Limitation du nombre d’engagés par tableau : tableaux E, M et R : 84 joueurs ; tableau I : 60 joueurs ; tableau S : 24 joueurs ; tableau J : 16 joueurs ; tous les autres tableaux : 42 joueurs.</p>
+            <p><b>Article 12.</b> Limitation du nombre d’engagés par tableau : tableaux E, M et R : 84 joueurs ; tableau I : 60 joueurs ; tableau S : 24 joueurs ; tableau J (Benjamins-Minimes nés en 2014-2015-2016-2017) : 16 joueurs ; tous les autres tableaux : 42 joueurs.</p>
             <p><b>Article 13.</b> En cas de forfait non excusé ou d’absence non excusée, la Commission sportive fédérale appliquera l’article IV.202 des Règlements administratifs sur votre première partie non jouée et vous perdrez les points classement que vous auriez dû perdre si vous aviez participé et perdu cette partie.</p>
             <p><b>Article 14.</b> Les joueurs et joueuses du tournoi donnent leur accord sur le droit à l’image, sinon ils doivent le faire savoir aux organisateurs lors du tournoi.</p>
           </div>
@@ -660,7 +667,7 @@
 
                 <!-- Joueur sans licence FFTT -->
                 <div id="box-foreign" hidden>
-                  <p class="step-hint">Vous n’avez pas de licence FFTT (licence belge, néerlandaise, luxembourgeoise…) ? Indiquez votre nationalité et votre classement : nous calculons l’équivalent en points FFTT, qui détermine les tableaux accessibles. Pour un joueur belge, le classement est vérifié automatiquement sur le site de l’AFTT lorsque c’est possible ; sinon, les organisateurs valident votre inscription après le paiement et vous préviennent par e-mail.</p>
+                  <p class="step-hint">Vous n’avez pas de licence FFTT (licence belge, néerlandaise, luxembourgeoise…) ? Indiquez votre nationalité, votre club et votre classement : nous calculons l’équivalent en points FFTT, qui détermine les tableaux accessibles. Pour un joueur belge, le classement est vérifié automatiquement sur le site de l’AFTT lorsque c’est possible ; sinon, les organisateurs valident votre inscription après le paiement et vous préviennent par e-mail.</p>
                   <div class="foreign-links">
                     <button type="button" class="btn btn-ghost" id="btn-eq">Tableau d’équivalence des classements</button>
                     <button type="button" class="btn btn-ghost" id="btn-tabs">Tableaux du tournoi</button>
@@ -691,6 +698,11 @@
                       <input id="f-prenom" autocomplete="given-name" maxlength="50">
                       <span class="field-error" aria-live="polite"></span>
                     </div>
+                    <div class="field full" data-field="fclub">
+                      <label for="f-club">Nom de votre club</label>
+                      <input id="f-club" autocomplete="organization" maxlength="80" placeholder="Ex. Royal TTC Charleroi">
+                      <span class="field-error" aria-live="polite"></span>
+                    </div>
                     <div class="field full" data-field="fmixte" hidden>
                       <label class="check">
                         <input type="checkbox" id="f-mixte" checked>
@@ -706,7 +718,7 @@
                     <div class="field full" data-field="fcat">
                       <label for="f-cat">Catégorie d’âge <span class="opt">utile pour le tableau J</span></label>
                       <select id="f-cat"><option value="">Senior ou autre catégorie</option><option value="B">Benjamin</option><option value="M">Minime</option></select>
-                      <span class="field-help">Le tableau J est réservé aux Benjamins et Minimes ; il est contrôlé par les organisateurs.</span>
+                      <span class="field-help">Le tableau J est réservé aux Benjamins et Minimes (enfants nés en 2014-2015-2016-2017) ; il est contrôlé par les organisateurs.</span>
                     </div>
                   </div>
                   <div class="foreign-actions" data-field="fverify">
@@ -875,7 +887,7 @@
   const SITE = {
     // URL de déploiement Google Apps Script (se termine par /exec).
     // Laissez vide pour tester la page en « mode démo » (données fictives).
-    API_URL: 'https://script.google.com/macros/s/AKfycbzqLNER3rTQSllcbcL73GxiLw7ccZ5mhvQ-5XN3oiN5554tmzDgr-uJWxd1BCkR0MfX/exec',
+    API_URL: '',
     // Début du premier tableau (compte à rebours)
     TARGET: '2027-04-17T08:30:00+02:00',
     // Fin des inscriptions (le serveur reste maître de cette date)
@@ -886,26 +898,26 @@
   // kind : 'points' (fourchette de points) | 'jeunes' (Benjamins-Minimes) | 'dames' | 'open'
   const TABLEAUX = [
     // SAMEDI 17 AVRIL 2027
-    { id:'A', day:'sam', kind:'points', min:500,  max:899,   label:'500 à 899 pts',  price:9,  pointage:'8h15',  start:'8h30',  limit:42, total:100, prizes:{ first:'30 € + lot 20 €', second:'20 €', third:'15 €' } },
-    { id:'B', day:'sam', kind:'points', min:900,  max:1499,  label:'900 à 1499 pts', price:9,  pointage:'8h30',  start:'8h45',  limit:42, total:110, prizes:{ first:'40 € + lot 20 €', second:'20 €', third:'15 €' } },
-    { id:'C', day:'sam', kind:'points', min:500,  max:1099,  label:'500 à 1099 pts', price:9,  pointage:'9h30',  start:'9h45',  limit:42, total:100, prizes:{ first:'30 € + lot 20 €', second:'20 €', third:'15 €' } },
-    { id:'D', day:'sam', kind:'points', min:1100, max:1699,  label:'1100 à 1699 pts',price:9,  pointage:'9h45',  start:'10h00', limit:42, total:140, prizes:{ first:'50 € + lot 20 €', second:'30 €', third:'20 €' } },
-    { id:'E', day:'sam', kind:'points', min:500,  max:1999,  label:'500 à 1999 pts', price:9,  pointage:'10h45', start:'11h00', limit:84, total:210, prizes:{ first:'80 € + lot 20 €', second:'50 €', third:'30 €' } },
-    { id:'F', day:'sam', kind:'points', min:500,  max:1299,  label:'500 à 1299 pts', price:9,  pointage:'12h00', start:'12h15', limit:42, total:110, prizes:{ first:'40 € + lot 20 €', second:'20 €', third:'15 €' } },
-    { id:'G', day:'sam', kind:'points', min:1300, max:1899,  label:'1300 à 1899 pts',price:9,  pointage:'12h15', start:'12h30', limit:42, total:200, prizes:{ first:'70 € + lot 20 €', second:'50 €', third:'30 €' } },
-    { id:'H', day:'sam', kind:'points', min:500,  max:799,   label:'500 à 799 pts',  price:9,  pointage:'13h15', start:'13h30', limit:42, total:100, prizes:{ first:'30 € + lot 20 €', second:'20 €', third:'15 €' } },
-    { id:'I', day:'sam', kind:'points', min:800,  max:1799,  label:'800 à 1799 pts', price:9,  pointage:'13h30', start:'13h45', limit:60, total:160, prizes:{ first:'60 € + lot 20 €', second:'40 €', third:'20 €' } },
-    { id:'J', day:'sam', kind:'jeunes', min:0,    max:1299,  label:'Benjamins-Minimes 500 à 1299 pts', price:9, pointage:'15h15', start:'15h30', limit:16, total:60, prizes:{ first:'lot 25 €', second:'lot 15 €', third:'lot 10 €' } },
+    { id:'A', day:'sam', kind:'points', min:500,  max:899,   label:'500 à 899 pts (mixte)',  price:9,  pointage:'8h15',  start:'8h30',  limit:42, total:100, prizes:{ first:'30 € + lot 20 €', second:'20 €', third:'15 €' } },
+    { id:'B', day:'sam', kind:'points', min:900,  max:1499,  label:'900 à 1499 pts (mixte)', price:9,  pointage:'8h30',  start:'8h45',  limit:42, total:110, prizes:{ first:'40 € + lot 20 €', second:'20 €', third:'15 €' } },
+    { id:'C', day:'sam', kind:'points', min:500,  max:1099,  label:'500 à 1099 pts (mixte)', price:9,  pointage:'9h30',  start:'9h45',  limit:42, total:100, prizes:{ first:'30 € + lot 20 €', second:'20 €', third:'15 €' } },
+    { id:'D', day:'sam', kind:'points', min:1100, max:1699,  label:'1100 à 1699 pts (mixte)',price:9,  pointage:'9h45',  start:'10h00', limit:42, total:140, prizes:{ first:'50 € + lot 20 €', second:'30 €', third:'20 €' } },
+    { id:'E', day:'sam', kind:'points', min:500,  max:1999,  label:'500 à 1999 pts (mixte)', price:9,  pointage:'10h45', start:'11h00', limit:84, total:210, prizes:{ first:'80 € + lot 20 €', second:'50 €', third:'30 €' } },
+    { id:'F', day:'sam', kind:'points', min:500,  max:1299,  label:'500 à 1299 pts (mixte)', price:9,  pointage:'12h00', start:'12h15', limit:42, total:110, prizes:{ first:'40 € + lot 20 €', second:'20 €', third:'15 €' } },
+    { id:'G', day:'sam', kind:'points', min:1300, max:1899,  label:'1300 à 1899 pts (mixte)',price:9,  pointage:'12h15', start:'12h30', limit:42, total:200, prizes:{ first:'70 € + lot 20 €', second:'50 €', third:'30 €' } },
+    { id:'H', day:'sam', kind:'points', min:500,  max:799,   label:'500 à 799 pts (mixte)',  price:9,  pointage:'13h15', start:'13h30', limit:42, total:100, prizes:{ first:'30 € + lot 20 €', second:'20 €', third:'15 €' } },
+    { id:'I', day:'sam', kind:'points', min:800,  max:1799,  label:'800 à 1799 pts (mixte)', price:9,  pointage:'13h30', start:'13h45', limit:60, total:160, prizes:{ first:'60 € + lot 20 €', second:'40 €', third:'20 €' } },
+    { id:'J', day:'sam', kind:'jeunes', min:0,    max:1299,  label:'Benjamins-Minimes (nés en 2014-2015-2016-2017) 500 à 1299 pts (mixte)', price:9, pointage:'15h15', start:'15h30', limit:16, total:60, prizes:{ first:'lot 25 €', second:'lot 15 €', third:'lot 10 €' } },
     // DIMANCHE 18 AVRIL 2027
-    { id:'K', day:'dim', kind:'points', min:500,  max:899,   label:'500 à 899 pts',  price:9,  pointage:'8h15',  start:'8h30',  limit:42, total:100, prizes:{ first:'30 € + lot 20 €', second:'20 €', third:'15 €' } },
-    { id:'L', day:'dim', kind:'points', min:900,  max:1599,  label:'900 à 1599 pts', price:9,  pointage:'8h30',  start:'8h45',  limit:42, total:140, prizes:{ first:'50 € + lot 20 €', second:'30 €', third:'20 €' } },
-    { id:'M', day:'dim', kind:'points', min:0,    max:1999,  label:'500 à 1999 pts', title:'Trophée EIMI', price:9, pointage:'9h30', start:'9h45', limit:84, total:210, prizes:{ first:'80 € + lot 20 €', second:'50 €', third:'30 €' } },
-    { id:'N', day:'dim', kind:'points', min:500,  max:1399,  label:'500 à 1399 pts', price:9,  pointage:'10h30', start:'10h45', limit:42, total:110, incompatible:['O'], prizes:{ first:'40 € + lot 20 €', second:'20 €', third:'15 €' } },
-    { id:'O', day:'dim', kind:'points', min:500,  max:2499,  label:'500 à 2499 pts', title:'Trophée CUBE', price:11, pointage:'10h45', start:'11h00', limit:42, total:700, incompatible:['N'], prizes:{ first:'300 €', second:'200 €', third:'100 €' } },
-    { id:'P', day:'dim', kind:'points', min:500,  max:1099,  label:'500 à 1099 pts', price:9,  pointage:'11h45', start:'12h00', limit:42, total:110, prizes:{ first:'40 € + lot 20 €', second:'20 €', third:'15 €' } },
-    { id:'Q', day:'dim', kind:'points', min:1100, max:1799,  label:'1100 à 1799 pts',price:9,  pointage:'12h00', start:'12h15', limit:42, total:160, prizes:{ first:'60 € + lot 20 €', second:'40 €', third:'20 €' } },
-    { id:'R', day:'dim', kind:'open',   min:0,    max:99999, label:'Open Messieurs, toutes séries', title:'Trophée du Pays de Montbéliard Agglomération', price:11, pointage:'13h00', start:'13h15', limit:84, total:2800, prizes:{ first:'1000 €', second:'600 €', third:'300 €', fifth:'150 €' } },
-    { id:'S', day:'dim', kind:'dames',  min:0,    max:99999, label:'Open Dames, toutes séries', title:'Trophée du Département du Doubs', price:9, pointage:'14h45', start:'15h00', limit:24, total:440, prizes:{ first:'200 € + lot 40 €', second:'100 €', third:'50 €' } }
+    { id:'K', day:'dim', kind:'points', min:500,  max:899,   label:'500 à 899 pts (mixte)',  price:9,  pointage:'8h15',  start:'8h30',  limit:42, total:100, prizes:{ first:'30 € + lot 20 €', second:'20 €', third:'15 €' } },
+    { id:'L', day:'dim', kind:'points', min:900,  max:1599,  label:'900 à 1599 pts (mixte)', price:9,  pointage:'8h30',  start:'8h45',  limit:42, total:140, prizes:{ first:'50 € + lot 20 €', second:'30 €', third:'20 €' } },
+    { id:'M', day:'dim', kind:'points', min:0,    max:1999,  label:'500 à 1999 pts (mixte)', title:'Trophée EIMI', price:9, pointage:'9h30', start:'9h45', limit:84, total:210, prizes:{ first:'80 € + lot 20 €', second:'50 €', third:'30 €' } },
+    { id:'N', day:'dim', kind:'points', min:500,  max:1399,  label:'500 à 1399 pts (mixte)', price:9,  pointage:'10h30', start:'10h45', limit:42, total:110, incompatible:['O'], prizes:{ first:'40 € + lot 20 €', second:'20 €', third:'15 €' } },
+    { id:'O', day:'dim', kind:'points', min:500,  max:2499,  label:'500 à 2499 pts (mixte)', title:'Trophée CUBE', price:11, pointage:'10h45', start:'11h00', limit:42, total:700, incompatible:['N'], prizes:{ first:'300 €', second:'200 €', third:'100 €' } },
+    { id:'P', day:'dim', kind:'points', min:500,  max:1099,  label:'500 à 1099 pts (mixte)', price:9,  pointage:'11h45', start:'12h00', limit:42, total:110, prizes:{ first:'40 € + lot 20 €', second:'20 €', third:'15 €' } },
+    { id:'Q', day:'dim', kind:'points', min:1100, max:1799,  label:'1100 à 1799 pts (mixte)',price:9,  pointage:'12h00', start:'12h15', limit:42, total:160, prizes:{ first:'60 € + lot 20 €', second:'40 €', third:'20 €' } },
+    { id:'R', day:'dim', kind:'open',   min:0,    max:99999, label:'Open de Seloncourt (Toutes séries mixtes)', title:'Trophée du Pays de Montbéliard Agglomération', price:11, pointage:'13h00', start:'13h15', limit:84, total:2800, prizes:{ first:'1000 €', second:'600 €', third:'300 €', fifth:'150 €' } },
+    { id:'S', day:'dim', kind:'dames',  min:0,    max:99999, label:'Open Dames (Toutes séries dames)', title:'Trophée du Département du Doubs', price:9, pointage:'14h45', start:'15h00', limit:24, total:440, prizes:{ first:'200 € + lot 40 €', second:'100 €', third:'50 €' } }
   ];
   const MAX_PER_DAY = 3;
 
@@ -977,6 +989,10 @@
       if (DEMO) return demo.foreign(q);
       return fetchJSON(SITE.API_URL + '?action=foreign&' + new URLSearchParams(q).toString());
     },
+    resume(ref) {
+      if (DEMO) return Promise.resolve({ ok: false, error: 'Mode démo : ce lien n’est pas disponible.' });
+      return fetchJSON(SITE.API_URL + '?action=resume&ref=' + encodeURIComponent(ref));
+    },
     register(data) {
       if (DEMO) return demo.register(data);
       // text/plain évite la requête de pré-vérification CORS avec Apps Script
@@ -1046,7 +1062,7 @@
         opt = equivOptions(q.nation, mixte).find((o) => o.key === q.cl);
         if (!opt) return { ok: false, error: 'Classement inconnu pour ce pays.' };
       }
-      const player = { licence: q.nation + '-' + q.licence.toUpperCase(), nom: q.nom.toUpperCase(), prenom: q.prenom, club: '', sexe: q.sexe, cat: q.cat,
+      const player = { licence: q.nation + '-' + q.licence.toUpperCase(), nom: q.nom.toUpperCase(), prenom: q.prenom, club: q.club || '', sexe: q.sexe, cat: q.cat,
         points: opt.pts, foreign: true, nation: q.nation, classement: opt.label + (mx ? '' : ' (dames)'), verified };
       return { ok: true, player, eligible: TABLEAUX.filter((t) => isEligible(t, player)).map((t) => t.id), mine: emptyMine() };
     },
@@ -1155,7 +1171,9 @@
           '<div class="tl-letter" aria-label="Tableau ' + t.id + '">' + t.id + '</div>' +
           '<div><div class="tl-title">' + (t.title ? '<small>' + esc(t.title) + '</small>' : '') + esc(t.label) + '</div>' +
           '<div class="tl-meta">Pointage jusqu’à ' + esc(t.pointage) + ', dotation ' + fmtEUR(t.total) + '</div></div>' +
-          '<div class="tl-price"><b>' + fmtEUR(t.price) + '</b><span>par joueur</span></div>' +
+          (seatInfo(t, false).full
+          ? '<div class="tl-price"><b><s class="strike">' + fmtEUR(t.price) + '</s> <em class="free">Gratuit</em></b><span>liste complémentaire</span></div>'
+          : '<div class="tl-price"><b>' + fmtEUR(t.price) + '</b><span>par joueur</span></div>') +
           '<div class="prizes">' + prizesHTML(t) + '</div>' +
           seatsHTML(t, false, 'div') +
         '</div></li>';
@@ -1326,7 +1344,7 @@
    *  Joueurs sans licence FFTT
    * ═══════════════════════════════════════════════════════════════════════════ */
   const fEl = { nation: $('#f-nation'), sexe: $('#f-sexe'), licence: $('#f-licence'), nom: $('#f-nom'), prenom: $('#f-prenom'),
-    cl: $('#f-cl'), cat: $('#f-cat'), mixte: $('#f-mixte') };
+    cl: $('#f-cl'), cat: $('#f-cat'), mixte: $('#f-mixte'), club: $('#f-club') };
   fEl.nation.insertAdjacentHTML('beforeend', NATIONS.map((n) => '<option value="' + n.c + '">' + FLAG[n.c] + ' ' + n.n + '</option>').join('') +
     '<option value="OTHER">Autre pays</option>');
 
@@ -1356,7 +1374,7 @@
     $('#box-fr').hidden = m !== 'fr'; $('#box-foreign').hidden = m !== 'foreign';
     $('#step1-title').textContent = m === 'fr' ? 'Votre licence FFTT' : 'Joueur sans licence FFTT';
     resetPlayer(); setVerify('', '');
-    ['licence', 'fnation', 'fsexe', 'flicence', 'fnom', 'fprenom', 'fcl', 'fverify'].forEach((n) => setFieldError(n, ''));
+    ['licence', 'fnation', 'fsexe', 'flicence', 'fnom', 'fprenom', 'fclub', 'fcl', 'fverify'].forEach((n) => setFieldError(n, ''));
     if (m === 'foreign') refreshCl();
   }
   $('#mode-fr').addEventListener('click', () => setMode('fr'));
@@ -1364,14 +1382,15 @@
 
   async function verifyForeign() {
     const v = { nation: fEl.nation.value, sexe: fEl.sexe.value, licence: fEl.licence.value.trim(), nom: fEl.nom.value.trim(),
-      prenom: fEl.prenom.value.trim(), cat: fEl.cat.value };
-    ['fnation', 'fsexe', 'flicence', 'fnom', 'fprenom', 'fcl', 'fverify'].forEach((n) => setFieldError(n, ''));
+      prenom: fEl.prenom.value.trim(), cat: fEl.cat.value, club: fEl.club.value.trim().replace(/\s+/g, ' ') };
+    ['fnation', 'fsexe', 'flicence', 'fnom', 'fprenom', 'fclub', 'fcl', 'fverify'].forEach((n) => setFieldError(n, ''));
     let ok = true;
     if (!v.nation) { setFieldError('fnation', 'Choisissez votre nationalité.'); ok = false; }
     if (!v.sexe) { setFieldError('fsexe', 'Indiquez votre sexe.'); ok = false; }
     if (!/^[A-Za-z0-9][A-Za-z0-9 \-\/.]{1,19}$/.test(v.licence)) { setFieldError('flicence', 'Saisissez votre numéro de licence (lettres et chiffres).'); ok = false; }
     if (v.nom.length < 2) { setFieldError('fnom', 'Saisissez votre nom.'); ok = false; }
     if (v.prenom.length < 2) { setFieldError('fprenom', 'Saisissez votre prénom.'); ok = false; }
+    if (v.club.length < 2) { setFieldError('fclub', 'Indiquez le nom de votre club.'); ok = false; }
     if (v.nation === 'OTHER') {
       setVerify('ko', 'Votre pays ne figure pas dans le tableau d’équivalence : contactez le club (06 07 70 27 49 ou ttseloncourt25@gmail.com) pour vous inscrire.');
       return false;
@@ -1383,7 +1402,7 @@
     resetPlayer();
     const btn = $('#btn-verify-foreign'); btn.disabled = true; btn.textContent = 'Vérification…';
     setVerify('wait', v.nation === 'BEL' ? 'Recherche de votre classement sur le site de l’AFTT…' : 'Calcul de votre classement équivalent…');
-    const q = { nation: v.nation, licence: v.licence, nom: v.nom, prenom: v.prenom, sexe: v.sexe, mixte: useMixte() ? '1' : '0', cl: needCl ? fEl.cl.value : '', cat: v.cat };
+    const q = { nation: v.nation, licence: v.licence, nom: v.nom, prenom: v.prenom, sexe: v.sexe, mixte: useMixte() ? '1' : '0', cl: needCl ? fEl.cl.value : '', cat: v.cat, club: v.club };
     const res = await api.foreign(q);
     btn.disabled = false; btn.textContent = 'Valider mon classement';
     if (!res.ok && res.needClassement) {
@@ -1393,7 +1412,7 @@
     }
     if (!res.ok) { setVerify('ko', esc(res.error || 'Vérification impossible.')); return false; }
 
-    state.fin = { nation: q.nation, licence: q.licence, nom: q.nom, prenom: q.prenom, sexe: q.sexe, mixte: q.mixte === '1', cl: q.cl, cat: q.cat };
+    state.fin = { nation: q.nation, licence: q.licence, nom: q.nom, prenom: q.prenom, sexe: q.sexe, mixte: q.mixte === '1', cl: q.cl, cat: q.cat, club: q.club };
     const pl = res.player;
     state.player = pl; state.eligible = res.eligible; state.mine = Object.assign(emptyMine(), res.mine || {});
     setVerify('ok', (pl.verified
@@ -1410,7 +1429,7 @@
   $('#btn-verify-foreign').addEventListener('click', verifyForeign);
 
   // Toute modification des informations annule la vérification
-  [fEl.nation, fEl.sexe, fEl.licence, fEl.nom, fEl.prenom, fEl.cl, fEl.cat, fEl.mixte].forEach((el) => el.addEventListener('input', () => {
+  [fEl.nation, fEl.sexe, fEl.licence, fEl.nom, fEl.prenom, fEl.club, fEl.cl, fEl.cat, fEl.mixte].forEach((el) => el.addEventListener('input', () => {
     if (el === fEl.nation) state.needCl = false;
     if (state.player) { resetPlayer(); setVerify('', ''); }
     if (el === fEl.nation || el === fEl.sexe || el === fEl.mixte) refreshCl();
@@ -1443,7 +1462,7 @@
       '<tr><th scope="row">' + t.id + '</th><td>' + esc(t.title ? t.title + ', ' : '') + esc(t.label) + '</td><td>' + esc(t.start) + '</td><td>' + fmtEUR(t.price) + '</td></tr>').join('');
     const tbl = (d) => '<h3 class="eq-title">' + DAYS[d] + '</h3><div class="eq-wrap"><table class="eq-table"><thead><tr><th>Tableau</th><th>Séries (points FFTT)</th><th>Début</th><th>Prix</th></tr></thead><tbody>' + rows(d) + '</tbody></table></div>';
     dialog({ icon: null, title: 'Tableaux du tournoi', wide: true, action: { label: 'Fermer', fn: closeDialog },
-      html: '<p style="color:var(--muted);margin-top:8px">Les tableaux proposés dépendent de vos points FFTT équivalents. Le tableau S est réservé aux dames, le tableau J aux Benjamins et Minimes.</p>' + tbl('sam') + tbl('dim') });
+      html: '<p style="color:var(--muted);margin-top:8px">Les tableaux proposés dépendent de vos points FFTT équivalents. Le tableau S est réservé aux dames, le tableau J aux Benjamins et Minimes (enfants nés en 2014-2015-2016-2017).</p>' + tbl('sam') + tbl('dim') });
   }
   $('#btn-eq').addEventListener('click', openEquivDialog);
   $('#btn-tabs').addEventListener('click', openTabsDialog);
@@ -1475,6 +1494,8 @@
     });
   }
 
+  const freeHTML = (t) => '<s class="strike">' + fmtEUR(t.price) + '</s><em class="free">Gratuit</em>';
+
   function renderPicks() {
     renderMeals();
     ['sam', 'dim'].forEach((d) => {
@@ -1495,9 +1516,9 @@
         const base = (t.title ? esc(t.label) + ', ' : '') + 'début ' + esc(t.start);
         let tag = '', sub = base, price = fmtEUR(t.price);
         if (registered) tag = 'Déjà inscrit(e)';
-        else if (waiting) { tag = 'En liste complémentaire'; price = 'Gratuit'; }
+        else if (waiting) { tag = 'En liste complémentaire'; price = freeHTML(t); }
         else if (reserved) tag = 'Place réservée pour vous';
-        else if (full) { tag = 'Complet : liste complémentaire gratuite'; price = 'Gratuit'; }
+        else if (full) { tag = 'Complet : liste complémentaire gratuite'; price = freeHTML(t); }
         else if (clash && !checked) sub = 'Incompatible avec le tableau ' + clash;
         const seats = (registered || waiting || reserved) ? '' : seatsHTML(t, reserved, 'span');
         return '<label class="pick' + (locked ? ' locked' : '') + (full ? ' wl' : '') + '"><input type="checkbox" value="' + t.id + '"' + (checked ? ' checked' : '') + (disabled ? ' disabled' : '') + '>' +
@@ -1727,6 +1748,44 @@
   /* ═══════════════════════════════════════════════════════════════════════════
    *  Chargement initial
    * ═══════════════════════════════════════════════════════════════════════════ */
+  /** Lien reçu par SMS / e-mail (?place=REF) : ouvre l'inscription avec les informations du joueur déjà remplies. */
+  async function handleResume() {
+    const ref = (new URLSearchParams(location.search).get('place') || '').trim().toUpperCase();
+    if (!ref) return;
+    history.replaceState(null, '', location.pathname + '#inscription');
+    openTab('inscription');
+    dialog({ icon: '', cls: 'spin', title: 'Chargement de votre place', html: '<p>Nous retrouvons votre réservation…</p>' });
+    const res = await api.resume(ref);
+    if (!res || !res.ok) {
+      dialog({ icon: '!', cls: 'warn', title: 'Lien non valable', html: '<p>' + esc((res && res.error) || 'Ce lien n’est plus valable.') + ' Contactez le club au 06 07 70 27 49 si besoin.</p>', action: { label: 'Fermer', fn: closeDialog } });
+      return;
+    }
+    F.email.value = res.email || ''; F.tel.value = res.telephone || '';
+    const f = res.foreign;
+    let ok;
+    if (f) {
+      setMode('foreign');
+      fEl.nation.value = f.nation || ''; fEl.sexe.value = f.sexe || ''; fEl.licence.value = f.licence || '';
+      fEl.nom.value = f.nom || ''; fEl.prenom.value = f.prenom || ''; fEl.club.value = f.club || ''; fEl.cat.value = f.cat || '';
+      fEl.mixte.checked = f.mixte !== false;
+      refreshCl();
+      if (f.cl) fEl.cl.value = f.cl;
+      ok = await verifyForeign();
+    } else {
+      setMode('fr');
+      F.licence.value = res.licence || '';
+      ok = await verifyLicence();
+    }
+    if (ok && state.eligible.includes(res.tab) && !state.mine.registered.includes(res.tab)) { state.selected.add(res.tab); renderPicks(); updateRecap(); }
+    const t = byId(res.tab);
+    const go = () => { closeDialog(); $('#inscription').scrollIntoView({ block: 'start', behavior: reduceMotion ? 'auto' : 'smooth' }); };
+    dialog({ icon: ok ? '✓' : '!', cls: ok ? '' : 'warn', title: 'Une place vous est réservée',
+      html: '<p>Tableau ' + esc(res.tab) + (t ? ' (' + DAYS[t.day].toLowerCase() + ', début à ' + esc(t.start) + ')' : '') + '. ' +
+        (ok ? 'Vos informations sont déjà remplies : vérifiez-les, acceptez le règlement puis cliquez sur « Valider et payer sur HelloAsso ».'
+            : 'Vérifiez les informations, complétez-les si besoin, puis sélectionnez le tableau et validez votre inscription.') + '</p>',
+      action: { label: 'Continuer mon inscription', fn: go } });
+  }
+
   async function refreshList() {
     const res = await api.list();
     if (res && res.ok) {
@@ -1744,7 +1803,7 @@
   function init() {
     if (DEMO) $('#demo-banner').hidden = false;
     renderTimeline(); renderChips(); renderList(); updateRecap();
-    refreshList();
+    refreshList().then(handleResume);
     if (location.hash === '#inscrits') openTab('inscrits');
     handleReturn();
     // Page laissée ouverte : places et réservations restent à jour
