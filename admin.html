@@ -114,7 +114,7 @@
   <script>
   'use strict';
   // Même adresse que dans index.html (URL de déploiement Apps Script, qui se termine par /exec)
-  const API_URL = 'https://script.google.com/macros/s/AKfycbwHh25D35VIegpqMvtUtx-utAConeT8U3cz-ZH99ykDHJ5QL0XhCAyn-LDOoLy5_2Y/exec';
+  const API_URL = '';
 
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -142,7 +142,7 @@
     $('#stats').innerHTML = [
       [st.joueurs, 'joueurs payés'], [fmtEUR(st.inscriptions), 'inscriptions (tableaux)'],
       [st.repasSam, 'repas samedi', 'sam'], [st.repasDim, 'repas dimanche', 'dim'],
-      [fmtEUR(st.buvette), 'cartes buvette'], [fmtEUR(st.dons), 'dons']
+      [fmtEUR(st.buvette), 'cartes buvette'], [fmtEUR(st.dons), 'dons'], [st.aValider || 0, 'inscriptions étrangères à valider']
     ].map((x) => '<div class="stat ' + (x[2] || '') + '"><b>' + esc(x[0]) + '</b><span>' + x[1] + '</span></div>').join('');
 
     let lastDay = '';

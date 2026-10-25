@@ -235,21 +235,45 @@
     .step-num { width: 30px; height: 30px; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--cyan); color: #00262b; font-weight: 900; font-size: .9rem; }
     .step.locked { opacity: .45; pointer-events: none; }
     .step-hint { color: var(--muted); font-size: .92rem; margin-top: 8px; }
+    .field[hidden], .fields[hidden] { display: none; }
+    .field select { font: inherit; appearance: auto; }
+    select option { background: #0b1030; color: #eaeeff; }
+    /* Joueurs sans licence FFTT */
+    .mode-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .mode-tabs button { cursor: pointer; font: inherit; font-weight: 700; font-size: .92rem; color: var(--text); background: transparent; border: 1px solid var(--line); border-radius: 999px; padding: 10px 18px; transition: background .2s, border-color .2s; }
+    .mode-tabs button:hover { background: rgba(255, 255, 255, .06); }
+    .mode-tabs button[aria-selected="true"] { background: var(--cyan); border-color: var(--cyan); color: #00262b; }
+    .foreign-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+    .foreign-links .btn { padding: 10px 18px; font-size: .88rem; }
+    .foreign-actions { margin-top: 18px; }
+    dialog.wide { width: min(1040px, calc(100% - 24px)); }
+    .dlg-wide { text-align: left; padding: 28px 22px 24px; }
+    .dlg-wide h2 { font-size: 1.3rem; }
+    .eq-title { margin: 18px 0 8px; font-size: 1rem; color: var(--cyan); }
+    .eq-wrap { overflow: auto; max-height: 52vh; border: 1px solid var(--line); border-radius: 12px; }
+    .eq-table { border-collapse: collapse; width: 100%; font-size: .8rem; }
+    .eq-table th, .eq-table td { padding: 6px 10px; border-bottom: 1px solid var(--line-soft); white-space: nowrap; text-align: left; }
+    .eq-table thead th { position: sticky; top: 0; background: #0b1030; color: var(--muted); z-index: 1; }
+    .eq-table tbody th { color: var(--cyan); font-variant-numeric: tabular-nums; position: sticky; left: 0; background: #0b1030; }
+    .eq-select { margin-top: 12px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .eq-select select { font: inherit; color: var(--text); padding: 9px 12px; border-radius: 10px; background: rgba(4, 8, 30, .8); border: 1px solid var(--line); }
+    .nat { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 999px; font-size: .72rem; font-weight: 700; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+    .reg td.pts small.eq { display: block; font-family: var(--font); font-weight: 600; font-size: .68rem; color: var(--muted); }
 
     .fields { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 20px; }
     @media (max-width: 620px) { .fields { grid-template-columns: 1fr; } }
     .field { display: flex; flex-direction: column; gap: 6px; }
     .field.full { grid-column: 1 / -1; }
     .field label { font-weight: 700; font-size: .9rem; }
-    .field input {
+    .field input, .field select {
       width: 100%; padding: 13px 15px; border-radius: 12px;
       background: rgba(4, 8, 30, .8); border: 1px solid var(--line); color: var(--text);
       transition: border-color .2s, box-shadow .2s;
     }
     .field input::placeholder { color: #5c6aa8; }
-    .field input:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(34, 240, 255, .2); }
+    .field input:focus, .field select:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(34, 240, 255, .2); }
     .field input[readonly] { background: rgba(34, 240, 255, .06); border-style: dashed; color: var(--cyan); font-weight: 700; cursor: not-allowed; }
-    .field.invalid input { border-color: var(--bad); }
+    .field.invalid input, .field.invalid select { border-color: var(--bad); }
     .field-error { color: var(--bad); font-size: .84rem; min-height: 1.1em; }
     .field-help { color: var(--muted); font-size: .82rem; }
     .licence-row { display: flex; gap: 10px; }
@@ -598,7 +622,12 @@
             <div>
               <!-- Étape 1 : licence -->
               <div class="step" id="step-player">
-                <h3><span class="step-num">1</span>Votre licence FFTT</h3>
+                <h3><span class="step-num">1</span><span id="step1-title">Votre licence FFTT</span></h3>
+                <div class="mode-tabs" role="tablist" aria-label="Type de licence">
+                  <button type="button" role="tab" id="mode-fr" aria-selected="true">J’ai une licence FFTT</button>
+                  <button type="button" role="tab" id="mode-foreign" aria-selected="false">Je n’ai pas de licence FFTT (joueur étranger)</button>
+                </div>
+                <div id="box-fr">
                 <p class="step-hint">Saisissez votre numéro de licence : votre nom, votre prénom et vos points sont récupérés et vérifiés auprès de la FFTT.</p>
 
                 <div class="fields">
@@ -625,6 +654,64 @@
                   <div class="field" data-field="club">
                     <label for="club">Club</label>
                     <input id="club" name="club" readonly placeholder="Rempli après vérification" tabindex="-1">
+                  </div>
+                </div>
+                </div>
+
+                <!-- Joueur sans licence FFTT -->
+                <div id="box-foreign" hidden>
+                  <p class="step-hint">Vous n’avez pas de licence FFTT (licence belge, néerlandaise, luxembourgeoise…) ? Indiquez votre nationalité et votre classement : nous calculons l’équivalent en points FFTT, qui détermine les tableaux accessibles. Pour un joueur belge, le classement est vérifié automatiquement sur le site de l’AFTT lorsque c’est possible ; sinon, les organisateurs valident votre inscription après le paiement et vous préviennent par e-mail.</p>
+                  <div class="foreign-links">
+                    <button type="button" class="btn btn-ghost" id="btn-eq">Tableau d’équivalence des classements</button>
+                    <button type="button" class="btn btn-ghost" id="btn-tabs">Tableaux du tournoi</button>
+                  </div>
+                  <div class="fields">
+                    <div class="field" data-field="fnation">
+                      <label for="f-nation">Nationalité</label>
+                      <select id="f-nation"><option value="">Choisir…</option></select>
+                      <span class="field-error" aria-live="polite"></span>
+                    </div>
+                    <div class="field" data-field="fsexe">
+                      <label for="f-sexe">Sexe</label>
+                      <select id="f-sexe"><option value="">Choisir…</option><option value="M">Homme</option><option value="F">Femme</option></select>
+                      <span class="field-error" aria-live="polite"></span>
+                    </div>
+                    <div class="field full" data-field="flicence">
+                      <label for="f-licence">Numéro de licence</label>
+                      <input id="f-licence" autocomplete="off" maxlength="20" placeholder="Numéro de licence de votre fédération">
+                      <span class="field-error" aria-live="polite"></span>
+                    </div>
+                    <div class="field" data-field="fnom">
+                      <label for="f-nom">Nom</label>
+                      <input id="f-nom" autocomplete="family-name" maxlength="50">
+                      <span class="field-error" aria-live="polite"></span>
+                    </div>
+                    <div class="field" data-field="fprenom">
+                      <label for="f-prenom">Prénom</label>
+                      <input id="f-prenom" autocomplete="given-name" maxlength="50">
+                      <span class="field-error" aria-live="polite"></span>
+                    </div>
+                    <div class="field full" data-field="fmixte" hidden>
+                      <label class="check">
+                        <input type="checkbox" id="f-mixte" checked>
+                        <span>J’ai un classement mixte (messieurs), utilisé en priorité. Décochez-la si vous n’avez qu’un classement dames.</span>
+                      </label>
+                    </div>
+                    <div class="field full" data-field="fcl" hidden>
+                      <label for="f-cl">Votre classement dans votre fédération</label>
+                      <select id="f-cl"></select>
+                      <span class="field-help" id="f-cl-help">Voir le tableau d’équivalence ci-dessus si vous hésitez.</span>
+                      <span class="field-error" aria-live="polite"></span>
+                    </div>
+                    <div class="field full" data-field="fcat">
+                      <label for="f-cat">Catégorie d’âge <span class="opt">utile pour le tableau J</span></label>
+                      <select id="f-cat"><option value="">Senior ou autre catégorie</option><option value="B">Benjamin</option><option value="M">Minime</option></select>
+                      <span class="field-help">Le tableau J est réservé aux Benjamins et Minimes ; il est contrôlé par les organisateurs.</span>
+                    </div>
+                  </div>
+                  <div class="foreign-actions" data-field="fverify">
+                    <button type="button" class="btn" id="btn-verify-foreign">Valider mon classement</button>
+                    <span class="field-error" aria-live="polite"></span>
                   </div>
                 </div>
                 <div class="verify" id="verify" role="status" aria-live="polite"></div>
@@ -788,7 +875,7 @@
   const SITE = {
     // URL de déploiement Google Apps Script (se termine par /exec).
     // Laissez vide pour tester la page en « mode démo » (données fictives).
-    API_URL: 'https://script.google.com/macros/s/AKfycbwHh25D35VIegpqMvtUtx-utAConeT8U3cz-ZH99ykDHJ5QL0XhCAyn-LDOoLy5_2Y/exec',
+    API_URL: '',
     // Début du premier tableau (compte à rebours)
     TARGET: '2027-04-17T08:30:00+02:00',
     // Fin des inscriptions (le serveur reste maître de cette date)
@@ -831,6 +918,22 @@
     return pts >= t.min && pts <= t.max;
   }
 
+  /* ── Joueurs sans licence FFTT : tableau d'équivalence (VERGELIJKINGSTABEL 2021-2022) ──
+   * men = classement mixte (messieurs), dames = classement dames ; p = points FFTT équivalents, c = classement par pays */
+  const NATIONS = [
+    { c: 'BEL', n: 'Belgique' }, { c: 'NED', n: 'Pays-Bas' }, { c: 'LUX', n: 'Luxembourg' }, { c: 'ENG', n: 'Angleterre' },
+    { c: 'GER', n: 'Allemagne' }, { c: 'SUI', n: 'Suisse' }, { c: 'ITA', n: 'Italie' }, { c: 'POL', n: 'Pologne' },
+    { c: 'AUT', n: 'Autriche' }, { c: 'ESP', n: 'Espagne' }, { c: 'HUN', n: 'Hongrie' }, { c: 'EST', n: 'Estonie' },
+    { c: 'ICE', n: 'Islande' }, { c: 'SWE', n: 'Suède' }
+  ];
+  const EQUIV = {"men":[{"p":3400,"c":{"BEL":"A","NED":">2500","LUX":"A1","ENG":">2700","GER":"1. Bundesliga","SUI":"A20","ITA":"1 Cat","POL":"Ekstraklasa","AUT":"Staatsliga","ESP":"Super Div.","HUN":"Super League","EST":"001-010","ICE":">2500","SWE":"Pingisligen"}},{"p":2950,"c":{"NED":">2400","GER":"2. Bundesliga","SUI":"A19","POL":"001 - 025"}},{"p":2725,"c":{"NED":">2300","GER":"3. Bundesliga","POL":"026 - 050"}},{"p":2600,"c":{"NED":">2250","GER":"Regionalliga"}},{"p":2375,"c":{"BEL":"B0","NED":"2101-2250","LUX":"A2","ENG":"2700-1951","GER":"Oberliga","SUI":"A18-17","ITA":"2 Cat","POL":"I-Liga 051-150","AUT":"Landesliga","ESP":"Honor Div.","HUN":"I. Div western group","EST":"011-025","ICE":"<2500","SWE":"Superetten"}},{"p":2125,"c":{"BEL":"B2","NED":"1951-2100","ENG":"1950-1601","GER":"Verbandsliga","SUI":"A16","ITA":"3 Cat","POL":"II-Liga 151-300","HUN":"I. Div. middle group","EST":"026-040"}},{"p":1800,"c":{"BEL":"B4","NED":"1851-1950","LUX":"A3","ENG":"1600-1501","GER":"Landesliga","SUI":"B15-14","HUN":"I. Div. eastern group","EST":"041-055","ICE":"<2250","SWE":"Div. 1"}},{"p":1650,"c":{"BEL":"B6","NED":"1751-1850","LUX":"B1","ENG":"1500-1401","GER":"Bezirksliga","SUI":"B13-12","POL":"III-Liga","EST":"056-070","SWE":"Div. 2"}},{"p":1550,"c":{"BEL":"C0","NED":"1701-1750","LUX":"B2","ENG":"1400-1301","GER":"Bezirksklasse","SUI":"B11-C10","ITA":"4 Cat","POL":"IV-Liga","AUT":"1 Klasse","ESP":"1° Div.","HUN":"2. Div western group","EST":"071-085","ICE":"<1900"}},{"p":1450,"c":{"BEL":"C2","NED":"1601-1700","ENG":"1300-1201","GER":"Kreisliga","SUI":"C9-C8","HUN":"2. Div. middle group","EST":"086-100","SWE":"Div.3"}},{"p":1350,"c":{"BEL":"C4","NED":"1501-1600","LUX":"B3","ENG":"1200-1101","GER":"1. Kreisklasse","SUI":"C7-C6","POL":"IV-Liga","AUT":"2 Klasse","HUN":"2. Div. eastern group","EST":"101-120","ICE":"<1700"}},{"p":1250,"c":{"BEL":"C6","NED":"1401-1500","LUX":"C1","ENG":"1100-1051","SUI":"D5","EST":"121-150"}},{"p":1150,"c":{"BEL":"D0","NED":"1301-1400","LUX":"C2","ENG":"1050-0901","GER":"2. Kreisklasse","SUI":"D4","ITA":"5 Cat","POL":"V-Liga","AUT":"3 Klasse","ESP":"2° Div.","HUN":"3. Div.","EST":"151-175","ICE":"<1600"}},{"p":1050,"c":{"BEL":"D2","NED":"1201-1300","ENG":"0900-0751","SUI":"D3","HUN":"Regional Leagues","EST":"176-200"}},{"p":975,"c":{"BEL":"D4","NED":"1101-1200","LUX":"C3","ENG":"0750-0601","GER":"3. Kreisklasse","SUI":"D2","AUT":"4 Klasse","EST":"201-225","ICE":"<1500"}},{"p":925,"c":{"BEL":"D6","NED":"1001-1100","ENG":"0600-0451","EST":"226-250"}},{"p":875,"c":{"BEL":"E0","NED":"851-1000","LUX":"D1","ENG":"0450-0251","SUI":"D1","AUT":"Anfänger","ESP":"3° Div.","EST":"251-300","ICE":"<1400"}},{"p":825,"c":{"BEL":"E2","NED":"701-850","LUX":"D2","ENG":"0250-0101","ESP":"Autonomica","EST":"301-350"}},{"p":775,"c":{"BEL":"E4","NED":"350-700","ENG":"< 100","EST":"351-400"}},{"p":625,"c":{"BEL":"E6","NED":"<350","LUX":"D3","EST":"401-550"}},{"p":500,"c":{"BEL":"NC"}}],"dames":[{"p":2200,"c":{"BEL":"A","NED":">2300","LUX":"A1","ENG":">2550","GER":"1. Bundesliga","SUI":"A20-19","ITA":"1 Cat","POL":"Ekstraklasa","AUT":"Staatsliga","ESP":"Super Div.","HUN":"Super League","EST":"001-010","ICE":">2000","SWE":"Pingisligen"}},{"p":2075,"c":{"NED":">2100","LUX":"A2","GER":"2. Bundesliga"}},{"p":1925,"c":{"NED":">1900","LUX":"A3","GER":"3. Bundesliga","SWE":"Superetten"}},{"p":1775,"c":{"NED":">1860","GER":"Regionalliga"}},{"p":1625,"c":{"BEL":"B0","NED":"1750-1860","LUX":"B1","ENG":"2550-1701","GER":"Oberliga","SUI":"A18","ITA":"2 Cat","POL":"I-Liga","AUT":"Landesliga","ESP":"Honor Div.","HUN":"I. Div western group","EST":"011-020","ICE":"<2000","SWE":"Div.1"}},{"p":1475,"c":{"BEL":"B2","NED":"1600-1750","LUX":"B2","ENG":"1700-1651","GER":"Verbandsliga","SUI":"A17-16","HUN":"I. Div eastern group","EST":"021-030"}},{"p":1335,"c":{"BEL":"B4","NED":"1500-1600","LUX":"B3","ENG":"1650-1601","GER":"Landesliga","SUI":"B15","POL":"II-Liga","EST":"031-040","ICE":"<1750","SWE":"Div.2."}},{"p":1205,"c":{"BEL":"B6","NED":"1400-1500","ENG":"1600-1501","GER":"Bezirksliga","SUI":"B14"}},{"p":1085,"c":{"BEL":"C0","NED":"1300-1400","LUX":"C1","ENG":"1500-1401","GER":"Bezirksklasse","SUI":"B13-12","POL":"III-Liga","ESP":"1° Div.","HUN":"2. Div western group","EST":"041-050","ICE":"<1500"}},{"p":975,"c":{"BEL":"C2","NED":"1200-1300","LUX":"C2","ENG":"1400-1301","GER":"Kreisliga","SUI":"B11-C10","HUN":"2. Div eastern group","EST":"051-060"}},{"p":875,"c":{"BEL":"C4","NED":"1100-1200","ENG":"1300-1201","GER":"Kreisklasse","SUI":"C9","EST":"061-070"}},{"p":785,"c":{"BEL":"C6","NED":"1000-1100","LUX":"C3","ENG":"1200-1101","SUI":"C8-7","EST":"071-080"}},{"p":705,"c":{"BEL":"D0","NED":"850-1000","LUX":"D1","ENG":"1100-1051","SUI":"C6-D5-D4","ESP":"2° Div.","EST":"081-100","ICE":"<1400"}},{"p":635,"c":{"BEL":"D2","NED":"700-850","LUX":"D2","ENG":"1150-1001","SUI":"D3-D2","ESP":"Autonomica"}},{"p":575,"c":{"BEL":"D4","NED":"350-700","LUX":"D3","ENG":"1000-601","SUI":"D1","EST":"101-130"}},{"p":525,"c":{"BEL":"D6","NED":"<350","ENG":"<600"}}]};
+  const FLAG = { BEL: '🇧🇪', NED: '🇳🇱', LUX: '🇱🇺', ENG: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', GER: '🇩🇪', SUI: '🇨🇭',
+    ITA: '🇮🇹', POL: '🇵🇱', AUT: '🇦🇹', ESP: '🇪🇸', HUN: '🇭🇺', EST: '🇪🇪',
+    ICE: '🇮🇸', SWE: '🇸🇪' };
+  const natName = (c) => (NATIONS.find((n) => n.c === c) || {}).n || c;
+  const equivOptions = (nation, mixte) => (mixte ? EQUIV.men : EQUIV.dames).filter((r) => r.c[nation])
+    .map((r) => ({ key: r.c[nation] + '|' + r.p, label: r.c[nation], pts: r.p }));
+
   const DAYS = { sam: 'Samedi 17 avril', dim: 'Dimanche 18 avril' };
   const DEMO = !SITE.API_URL;
 
@@ -869,6 +972,10 @@
     player(licence) {
       if (DEMO) return demo.player(licence);
       return fetchJSON(SITE.API_URL + '?action=player&licence=' + encodeURIComponent(licence));
+    },
+    foreign(q) {
+      if (DEMO) return demo.foreign(q);
+      return fetchJSON(SITE.API_URL + '?action=foreign&' + new URLSearchParams(q).toString());
     },
     register(data) {
       if (DEMO) return demo.register(data);
@@ -927,6 +1034,22 @@
       const m = this.mine[licence] || { registered: [], pending: [], waiting: [], reserved: [], meals: { sam: false, dim: false } };
       return { ok: true, player: p, eligible: TABLEAUX.filter((t) => isEligible(t, p)).map((t) => t.id), mine: JSON.parse(JSON.stringify(m)) };
     },
+    async foreign(q) {
+      await new Promise((r) => setTimeout(r, 450));
+      const mixte = q.sexe !== 'F' || q.mixte === '1';
+      let opt = null, verified = false, mx = mixte;
+      if (q.nation === 'BEL' && q.licence === '1234567') {   // démo : « joueur belge vérifié sur l'AFTT »
+        const row = EQUIV.men.find((r) => r.c.BEL === 'C4'); opt = { label: 'C4', pts: row.p }; verified = true; mx = true;
+      }
+      if (!opt) {
+        if (!q.cl) return { ok: false, needClassement: true, error: 'Indiquez votre classement.' };
+        opt = equivOptions(q.nation, mixte).find((o) => o.key === q.cl);
+        if (!opt) return { ok: false, error: 'Classement inconnu pour ce pays.' };
+      }
+      const player = { licence: q.nation + '-' + q.licence.toUpperCase(), nom: q.nom.toUpperCase(), prenom: q.prenom, club: '', sexe: q.sexe, cat: q.cat,
+        points: opt.pts, foreign: true, nation: q.nation, classement: opt.label + (mx ? '' : ' (dames)'), verified };
+      return { ok: true, player, eligible: TABLEAUX.filter((t) => isEligible(t, player)).map((t) => t.id), mine: emptyMine() };
+    },
     async register(data) {
       await new Promise((r) => setTimeout(r, 700));
       const sel = data.tableaux.map(byId);
@@ -938,7 +1061,7 @@
       this.last = { prenom: data.prenom, nom: data.nom, montant, don: data.don, repasMontant: nMeals * 12, buvette: data.buvette, total,
         sam: sel.filter((t) => t.day === 'sam').map((t) => t.id), dim: sel.filter((t) => t.day === 'dim').map((t) => t.id) };
       const hasPayment = sel.length || nMeals || data.buvette;
-      return { ok: true, ref: hasPayment ? 'DEMO' : null, amount: montant, mealsAmount: nMeals * 12, buvette: data.buvette, don: data.don, total, tableaux: data.tableaux, attente, paymentUrl: '' };
+      return { ok: true, ref: hasPayment ? 'DEMO' : null, amount: montant, mealsAmount: nMeals * 12, buvette: data.buvette, don: data.don, total, tableaux: data.tableaux, attente, paymentUrl: '', toValidate: !!(data.foreign && data.foreign.cl) };
     }
   };
 
@@ -980,6 +1103,7 @@
     mine: { registered: [], pending: [], waiting: [], reserved: [], meals: { sam: false, dim: false } },   // ce que le joueur vérifié a déjà
     don: 0,
     buvette: 0,
+    mode: 'fr', fin: null, needCl: false,
     meals: { sam: false, dim: false },
     player: null,         // joueur vérifié
     eligible: [],         // ids des tableaux accessibles
@@ -1098,8 +1222,9 @@
     $$('.reg thead th[data-sort]').forEach((th) => th.setAttribute('aria-sort', th.dataset.sort === key ? (dir === 'asc' ? 'ascending' : 'descending') : 'none'));
 
     $('#reg-body').innerHTML = rows.map((r, i) =>
-      '<tr><td class="rank num">' + (i + 1) + '</td><td class="nm">' + esc(r.nom) + '</td><td>' + esc(r.prenom) + '</td>' +
-      '<td class="num pts">' + r.points + '</td><td class="hide-sm"><div class="badges">' +
+      '<tr><td class="rank num">' + (i + 1) + '</td><td class="nm">' + esc(r.nom) + '</td><td>' + esc(r.prenom) +
+      (r.nation ? '<span class="nat" title="' + esc(natName(r.nation)) + '">' + (FLAG[r.nation] || '') + ' ' + esc(r.nation) + '</span>' : '') + '</td>' +
+      '<td class="num pts">' + r.points + (r.nation ? '<small class="eq" title="Points FFTT équivalents au classement ' + esc(r.classement || '') + '">éq. ' + esc(r.classement || '') + '</small>' : '') + '</td><td class="hide-sm"><div class="badges">' +
       r.tableaux.slice().sort().map((id) => '<span class="badge ' + byId(id).day + (id === state.filter ? ' on' : '') + '" title="Tableau ' + id + '">' + id + '</span>').join('') +
       '</div></td></tr>').join('');
 
@@ -1117,7 +1242,7 @@
         (((state.list.waiting || {})[t.id]) ? '<span>' + state.list.waiting[t.id] + ' en liste complémentaire</span>' : '');
     } else info.classList.remove('show');
 
-    $('#list-foot').textContent = rows.length + (rows.length > 1 ? ' joueurs affichés' : ' joueur affiché') + '. Seules les inscriptions payées apparaissent dans la liste.';
+    $('#list-foot').textContent = rows.length + (rows.length > 1 ? ' joueurs affichés' : ' joueur affiché') + '. Seules les inscriptions payées apparaissent dans la liste. Pour les joueurs étrangers, les points sont l’équivalent FFTT de leur classement.';
     const pill = $('#count-pill'); pill.hidden = state.list.registrants.length === 0; pill.textContent = state.list.registrants.length;
   }
 
@@ -1156,6 +1281,7 @@
     if (m.registered.length) out.push('<p class="note"><b>Vous êtes déjà inscrit(e)</b> : ' + byDayText(m.registered) + '. Ces tableaux sont signalés ci-dessous ; vous pouvez en ajouter (3 maximum par jour).</p>');
     if (m.reserved.length) out.push('<p class="note"><b>Une place vous est réservée</b> : ' + byDayText(m.reserved) + '. Sélectionnez-la ci-dessous pour la confirmer.</p>');
     if (m.waiting.length) out.push('<p class="note"><b>Vous êtes en liste complémentaire</b> : ' + byDayText(m.waiting) + '. Les organisateurs vous contacteront si une place se libère.</p>');
+    if (m.toValidate) out.push('<p class="note"><b>Inscription en attente de validation</b> par les organisateurs (contrôle du classement).</p>');
     if (m.meals && (m.meals.sam || m.meals.dim)) out.push('<p class="note"><b>Repas déjà réservé</b> : ' + [m.meals.sam ? 'samedi' : '', m.meals.dim ? 'dimanche' : ''].filter(Boolean).join(' et ') + '.</p>');
     if (m.pending.length) out.push('<p class="note">Un paiement n’a pas été terminé pour : ' + byDayText(m.pending) + '. Vous pouvez recommencer l’inscription.</p>');
     return out.join('');
@@ -1195,6 +1321,131 @@
   $('#btn-verify').addEventListener('click', verifyLicence);
   F.licence.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); verifyLicence(); } });
   F.licence.addEventListener('input', () => { if (state.player) { resetPlayer(); setVerify('', ''); } });
+
+  /* ═══════════════════════════════════════════════════════════════════════════
+   *  Joueurs sans licence FFTT
+   * ═══════════════════════════════════════════════════════════════════════════ */
+  const fEl = { nation: $('#f-nation'), sexe: $('#f-sexe'), licence: $('#f-licence'), nom: $('#f-nom'), prenom: $('#f-prenom'),
+    cl: $('#f-cl'), cat: $('#f-cat'), mixte: $('#f-mixte') };
+  fEl.nation.insertAdjacentHTML('beforeend', NATIONS.map((n) => '<option value="' + n.c + '">' + FLAG[n.c] + ' ' + n.n + '</option>').join('') +
+    '<option value="OTHER">Autre pays</option>');
+
+  const useMixte = () => fEl.sexe.value !== 'F' || fEl.mixte.checked;
+
+  /** Liste des classements du pays choisi (tableau messieurs / mixte, ou dames pour une joueuse sans classement mixte). */
+  function refreshCl() {
+    const nation = fEl.nation.value, known = !!nation && nation !== 'OTHER';
+    const damesOk = known && equivOptions(nation, false).length > 0;
+    $('[data-field="fmixte"]').hidden = !(fEl.sexe.value === 'F' && damesOk);
+    const mixte = useMixte() || !damesOk;
+    const opts = known ? equivOptions(nation, mixte) : [];
+    const prev = fEl.cl.value;
+    fEl.cl.innerHTML = '<option value="">Choisir votre classement…</option>' +
+      opts.map((o) => '<option value="' + esc(o.key) + '">' + esc(o.label) + '   (≈ ' + o.pts + ' pts FFTT)</option>').join('');
+    if (opts.some((o) => o.key === prev)) fEl.cl.value = prev;
+    const auto = nation === 'BEL' && extras().afttAuto && !state.needCl;   // Belgique : classement lu sur l'AFTT
+    $('[data-field="fcl"]').hidden = !known || auto;
+    $('#f-cl-help').textContent = mixte ? 'Votre classement (messieurs / mixte). Voir le tableau d’équivalence si vous hésitez.'
+      : 'Votre classement dames. Voir le tableau d’équivalence si vous hésitez.';
+  }
+
+  function setMode(m) {
+    state.mode = m; state.fin = null; state.needCl = false;
+    $('#mode-fr').setAttribute('aria-selected', String(m === 'fr'));
+    $('#mode-foreign').setAttribute('aria-selected', String(m === 'foreign'));
+    $('#box-fr').hidden = m !== 'fr'; $('#box-foreign').hidden = m !== 'foreign';
+    $('#step1-title').textContent = m === 'fr' ? 'Votre licence FFTT' : 'Joueur sans licence FFTT';
+    resetPlayer(); setVerify('', '');
+    ['licence', 'fnation', 'fsexe', 'flicence', 'fnom', 'fprenom', 'fcl', 'fverify'].forEach((n) => setFieldError(n, ''));
+    if (m === 'foreign') refreshCl();
+  }
+  $('#mode-fr').addEventListener('click', () => setMode('fr'));
+  $('#mode-foreign').addEventListener('click', () => setMode('foreign'));
+
+  async function verifyForeign() {
+    const v = { nation: fEl.nation.value, sexe: fEl.sexe.value, licence: fEl.licence.value.trim(), nom: fEl.nom.value.trim(),
+      prenom: fEl.prenom.value.trim(), cat: fEl.cat.value };
+    ['fnation', 'fsexe', 'flicence', 'fnom', 'fprenom', 'fcl', 'fverify'].forEach((n) => setFieldError(n, ''));
+    let ok = true;
+    if (!v.nation) { setFieldError('fnation', 'Choisissez votre nationalité.'); ok = false; }
+    if (!v.sexe) { setFieldError('fsexe', 'Indiquez votre sexe.'); ok = false; }
+    if (!/^[A-Za-z0-9][A-Za-z0-9 \-\/.]{1,19}$/.test(v.licence)) { setFieldError('flicence', 'Saisissez votre numéro de licence (lettres et chiffres).'); ok = false; }
+    if (v.nom.length < 2) { setFieldError('fnom', 'Saisissez votre nom.'); ok = false; }
+    if (v.prenom.length < 2) { setFieldError('fprenom', 'Saisissez votre prénom.'); ok = false; }
+    if (v.nation === 'OTHER') {
+      setVerify('ko', 'Votre pays ne figure pas dans le tableau d’équivalence : contactez le club (06 07 70 27 49 ou ttseloncourt25@gmail.com) pour vous inscrire.');
+      return false;
+    }
+    const needCl = !$('[data-field="fcl"]').hidden;
+    if (needCl && !fEl.cl.value) { setFieldError('fcl', 'Choisissez votre classement.'); ok = false; }
+    if (!ok) return false;
+
+    resetPlayer();
+    const btn = $('#btn-verify-foreign'); btn.disabled = true; btn.textContent = 'Vérification…';
+    setVerify('wait', v.nation === 'BEL' ? 'Recherche de votre classement sur le site de l’AFTT…' : 'Calcul de votre classement équivalent…');
+    const q = { nation: v.nation, licence: v.licence, nom: v.nom, prenom: v.prenom, sexe: v.sexe, mixte: useMixte() ? '1' : '0', cl: needCl ? fEl.cl.value : '', cat: v.cat };
+    const res = await api.foreign(q);
+    btn.disabled = false; btn.textContent = 'Valider mon classement';
+    if (!res.ok && res.needClassement) {
+      state.needCl = true; refreshCl();
+      setVerify('ko', 'Nous n’avons pas pu vérifier automatiquement votre classement. Choisissez-le dans la liste ci-dessus : votre inscription sera contrôlée par les organisateurs après le paiement.');
+      return false;
+    }
+    if (!res.ok) { setVerify('ko', esc(res.error || 'Vérification impossible.')); return false; }
+
+    state.fin = { nation: q.nation, licence: q.licence, nom: q.nom, prenom: q.prenom, sexe: q.sexe, mixte: q.mixte === '1', cl: q.cl, cat: q.cat };
+    const pl = res.player;
+    state.player = pl; state.eligible = res.eligible; state.mine = Object.assign(emptyMine(), res.mine || {});
+    setVerify('ok', (pl.verified
+      ? 'Classement vérifié sur le site de l’AFTT : <b>' + esc(pl.prenom) + ' ' + esc(pl.nom) + '</b>, classement ' + esc(pl.classement) + ', équivalent à <b>' + pl.points + ' points</b> FFTT.'
+      : 'Classement déclaré : <b>' + esc(pl.prenom) + ' ' + esc(pl.nom) + '</b> (' + esc(natName(pl.nation)) + '), classement ' + esc(pl.classement) + ', équivalent à <b>' + pl.points + ' points</b> FFTT. ' +
+        'Votre inscription sera validée par les organisateurs après le paiement ; vous serez prévenu par e-mail.') + mineNotice(state.mine));
+    ['#step-picks', '#step-contact', '#step-buvette', '#step-don'].forEach((id) => $(id).classList.remove('locked'));
+    $('#picks-hint').textContent = 'Seuls les tableaux accessibles avec vos ' + pl.points + ' points FFTT équivalents sont affichés. Maximum 3 par jour, liste complémentaire comprise. Si un tableau est complet, vous pouvez vous inscrire gratuitement en liste complémentaire.';
+    $('#picks').hidden = false;
+    renderPicks(); updateRecap();
+    return true;
+  }
+  $('#btn-verify-foreign').addEventListener('click', verifyForeign);
+
+  // Toute modification des informations annule la vérification
+  [fEl.nation, fEl.sexe, fEl.licence, fEl.nom, fEl.prenom, fEl.cl, fEl.cat, fEl.mixte].forEach((el) => el.addEventListener('input', () => {
+    if (el === fEl.nation) state.needCl = false;
+    if (state.player) { resetPlayer(); setVerify('', ''); }
+    if (el === fEl.nation || el === fEl.sexe || el === fEl.mixte) refreshCl();
+  }));
+  fEl.mixte.addEventListener('change', () => { if (state.player) { resetPlayer(); setVerify('', ''); } refreshCl(); });
+
+  /* ── Tableau d'équivalence et tableaux du tournoi (fenêtres) ── */
+  function equivTablesHTML(nation) {
+    const cols = nation ? NATIONS.filter((n) => n.c === nation) : NATIONS;
+    const mk = (rows, title) => {
+      const used = rows.filter((r) => !nation || cols.some((n) => r.c[n.c]));
+      return '<h3 class="eq-title">' + title + '</h3><div class="eq-wrap"><table class="eq-table"><thead><tr><th>Points FFTT</th>' +
+        cols.map((n) => '<th>' + FLAG[n.c] + ' ' + n.c + '</th>').join('') + '</tr></thead><tbody>' +
+        used.map((r) => '<tr><th scope="row">' + r.p + '</th>' + cols.map((n) => '<td>' + esc(r.c[n.c] || '') + '</td>').join('') + '</tr>').join('') +
+        '</tbody></table></div>';
+    };
+    return mk(EQUIV.men, 'Messieurs et classement mixte') + mk(EQUIV.dames, 'Dames');
+  }
+  function openEquivDialog() {
+    const cur = fEl.nation.value && fEl.nation.value !== 'OTHER' ? fEl.nation.value : '';
+    dialog({ icon: null, title: 'Tableau d’équivalence des classements', wide: true, action: { label: 'Fermer', fn: closeDialog },
+      html: '<p style="color:var(--muted);margin-top:8px">Chaque ligne donne les points FFTT équivalents au classement de votre fédération. Les joueuses qui ont un classement mixte utilisent le tableau « Messieurs et classement mixte ».</p>' +
+        '<div class="eq-select"><label for="eq-nation">Pays :</label><select id="eq-nation"><option value="">Tous les pays</option>' +
+        NATIONS.map((n) => '<option value="' + n.c + '"' + (n.c === cur ? ' selected' : '') + '>' + FLAG[n.c] + ' ' + n.n + '</option>').join('') +
+        '</select></div><div id="eq-body">' + equivTablesHTML(cur) + '</div>' });
+    $('#eq-nation').addEventListener('change', (e) => { $('#eq-body').innerHTML = equivTablesHTML(e.target.value); });
+  }
+  function openTabsDialog() {
+    const rows = (d) => TABLEAUX.filter((t) => t.day === d).map((t) =>
+      '<tr><th scope="row">' + t.id + '</th><td>' + esc(t.title ? t.title + ', ' : '') + esc(t.label) + '</td><td>' + esc(t.start) + '</td><td>' + fmtEUR(t.price) + '</td></tr>').join('');
+    const tbl = (d) => '<h3 class="eq-title">' + DAYS[d] + '</h3><div class="eq-wrap"><table class="eq-table"><thead><tr><th>Tableau</th><th>Séries (points FFTT)</th><th>Début</th><th>Prix</th></tr></thead><tbody>' + rows(d) + '</tbody></table></div>';
+    dialog({ icon: null, title: 'Tableaux du tournoi', wide: true, action: { label: 'Fermer', fn: closeDialog },
+      html: '<p style="color:var(--muted);margin-top:8px">Les tableaux proposés dépendent de vos points FFTT équivalents. Le tableau S est réservé aux dames, le tableau J aux Benjamins et Minimes.</p>' + tbl('sam') + tbl('dim') });
+  }
+  $('#btn-eq').addEventListener('click', openEquivDialog);
+  $('#btn-tabs').addEventListener('click', openTabsDialog);
 
   /* ── Places, liste complémentaire et plafond de 3 tableaux par jour ── */
   const listOf = (k) => state.list[k] || {};
@@ -1330,8 +1581,11 @@
 
   function validate() {
     let ok = true;
-    ['licence', 'email', 'telephone', 'reglement', 'buvette'].forEach((n) => setFieldError(n, ''));
-    if (!state.player) { setFieldError('licence', 'Vérifiez votre licence avant de continuer.'); ok = false; }
+    ['licence', 'fverify', 'email', 'telephone', 'reglement', 'buvette'].forEach((n) => setFieldError(n, ''));
+    if (!state.player) {
+      setFieldError(state.mode === 'foreign' ? 'fverify' : 'licence', state.mode === 'foreign' ? 'Validez d’abord votre classement.' : 'Vérifiez votre licence avant de continuer.');
+      ok = false;
+    }
     if (!state.selected.size && !newMeals().length && !state.buvette) { $('#picks-error').textContent = 'Sélectionnez au moins un tableau, un repas ou une carte buvette.'; ok = false; }
     const ex = extras();
     if (state.buvette && (state.buvette % ex.buvetteStep !== 0 || state.buvette > ex.buvetteMax)) {
@@ -1376,6 +1630,7 @@
     const p = state.player;
     const res = await api.register({
       licence: p.licence, nom: p.nom, prenom: p.prenom, points: p.points,
+      foreign: state.mode === 'foreign' ? state.fin : undefined,
       email: F.email.value.trim(), telephone: F.tel.value.trim(),
       tableaux: pay.map((t) => t.id), attente: wait.map((t) => t.id),
       repas: { sam: meals.includes('sam'), dim: meals.includes('dim') }, buvette: state.buvette,
@@ -1395,6 +1650,7 @@
       att.map((a) => sumRow('Liste complémentaire, tableau ' + a.id, 'enregistré')).join('') + '</div>';
     const waitNote = att.length ? '<p>Vous êtes aussi en liste complémentaire pour ' + att.map((a) => a.id).join(', ') + ' (gratuit). Les organisateurs vous contacteront si une place se libère.</p>' : '';
 
+    const valNote = res.toValidate ? '<p>Votre classement sera contrôlé par les organisateurs après le paiement : vous recevrez un e-mail de confirmation dès la validation.</p>' : '';
     if (!hasPayment) {
       dialog({ icon: '✓', cls: '', title: 'Vous êtes en liste complémentaire',
         html: summary + '<p>Aucun paiement n’est demandé. Un e-mail de confirmation vous est envoyé. Si une place se libère, les organisateurs vous contactent directement.</p>',
@@ -1402,12 +1658,12 @@
       resetForm(); refreshList();
     } else if (DEMO || !res.paymentUrl) {
       dialog({ icon: '✓', cls: '', title: DEMO ? 'Démo : inscription validée' : 'Inscription enregistrée',
-        html: summary + waitNote + '<p>' + (DEMO ? 'En production, vous seriez maintenant redirigé vers HelloAsso pour payer.' : 'Votre inscription est enregistrée. Réglez-la sur HelloAsso pour la confirmer.') + '</p>',
+        html: summary + waitNote + valNote + '<p>' + (DEMO ? 'En production, vous seriez maintenant redirigé vers HelloAsso pour payer.' : 'Votre inscription est enregistrée. Réglez-la sur HelloAsso pour la confirmer.') + '</p>',
         action: { label: 'Fermer', fn: closeDialog } });
       if (DEMO) { resetForm(); refreshList(); }
     } else {
       dialog({ icon: '', cls: 'spin', title: 'Inscription enregistrée',
-        html: summary + waitNote + '<p>Redirection vers HelloAsso pour le paiement sécurisé…</p><a class="btn" href="' + esc(res.paymentUrl) + '">Payer maintenant</a>' });
+        html: summary + waitNote + valNote + '<p>Redirection vers HelloAsso pour le paiement sécurisé…</p><a class="btn" href="' + esc(res.paymentUrl) + '">Payer maintenant</a>' });
       setTimeout(() => { window.location.href = res.paymentUrl; }, 1600);
     }
   });
@@ -1416,8 +1672,10 @@
    *  Fenêtre de dialogue + retour de HelloAsso
    * ═══════════════════════════════════════════════════════════════════════════ */
   const dlg = $('#dlg');
-  function dialog({ icon, cls, title, html, action }) {
-    $('#dlg-content').innerHTML = '<div class="dlg-icon ' + (cls || '') + '" aria-hidden="true">' + icon + '</div><h2 id="dlg-title">' + esc(title) + '</h2>' + (html || '') +
+  function dialog({ icon, cls, title, html, action, wide }) {
+    dlg.classList.toggle('wide', !!wide);
+    $('#dlg-content').className = 'dlg' + (wide ? ' dlg-wide' : '');
+    $('#dlg-content').innerHTML = (icon === null ? '' : '<div class="dlg-icon ' + (cls || '') + '" aria-hidden="true">' + icon + '</div>') + '<h2 id="dlg-title">' + esc(title) + '</h2>' + (html || '') +
       (action ? '<button type="button" class="btn" id="dlg-action">' + esc(action.label) + '</button>' : '');
     const a = $('#dlg-action'); if (a) a.addEventListener('click', action.fn);
     if (!dlg.open) dlg.showModal();
@@ -1454,6 +1712,9 @@
     }
     if (res && res.ok && res.status === 'paid') {
       dialog({ icon: '✓', cls: '', title: 'Inscription confirmée !', html: regSummary(res.registration) + '<p>Un e-mail de confirmation vous est envoyé. Rendez-vous à Seloncourt, licence en main, pour le pointage.</p>', action: { label: 'Voir la liste des inscrits', fn: () => { closeDialog(); openTab('inscrits'); } } });
+      refreshList();
+    } else if (res && res.ok && res.status === 'tovalidate') {
+      dialog({ icon: '✓', cls: '', title: 'Paiement reçu', html: regSummary(res.registration) + '<p>Votre classement doit encore être contrôlé par les organisateurs. Votre place est réservée : vous recevrez un e-mail de confirmation dès la validation de votre inscription.</p>', action: { label: 'Fermer', fn: closeDialog } });
       refreshList();
     } else if (res && res.ok && res.status === 'pending') {
       dialog({ icon: '…', cls: 'warn', title: 'Paiement en cours de validation', html: '<p>HelloAsso n’a pas encore confirmé votre paiement. Votre inscription apparaîtra dans la liste dès réception, en général sous quelques minutes. Aucune action n’est nécessaire.</p>', action: { label: 'Fermer', fn: closeDialog } });
