@@ -93,6 +93,8 @@
     .tag strong { font-weight: 800; }
     .tag.hot { border-color: rgba(255, 138, 31, .55); background: rgba(255, 138, 31, .12); }
     .tag sup { font-size: .7em; }
+    .map-link { color: var(--cyan); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+    .map-link:hover { color: var(--ball-hi); }
     .tag.big { font-size: clamp(1.2rem, 2.7vw, 1.75rem); padding: 12px 26px; }
 
     /* Compte à rebours = tableau de marque */
@@ -483,7 +485,7 @@
 
           <div class="hero-actions">
             <a class="btn" href="#inscription" data-open-tab="inscription">S’inscrire maintenant</a>
-            <p class="hero-note"><b>Salle omnisports</b>, place Ambroise Croizat, Seloncourt (Doubs), sur 28 tables.</p>
+            <p class="hero-note"><b>Salle omnisports</b>, place Ambroise Croizat, Seloncourt (Doubs), sur 28 tables. <a class="map-link" href="https://www.google.com/maps/search/?api=1&amp;query=Place%20Ambroise%20Croizat%2C%2025230%20Seloncourt" target="_blank" rel="noopener">Voir le plan et l’itinéraire</a></p>
           </div>
         </div>
 
@@ -887,7 +889,7 @@
   const SITE = {
     // URL de déploiement Google Apps Script (se termine par /exec).
     // Laissez vide pour tester la page en « mode démo » (données fictives).
-    API_URL: 'https://script.google.com/macros/s/AKfycbxQmf0vgFm1AA7APA1OLoy77jpWMDh6hQiq4K5tHTDRoxiokchA4zEOqyjLJTsfbNY/exec',
+    API_URL: '',
     // Début du premier tableau (compte à rebours)
     TARGET: '2027-04-17T08:30:00+02:00',
     // Fin des inscriptions (le serveur reste maître de cette date)
@@ -1297,7 +1299,7 @@
   function mineNotice(m) {
     const out = [];
     if (m.registered.length) out.push('<p class="note"><b>Vous êtes déjà inscrit(e)</b> : ' + byDayText(m.registered) + '. Ces tableaux sont signalés ci-dessous ; vous pouvez en ajouter (3 maximum par jour).</p>');
-    if (m.reserved.length) out.push('<p class="note"><b>Une place vous est réservée</b> : ' + byDayText(m.reserved) + '. Sélectionnez-la ci-dessous pour la confirmer.</p>');
+    if (m.reserved.length) out.push('<p class="note"><b>Une place vous est réservée</b> : ' + byDayText(m.reserved) + '. Elle est cochée ci-dessous : validez votre inscription pour la confirmer (vous pouvez la décocher si vous n’en voulez plus).</p>');
     if (m.waiting.length) out.push('<p class="note"><b>Vous êtes en liste complémentaire</b> : ' + byDayText(m.waiting) + '. Les organisateurs vous contacteront si une place se libère.</p>');
     if (m.toValidate) out.push('<p class="note"><b>Inscription en attente de validation</b> par les organisateurs (contrôle du classement).</p>');
     if (m.meals && (m.meals.sam || m.meals.dim)) out.push('<p class="note"><b>Repas déjà réservé</b> : ' + [m.meals.sam ? 'samedi' : '', m.meals.dim ? 'dimanche' : ''].filter(Boolean).join(' et ') + '.</p>');
@@ -1333,8 +1335,16 @@
     ['#step-picks', '#step-contact', '#step-buvette', '#step-don'].forEach((id) => $(id).classList.remove('locked'));
     $('#picks-hint').textContent = 'Seuls les tableaux accessibles avec vos ' + res.player.points + ' points sont affichés. Maximum 3 par jour, liste complémentaire comprise. Si un tableau est complet, vous pouvez vous inscrire gratuitement en liste complémentaire.';
     $('#picks').hidden = false;
+    preselectReserved();
     renderPicks(); updateRecap();
     return true;
+  }
+  /** Les places réservées pour le joueur sont cochées d'office (il peut les décocher), dans la limite de 3 par jour. */
+  function preselectReserved() {
+    state.mine.reserved.forEach((id) => {
+      const t = byId(id);
+      if (t && state.eligible.includes(id) && !state.mine.registered.includes(id) && held(t.day).length < MAX_PER_DAY) state.selected.add(id);
+    });
   }
   $('#btn-verify').addEventListener('click', verifyLicence);
   F.licence.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); verifyLicence(); } });
@@ -1423,6 +1433,7 @@
     ['#step-picks', '#step-contact', '#step-buvette', '#step-don'].forEach((id) => $(id).classList.remove('locked'));
     $('#picks-hint').textContent = 'Seuls les tableaux accessibles avec vos ' + pl.points + ' points FFTT équivalents sont affichés. Maximum 3 par jour, liste complémentaire comprise. Si un tableau est complet, vous pouvez vous inscrire gratuitement en liste complémentaire.';
     $('#picks').hidden = false;
+    preselectReserved();
     renderPicks(); updateRecap();
     return true;
   }
@@ -1475,7 +1486,7 @@
 
   /** Tableaux déjà « pris » ce jour-là : inscrits, liste complémentaire, places réservées, sélection en cours. */
   function held(day) {
-    const ids = new Set([].concat(state.mine.registered, state.mine.waiting, state.mine.reserved, Array.from(state.selected)));
+    const ids = new Set([].concat(state.mine.registered, state.mine.waiting, Array.from(state.selected)));   // une place réservée ne compte que si elle est cochée
     return Array.from(ids).filter((id) => byId(id) && byId(id).day === day);
   }
 
