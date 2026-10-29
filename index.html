@@ -799,9 +799,10 @@
                 <p class="step-hint">Un don s’ajoute au montant de votre commande et se règle en une seule fois sur HelloAsso. Il aide le club à organiser le tournoi.</p>
                 <div class="don-chips" role="group" aria-label="Montant du don">
                   <button type="button" class="don-chip" data-v="0" aria-pressed="true">Pas de don</button>
+                  <button type="button" class="don-chip" data-v="1" aria-pressed="false">1 €</button>
+                  <button type="button" class="don-chip" data-v="2" aria-pressed="false">2 €</button>
                   <button type="button" class="don-chip" data-v="5" aria-pressed="false">5 €</button>
                   <button type="button" class="don-chip" data-v="10" aria-pressed="false">10 €</button>
-                  <button type="button" class="don-chip" data-v="20" aria-pressed="false">20 €</button>
                   <button type="button" class="don-chip" data-v="other" aria-pressed="false">Autre montant</button>
                 </div>
                 <div class="field don-other" id="don-other" data-field="don" hidden>
@@ -889,7 +890,7 @@
   const SITE = {
     // URL de déploiement Google Apps Script (se termine par /exec).
     // Laissez vide pour tester la page en « mode démo » (données fictives).
-    API_URL: 'https://script.google.com/macros/s/AKfycbwSZ5jPuXgonCSbyA42Yj66QsOEPSpdcIPboT1iMIICqif_lRhE078xA50kytk3PAQ8/exec',
+    API_URL: '',
     // Début du premier tableau (compte à rebours)
     TARGET: '2027-04-17T08:30:00+02:00',
     // Fin des inscriptions (le serveur reste maître de cette date)
